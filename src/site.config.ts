@@ -10,7 +10,7 @@ export const SITE = {
   description:
     "Associate Professor of Leadership and Human Resource Development at Louisiana State University. Research at the intersection of leadership, learning, and human development — across Southeast Asia, organizations, and the lives of learners.",
   positioning:
-    "My research is on human resource development, leadership, and human development across Southeast Asia, ASEAN, and beyond.",
+    "I research human development, global leadership, and the changing nature of work, with deep work in Southeast Asia.",
 } as const;
 
 export const AUTHOR = {
