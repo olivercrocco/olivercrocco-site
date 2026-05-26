@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SOCIAL } from "../site.config";
+import { AUTHOR, SITE, SOCIAL } from "../site.config";
 
 /**
  * SELECTED PUBLICATIONS — curated, not a CV dump.
@@ -82,12 +82,72 @@ const selected: Record<string, SelectedPub[]> = {
     },
   ],
 };
+
+/**
+ * JSON-LD ScholarlyArticle schema for each selected publication.
+ * Parses the canonical APA-ish citation string into structured fields:
+ * authors (split on commas/&), year (regex), title (between year and venue).
+ * The note field is dropped — schema is for machines, note is for humans.
+ */
+function parseCitation(citation: string, venue: string) {
+  const yearMatch = citation.match(/\((\d{4})\)/);
+  const year = yearMatch ? parseInt(yearMatch[1], 10) : null;
+  // Authors come before the (YYYY)
+  const authorsPart = yearMatch
+    ? citation.slice(0, yearMatch.index).trim().replace(/[.,\s]+$/, "")
+    : "";
+  const authors = authorsPart
+    .split(/,\s*&\s*|\s*&\s*|,\s*/)
+    .map((a) => a.trim())
+    .filter((a) => a.length > 0);
+  // Title comes after the year, before the venue (italicized journal name)
+  const afterYear = yearMatch
+    ? citation.slice((yearMatch.index ?? 0) + yearMatch[0].length).replace(/^\.\s*/, "")
+    : citation;
+  // Title ends at first period followed by space + capital, roughly
+  const titleMatch = afterYear.match(/^([^.]+\.)/);
+  const title = titleMatch ? titleMatch[1].replace(/\.$/, "").trim() : afterYear;
+  // Journal name = first comma-separated chunk of venue (strip volume/pages)
+  const journal = venue.split(",")[0].trim();
+  return { year, authors, title, journal };
+}
+
+const allPubs = Object.values(selected).flat();
+const publicationsGraph = {
+  "@context": "https://schema.org",
+  "@graph": allPubs.map((p) => {
+    const { year, authors, title, journal } = parseCitation(p.citation, p.venue);
+    return {
+      "@type": "ScholarlyArticle",
+      headline: title,
+      author: authors.map((name) => ({ "@type": "Person", name })),
+      ...(year ? { datePublished: String(year) } : {}),
+      isPartOf: {
+        "@type": "Periodical",
+        name: journal,
+      },
+      url: p.url,
+      ...(p.url.includes("doi.org")
+        ? {
+            sameAs: p.url,
+            identifier: {
+              "@type": "PropertyValue",
+              propertyID: "doi",
+              value: p.url.replace(/^https?:\/\/(dx\.)?doi\.org\//, ""),
+            },
+          }
+        : {}),
+    };
+  }),
+};
 ---
 
 <BaseLayout
   title="Selected Publications"
   description="Selected peer-reviewed articles and chapters by Oliver S. Crocco on HRD, leadership, and human development across Southeast Asia and ASEAN."
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(publicationsGraph)} />
+
   {/* HEADER */}
   <section class="border-b border-[var(--color-border)] paper-grain">
     <div class="wrap py-20 md:py-28">

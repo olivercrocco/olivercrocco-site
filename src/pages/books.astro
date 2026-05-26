@@ -1,9 +1,44 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { AUTHOR, SITE } from "../site.config";
 
 const allBooks = await getCollection("books");
 const books = allBooks.sort((a, b) => a.data.order - b.data.order);
+
+// JSON-LD Book schema for every book on this page.
+// Helps Google understand each as a distinct work, link author to Oliver,
+// and potentially surface as rich results.
+const booksGraph = {
+  "@context": "https://schema.org",
+  "@graph": books.map((b) => {
+    const cover = b.data.cover
+      ? `${SITE.url}${b.data.cover.replace(/\.jpg$/i, "-1200.jpg")}`
+      : undefined;
+    return {
+      "@type": "Book",
+      name: b.data.title,
+      alternateName: b.data.subtitle,
+      author: b.data.authors.map((a) => ({ "@type": "Person", name: a })),
+      ...(b.data.role === "co-editor" || b.data.role === "editor"
+        ? { editor: b.data.authors.map((a) => ({ "@type": "Person", name: a })) }
+        : {}),
+      publisher: { "@type": "Organization", name: b.data.publisher },
+      datePublished:
+        typeof b.data.year === "number" ? String(b.data.year) : undefined,
+      description: b.data.description,
+      url: b.data.buyLinks[0]?.url || `${SITE.url}/books#${b.id}`,
+      ...(cover ? { image: cover } : {}),
+      ...(b.data.awards.length > 0
+        ? {
+            award: b.data.awards,
+          }
+        : {}),
+      bookFormat: "https://schema.org/Hardcover",
+      inLanguage: "en",
+    };
+  }),
+};
 
 const statusLabels: Record<string, string> = {
   "published": "Published",
@@ -36,6 +71,8 @@ const goldText: Record<string, string> = {
   title="Books"
   description="Books authored, co-authored, and edited by Oliver S. Crocco — with Palgrave Macmillan, Cambridge University Press, and Cornell University Press."
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(booksGraph)} />
+
   {/* HEADER */}
   <section class="border-b border-[var(--color-border)] paper-grain">
     <div class="wrap py-20 md:py-28">
