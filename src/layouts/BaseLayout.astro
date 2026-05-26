@@ -60,6 +60,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <Footer />
 
     <script>
+      // Open external links in a new tab so visitors don't leave the site.
+      // Anything pointing off olivercrocco.com gets target="_blank" + safe rel.
+      // mailto:, tel:, and #anchor links are excluded by the selector.
+      document.querySelectorAll('a[href^="http"]').forEach((a) => {
+        try {
+          const url = new URL((a as HTMLAnchorElement).href);
+          if (url.host !== window.location.host) {
+            (a as HTMLAnchorElement).target = "_blank";
+            (a as HTMLAnchorElement).rel = "noopener noreferrer";
+          }
+        } catch {
+          /* skip invalid URLs */
+        }
+      });
+
       // Quiet motion: reveal elements as they scroll into view.
       const reduceMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
