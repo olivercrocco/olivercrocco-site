@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { AUTHOR, SOCIAL, RESEARCH_THEMES } from "../site.config";
+import PersonSchema from "../components/PersonSchema.astro";
 
 const education = [
   {
@@ -39,6 +40,8 @@ const editorialRoles = [
   title="About"
   description="Oliver S. Crocco is Associate Professor of Leadership and Human Resource Development at Louisiana State University, with research on HRD, leadership, and human development across Southeast Asia and ASEAN."
 >
+  <PersonSchema slot="head" />
+
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">
     <div class="wrap py-20 md:py-28">

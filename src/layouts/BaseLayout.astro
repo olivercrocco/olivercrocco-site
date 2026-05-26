@@ -14,7 +14,7 @@ interface Props {
 const {
   title,
   description = SITE.description,
-  image = "/og-default.png",
+  image = "/og.png",
   noindex = false,
 } = Astro.props;
 
@@ -51,6 +51,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     {/* Preload key fonts */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    {/* Page-specific <head> content (JSON-LD schema, etc.) */}
+    <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />

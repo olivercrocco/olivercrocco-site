@@ -1,0 +1,88 @@
+---
+/**
+ * JSON-LD structured data describing Oliver as a Person.
+ *
+ * Goes in the <head> of the homepage and About page (the two pages that
+ * are "about Oliver" canonically). Helps Google understand the entity,
+ * surface knowledge-panel info, and link search results back to authoritative
+ * profiles (ORCID, Google Scholar, LinkedIn).
+ *
+ * Schema reference: https://schema.org/Person
+ */
+
+import { AUTHOR, SITE, SOCIAL } from "../site.config";
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: AUTHOR.name,
+  alternateName: `${AUTHOR.nickname} Crocco`,
+  givenName: "Oliver",
+  familyName: "Crocco",
+  honorificSuffix: "EdD",
+  jobTitle: AUTHOR.role,
+  description: SITE.description,
+  url: SITE.url,
+  email: `mailto:${AUTHOR.email}`,
+  image: `${SITE.url}/headshot-1200.jpg`,
+  worksFor: {
+    "@type": "CollegeOrUniversity",
+    name: AUTHOR.institution,
+    url: "https://www.lsu.edu",
+    department: {
+      "@type": "Organization",
+      name: AUTHOR.department,
+    },
+  },
+  affiliation: [
+    {
+      "@type": "CollegeOrUniversity",
+      name: AUTHOR.institution,
+      url: "https://www.lsu.edu",
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      name: "Chulalongkorn University",
+      url: "https://www.chula.ac.th/en/",
+    },
+  ],
+  alumniOf: [
+    {
+      "@type": "CollegeOrUniversity",
+      name: "The George Washington University",
+      url: "https://www.gwu.edu",
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      name: "Harvard University",
+      url: "https://www.harvard.edu",
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      name: "Whitworth University",
+      url: "https://www.whitworth.edu",
+    },
+  ],
+  knowsAbout: [
+    "Human Resource Development",
+    "Adult Learning",
+    "Human Development",
+    "Leadership Development",
+    "Southeast Asia",
+    "ASEAN",
+    "Comparative Education",
+    "Regional Development",
+    "Transformative Learning",
+    "Cross-cultural Leadership",
+  ],
+  sameAs: [
+    SOCIAL.orcid,
+    SOCIAL.googleScholar,
+    SOCIAL.linkedin,
+    SOCIAL.twitter,
+    AUTHOR.lsuProfileUrl,
+  ].filter(Boolean),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />

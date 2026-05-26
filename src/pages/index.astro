@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { AUTHOR, SITE, RESEARCH_THEMES } from "../site.config";
 import Fleuron from "../components/Fleuron.astro";
+import PersonSchema from "../components/PersonSchema.astro";
 
 // Selected publications — top 5 most prominent recent.
 const featuredPubs = [
@@ -52,6 +53,8 @@ const featuredBook = {
 ---
 
 <BaseLayout>
+  <PersonSchema slot="head" />
+
   {/* ============================================================ HERO ============================================================ */}
   <section class="paper-grain border-b border-[var(--color-border)] relative overflow-hidden">
     <div class="wrap py-24 md:py-36 relative">
