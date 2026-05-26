@@ -1,0 +1,98 @@
+---
+import { AUTHOR, SOCIAL, NAV } from "../site.config";
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-32 border-t border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+  <div class="wrap py-16">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
+      <div class="md:col-span-5">
+        <p class="font-display text-2xl font-semibold tracking-tight text-[var(--color-text)] mb-3">
+          {AUTHOR.name}
+        </p>
+        <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-4">
+          {AUTHOR.role}
+          <br />
+          {AUTHOR.institution} · {AUTHOR.visitingRole},{" "}{AUTHOR.visitingInstitution}
+        </p>
+        <a
+          href={`mailto:${AUTHOR.email}`}
+          class="text-[var(--color-ink)] text-[0.9375rem] tracking-tight"
+        >
+          {AUTHOR.email}
+        </a>
+      </div>
+
+      <div class="md:col-span-3 md:col-start-7">
+        <p class="eyebrow mb-4">Site</p>
+        <ul class="flex flex-col gap-2.5 text-[0.9375rem]">
+          {NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-[var(--color-text-muted)] hover:text-[var(--color-ink)] no-underline"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <p class="eyebrow mb-4">Elsewhere</p>
+        <ul class="flex flex-col gap-2.5 text-[0.9375rem]">
+          <li>
+            <a
+              href={AUTHOR.lsuProfileUrl}
+              class="text-[var(--color-text-muted)] hover:text-[var(--color-ink)] no-underline"
+            >
+              LSU Faculty Profile →
+            </a>
+          </li>
+          <li>
+            <a
+              href={SOCIAL.googleScholar}
+              class="text-[var(--color-text-muted)] hover:text-[var(--color-ink)] no-underline"
+            >
+              Google Scholar →
+            </a>
+          </li>
+          <li>
+            <a
+              href={SOCIAL.orcid}
+              class="text-[var(--color-text-muted)] hover:text-[var(--color-ink)] no-underline"
+            >
+              ORCID →
+            </a>
+          </li>
+          <li>
+            <a
+              href={SOCIAL.linkedin}
+              class="text-[var(--color-text-muted)] hover:text-[var(--color-ink)] no-underline"
+            >
+              LinkedIn →
+            </a>
+          </li>
+          <li>
+            <a
+              href={SOCIAL.twitter}
+              class="text-[var(--color-text-muted)] hover:text-[var(--color-ink)] no-underline"
+            >
+              Twitter / X →
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="hairline mt-12 mb-8" />
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-[0.8125rem] text-[var(--color-text-soft)]">
+      <p>© {year} {AUTHOR.name}. All rights reserved.</p>
+      <p>
+        Site built with <a href="https://astro.build" class="text-[var(--color-text-soft)] hover:text-[var(--color-ink)]">Astro</a>.
+      </p>
+    </div>
+  </div>
+</footer>

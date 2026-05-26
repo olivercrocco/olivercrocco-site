@@ -1,0 +1,118 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { AUTHOR, SOCIAL } from "../site.config";
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact Oliver S. Crocco for research collaboration, speaking inquiries, journalist comment, or general correspondence."
+>
+  <section class="paper-grain border-b border-[var(--color-border)]">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Contact</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-6 max-w-3xl">
+        Get in touch
+      </h1>
+      <p class="font-display text-xl text-[var(--color-text-muted)] leading-snug max-w-2xl">
+        Email is the most reliable way to reach me. I aim to respond within a few business days, though travel and field-work can push that out.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap py-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <div class="md:col-span-7">
+          <p class="eyebrow mb-3">Email</p>
+          <a
+            href={`mailto:${AUTHOR.email}`}
+            class="font-display text-3xl md:text-4xl font-semibold text-[var(--color-ink)] block mb-10 break-all"
+          >
+            {AUTHOR.email}
+          </a>
+
+          <p class="eyebrow mb-3">For specific kinds of inquiry</p>
+          <ul class="divide-y divide-[var(--color-border)]">
+            <li class="py-5">
+              <p class="font-display text-lg font-medium mb-1">Speaking & keynotes</p>
+              <p class="text-[var(--color-text-muted)] text-[0.9375rem]">
+                Email with date, audience, and topic.{" "}
+                <a href="/speaking">See sample topics →</a>
+              </p>
+            </li>
+            <li class="py-5">
+              <p class="font-display text-lg font-medium mb-1">Journalist comment & media</p>
+              <p class="text-[var(--color-text-muted)] text-[0.9375rem]">
+                I comment on HRD, leadership, and Southeast Asia / ASEAN topics.
+                Brief deadlines welcome.
+              </p>
+            </li>
+            <li class="py-5">
+              <p class="font-display text-lg font-medium mb-1">Research collaboration</p>
+              <p class="text-[var(--color-text-muted)] text-[0.9375rem]">
+                Particularly interested in collaborators working on regional/comparative HRD,
+                Southeast Asia, transformative learning, and the future of work.
+              </p>
+            </li>
+            <li class="py-5">
+              <p class="font-display text-lg font-medium mb-1">Prospective doctoral students</p>
+              <p class="text-[var(--color-text-muted)] text-[0.9375rem]">
+                Please review the LSU School of Leadership & HRD program first, then email me
+                with your research interests and a CV.
+              </p>
+            </li>
+            <li class="py-5">
+              <p class="font-display text-lg font-medium mb-1">Editorial inquiries</p>
+              <p class="text-[var(--color-text-muted)] text-[0.9375rem]">
+                I serve on several HRD editorial boards and as Associate Editor at HRDR.
+                For paper inquiries, please go through the journal's submission system first.
+              </p>
+            </li>
+          </ul>
+        </div>
+
+        <aside class="md:col-span-5">
+          <div class="border border-[var(--color-border-strong)] rounded p-8 bg-[var(--color-paper-warm)]">
+            <p class="eyebrow mb-4">About me</p>
+            <p class="text-[var(--color-text)] mb-3 leading-relaxed">
+              <span class="font-medium">{AUTHOR.fullTitle}</span>
+            </p>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-3">
+              {AUTHOR.role}
+              <br />
+              {AUTHOR.department}
+              <br />
+              {AUTHOR.institution}
+            </p>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-6">
+              {AUTHOR.visitingRole}
+              <br />
+              {AUTHOR.visitingInstitution}
+            </p>
+            <hr class="hairline" />
+            <p class="eyebrow mb-3">Elsewhere</p>
+            <ul class="space-y-2 text-[0.9375rem]">
+              <li>
+                <a href={AUTHOR.lsuProfileUrl} class="text-[var(--color-ink)]">
+                  LSU faculty profile →
+                </a>
+              </li>
+              <li>
+                <a href={SOCIAL.googleScholar} class="text-[var(--color-ink)]">Google Scholar →</a>
+              </li>
+              <li>
+                <a href={SOCIAL.orcid} class="text-[var(--color-ink)]">ORCID →</a>
+              </li>
+              <li>
+                <a href={SOCIAL.linkedin} class="text-[var(--color-ink)]">LinkedIn →</a>
+              </li>
+              <li>
+                <a href={SOCIAL.twitter} class="text-[var(--color-ink)]">Twitter / X →</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

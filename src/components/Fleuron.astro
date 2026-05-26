@@ -1,0 +1,21 @@
+---
+/**
+ * Letterpress-style ornamental section divider.
+ * Three dots in a delicate horizontal arrangement — feels like an asterism
+ * from a printed book rather than a generic <hr>.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<div class:list={["flex justify-center items-center my-16", className]} aria-hidden="true">
+  <svg width="120" height="14" viewBox="0 0 120 14" fill="none" class="text-[var(--color-gold)]">
+    <line x1="0" y1="7" x2="42" y2="7" stroke="currentColor" stroke-width="0.5" opacity="0.5" />
+    <circle cx="50" cy="7" r="1.5" fill="currentColor" />
+    <circle cx="60" cy="7" r="2.5" fill="currentColor" />
+    <circle cx="70" cy="7" r="1.5" fill="currentColor" />
+    <line x1="78" y1="7" x2="120" y2="7" stroke="currentColor" stroke-width="0.5" opacity="0.5" />
+  </svg>
+</div>

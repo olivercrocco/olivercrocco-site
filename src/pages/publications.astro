@@ -1,0 +1,184 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SOCIAL } from "../site.config";
+
+/**
+ * SELECTED PUBLICATIONS — curated, not a CV dump.
+ * Eight pieces that represent the signature territory.
+ * The full record lives on Google Scholar, ORCID, and the CV.
+ */
+
+interface SelectedPub {
+  citation: string;
+  venue: string;
+  url: string;
+  note?: string;
+  award?: string;
+}
+
+const selected: Record<string, SelectedPub[]> = {
+  "Regional & comparative HRD in Southeast Asia": [
+    {
+      citation:
+        "Crocco, O. S., & Tkachenko, O. (2022). Regional human resource development: The case of Southeast Asia and ASEAN.",
+      venue: "Human Resource Development International, 25(1), 40–58",
+      url: "https://doi.org/10.1080/13678868.2020.1858261",
+      award: "Monica M. Lee Research Excellence Award (AHRD)",
+      note: "The foundational argument for treating Southeast Asia as a distinct regional HRD context — between national HRD and global HRD scholarship.",
+    },
+    {
+      citation:
+        "Tkachenko, O., Crocco, O. S., Nguyen, L. A., & Jonathan, V. (2022). Regional human resource development in ASEAN: An institutional theory perspective.",
+      venue: "Human Resource Development Review, 21(2), 225–248",
+      url: "https://doi.org/10.1177/15344843221083190",
+      note: "An institutional-theory framework for understanding the regulative, normative, and cultural-cognitive forces shaping HRD across the ASEAN 11.",
+    },
+    {
+      citation:
+        "Crocco, O. S., Aroonsri, P., & Isna, N. (2025). Communicating a vision for human resource development in Southeast Asia: A thematic analysis of the speeches of ASEAN secretaries-general.",
+      venue: "Human Resource Development International, 28(4), 543–566",
+      url: "https://doi.org/10.1080/13678868.2024.2441089",
+      note: "What ASEAN's own leaders say HRD is for — and what that vision implies for organizations operating in the region.",
+    },
+    {
+      citation:
+        "Nguyen, L. A., Crocco, O. S., Tkachenko, O., & Jonathan, V. (2022). Crisis leadership during COVID-19: The response of ASEAN and EU regional leaders.",
+      venue: "Human Resource Development International, 25(3), 381–389",
+      url: "https://doi.org/10.1080/13678868.2022.2071096",
+      note: "A comparative analysis of regional-level leadership response in two of the world's most developed integration projects.",
+    },
+  ],
+  "Fieldwork, organizations, and emerging arrangements": [
+    {
+      citation:
+        "Crocco, O. S., & Cseh, M. (2021). Learning, development, and change in a community-based enterprise in Myanmar.",
+      venue: "European Journal of Training and Development, 45(4/5), 436–448",
+      url: "https://doi.org/10.1108/EJTD-12-2019-0198",
+      award: "Outstanding Paper (Emerald)",
+      note: "Field study with a Myanmar CBE — the foundational fieldwork that drives much of my later regional work.",
+    },
+    {
+      citation:
+        "Aroonsri, P., & Crocco, O. S. (2024). Workplace learning and information exchange among gig workers: Crowdsourcing and the social media advantage.",
+      venue: "Journal of Workplace Learning, 36(1), 77–95",
+      url: "https://doi.org/10.1108/JWL-03-2023-0049",
+      note: "How Thai gig workers actually learn — through informal networks and platform-mediated knowledge exchange.",
+    },
+    {
+      citation:
+        "Crocco, O. S., & Sukanya Chaemchoy. (2024). Higher education in Thailand.",
+      venue: "In L. P. Symaco (Ed.), Higher education in Southeast Asia (pp. 119–137). Emerald",
+      url: "https://doi.org/10.1108/S1479-367920240000049009",
+      note: "A definitive chapter on Thai higher education in the most current comparative reference work on Southeast Asian education.",
+    },
+  ],
+  "Field-shaping & methodology": [
+    {
+      citation:
+        "Crocco, O. S., Mohd Rasdi, R., & Garavan, T. N. (2026). Responsible AI in non-empirical research: Guidance for authors, reviewers, and editors in HRD.",
+      venue: "Human Resource Development Review",
+      url: "https://doi.org/10.1177/15344843261445531",
+      note: "An editorial-team statement on responsible AI use in scholarly work — shaping practice across the field's flagship journal.",
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Selected Publications"
+  description="Selected peer-reviewed articles and chapters by Oliver S. Crocco on HRD, leadership, and human development across Southeast Asia and ASEAN."
+>
+  {/* HEADER */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Publications</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-6 max-w-3xl">
+        Selected publications
+      </h1>
+      <p class="font-display text-xl text-[var(--color-text-muted)] leading-snug max-w-2xl mb-8">
+        Eight pieces that capture the signature territory. The full record — including 60+ peer-reviewed articles, chapters, and reviews — lives on Google Scholar and ORCID.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href={SOCIAL.googleScholar} class="btn btn-primary">Google Scholar →</a>
+        <a href={SOCIAL.orcid} class="btn btn-ghost">ORCID →</a>
+        <a
+          href="https://www.dropbox.com/scl/fi/8e451lgbxa85tgupyxwuu/Oliver-S.-Crocco_CV.docx?rlkey=7ibodut9wc9k3jgw2o1jc743c&st=xz46bcsn&dl=0"
+          class="btn btn-ghost"
+        >
+          Download CV
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* SELECTED PUBLICATIONS BY THEME */}
+  <section>
+    <div class="wrap py-20">
+      {Object.entries(selected).map(([theme, pubs], themeIdx) => (
+        <div class="mb-20">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10 items-end">
+            <div class="md:col-span-1">
+              <span class="font-mono text-sm text-[var(--color-gold)]">
+                0{themeIdx + 1}
+              </span>
+            </div>
+            <h2 class="md:col-span-11 font-display text-2xl md:text-3xl font-semibold tracking-tight pb-4 border-b border-[var(--color-border-strong)] leading-tight">
+              {theme}
+            </h2>
+          </div>
+
+          <ol class="divide-y divide-[var(--color-border)]">
+            {pubs.map((p) => (
+              <li class="py-8 grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div class="md:col-span-8">
+                  <p class="font-display text-[1.0625rem] leading-snug text-[var(--color-text)] mb-2">
+                    {p.citation}
+                  </p>
+                  <p class="text-sm italic text-[var(--color-text-muted)] mb-3">
+                    {p.venue}
+                  </p>
+                  {p.award && (
+                    <p class="text-xs uppercase tracking-wider text-[var(--color-gold)] font-medium mb-3">
+                      ★ {p.award}
+                    </p>
+                  )}
+                  <a
+                    href={p.url}
+                    class="text-sm text-[var(--color-ink)] tracking-tight font-mono break-all"
+                  >
+                    {p.url.replace(/^https?:\/\//, "")}
+                  </a>
+                </div>
+                {p.note && (
+                  <div class="md:col-span-4 md:border-l md:border-[var(--color-border-strong)] md:pl-6">
+                    <p class="font-display text-[0.9375rem] italic leading-relaxed text-[var(--color-text-muted)]">
+                      {p.note}
+                    </p>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {/* CTA — bottom */}
+  <section class="border-t border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <div class="max-w-2xl">
+        <h2 class="font-display text-3xl font-semibold tracking-tight mb-4">
+          Looking for the full list?
+        </h2>
+        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8">
+          The complete and current record of articles, chapters, reviews, and conference work is maintained automatically on Google Scholar and ORCID, and the full annotated record sits in my CV.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href={SOCIAL.googleScholar} class="btn btn-primary">Google Scholar →</a>
+          <a href={SOCIAL.orcid} class="btn btn-ghost">ORCID →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

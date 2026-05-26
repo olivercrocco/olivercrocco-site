@@ -1,0 +1,251 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { AUTHOR, SITE, RESEARCH_THEMES } from "../site.config";
+import Fleuron from "../components/Fleuron.astro";
+
+// Selected publications — top 5 most prominent recent.
+const featuredPubs = [
+  {
+    citation:
+      "Crocco, O. S., Mohd Rasdi, R., & Garavan, T. N. (2026). Responsible AI in non-empirical research: Guidance for authors, reviewers, and editors in HRD.",
+    venue: "Human Resource Development Review",
+    doi: "https://doi.org/10.1177/15344843261445531",
+    tag: "Forthcoming",
+  },
+  {
+    citation:
+      "Crocco, O. S., Aroonsri, P., & Isna, N. (2025). Communicating a vision for human resource development in Southeast Asia: A thematic analysis of the speeches of ASEAN secretaries-general.",
+    venue: "Human Resource Development International, 28(4), 543–566",
+    doi: "https://doi.org/10.1080/13678868.2024.2441089",
+    tag: "2025",
+  },
+  {
+    citation:
+      "Werner, J. M., Park, S. P., Cho, Y., Russ-Eft, D., Crocco, O. S., Ballenger, M., & Ghosh, R. (2026). Publishing books and book chapters in HRD: Some initial evidence of impact.",
+    venue: "Human Resource Development Review, 25(1), 80–101",
+    doi: "https://doi.org/10.1177/15344843251351504",
+    tag: "2026",
+  },
+  {
+    citation:
+      "Crocco, O. S., & Tkachenko, O. (2022). Regional human resource development: The case of Southeast Asia and ASEAN.",
+    venue: "Human Resource Development International, 25(1), 40–58",
+    doi: "https://doi.org/10.1080/13678868.2020.1858261",
+    tag: "Award winner",
+  },
+  {
+    citation:
+      "Crocco, O. S., & Cseh, M. (2021). Learning, development, and change in a community-based enterprise in Myanmar.",
+    venue: "European Journal of Training and Development, 45(4/5), 436–448",
+    doi: "https://doi.org/10.1108/EJTD-12-2019-0198",
+    tag: "Outstanding Paper",
+  },
+];
+
+const featuredBook = {
+  title: "Developing Human Resources in Southeast Asia",
+  subtitle: "A Holistic Framework for the ASEAN Community",
+  publisher: "Palgrave Macmillan, 2021",
+  description:
+    "The first systematic framework for understanding human resource development at the regional level in Southeast Asia. Argues that ASEAN's HRD ecosystem is a complex adaptive system shaped by the ASEAN Way of musjawarah and mufakat — deliberation and consensus.",
+};
+---
+
+<BaseLayout>
+  {/* ============================================================ HERO ============================================================ */}
+  <section class="paper-grain border-b border-[var(--color-border)] relative overflow-hidden">
+    <div class="wrap py-24 md:py-36 relative">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+        <div class="md:col-span-8" data-fade-stagger>
+          <p class="eyebrow mb-8">{AUTHOR.scholarlyArea}</p>
+          <h1 class="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-tight mb-10 leading-[0.95]">
+            Oliver S.<br />Crocco
+          </h1>
+          <p class="font-display text-2xl md:text-[1.875rem] leading-[1.3] text-[var(--color-text)] mb-10 max-w-3xl">
+            {SITE.positioning}
+          </p>
+          <p class="text-[var(--color-text-muted)] text-lg leading-relaxed max-w-xl mb-10">
+            I'm Associate Professor of Leadership and Human Resource Development at <a href={AUTHOR.lsuProfileUrl}>Louisiana State University</a>, recently on sabbatical (2025–2026) as Visiting Professor at Chulalongkorn University in Bangkok. My work brings the lens of adult learning and human development to questions of leadership and the changing nature of work, across organizations, institutions, and cultural contexts.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/books" class="btn btn-primary">Read my books</a>
+            <a href="/publications" class="btn btn-ghost">Browse publications</a>
+          </div>
+        </div>
+
+        <aside class="md:col-span-4 md:pt-2" data-fade>
+          <img
+            src="/headshot-800.jpg"
+            srcset="/headshot-400.jpg 400w, /headshot-800.jpg 800w, /headshot-1200.jpg 1200w"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            alt="Oliver S. Crocco"
+            class="w-full aspect-[3/4] object-cover rounded shadow-xl border border-[var(--color-border-strong)] mb-8"
+          />
+          <div class="border-l border-[var(--color-border-strong)] pl-6">
+            <p class="eyebrow mb-3">At a glance</p>
+            <ul class="text-[0.9375rem] text-[var(--color-text-muted)] space-y-2 leading-relaxed">
+              <li><span class="text-[var(--color-text)] font-medium">4</span> books published or under contract</li>
+              <li><span class="text-[var(--color-text)] font-medium">60+</span> peer-reviewed articles & chapters</li>
+              <li><span class="text-[var(--color-text)] font-medium">Associate Editor,</span> Human Resource Development Review</li>
+              <li><span class="text-[var(--color-text)] font-medium">2× Award-winning</span> research (AHRD, UFHRD)</li>
+              <li><span class="text-[var(--color-text)] font-medium">11 countries</span> presented & taught in</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ FEATURED BOOK ============================================================ */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20" data-fade>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+        <div class="md:col-span-4">
+          <img
+            src="/book-covers/developing-human-resources-southeast-asia-800.jpg"
+            srcset="/book-covers/developing-human-resources-southeast-asia-400.jpg 400w, /book-covers/developing-human-resources-southeast-asia-800.jpg 800w, /book-covers/developing-human-resources-southeast-asia-1200.jpg 1200w"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            alt="Cover of Developing Human Resources in Southeast Asia: A Holistic Framework for the ASEAN Community"
+            class="aspect-[2/3] w-full object-cover rounded shadow-2xl border border-black/20 lift"
+          />
+        </div>
+        <div class="md:col-span-8">
+          <p class="eyebrow mb-4">Featured book</p>
+          <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-3">
+            {featuredBook.title}
+          </h2>
+          <p class="font-display text-xl text-[var(--color-text-muted)] italic mb-2">
+            {featuredBook.subtitle}
+          </p>
+          <p class="text-sm text-[var(--color-text-soft)] mb-6">{featuredBook.publisher}</p>
+          <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8 max-w-2xl">
+            {featuredBook.description}
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/books" class="btn btn-primary">All books</a>
+            <a href="https://link.springer.com/book/10.1007/978-3-030-79114-4" class="btn btn-ghost">View on Palgrave</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ FIELD PHOTO SECTION BREAK (G) ============================================================ */}
+  <figure class="relative">
+    <img
+      src="/bangkok-sunset-1600.jpg"
+      srcset="/bangkok-sunset-800.jpg 800w, /bangkok-sunset-1600.jpg 1600w, /bangkok-sunset-2400.jpg 2400w"
+      sizes="100vw"
+      alt="Bangkok at sunset"
+      class="w-full h-[45vh] md:h-[65vh] object-cover"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+    <figcaption class="absolute bottom-6 left-6 md:bottom-10 md:left-12 text-white">
+      <p class="font-mono text-xs uppercase tracking-[0.18em] opacity-80 mb-1">Field</p>
+      <p class="font-display text-base md:text-lg italic">Bangkok, at dusk</p>
+    </figcaption>
+  </figure>
+
+  {/* ============================================================ THREE STREAMS — DARK SECTION (B) ============================================================ */}
+  <section class="section-dark border-y border-black/40">
+    <div class="wrap py-28">
+      <div class="max-w-2xl mb-20" data-fade>
+        <p class="eyebrow mb-4">What I work on</p>
+        <h2 class="font-display text-4xl md:text-5xl font-semibold tracking-tight mb-6 text-white leading-[1.1]">
+          Three streams that interweave
+        </h2>
+        <p class="text-lg leading-relaxed">
+          My scholarship moves between regional comparative work, the development of leaders and adults across cultures, and the rapidly shifting nature of work itself.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12" data-fade-stagger>
+        {RESEARCH_THEMES.map((theme, i) => (
+          <article class="relative pt-12">
+            <span class="section-numeral absolute top-0 left-0" style="opacity: 0.45;">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div class="border-t border-white/20 pt-6 relative z-10">
+              <h3 class="font-display text-2xl font-semibold mb-4 leading-tight text-white">
+                {theme.title}
+              </h3>
+              <p class="text-[0.9375rem] leading-relaxed">
+                {theme.summary}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================ SELECTED PUBLICATIONS ============================================================ */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-24">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14" data-fade>
+        <div class="max-w-xl">
+          <p class="eyebrow mb-4">Recent scholarship</p>
+          <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-5">
+            Selected publications
+          </h2>
+          <p class="text-[var(--color-text-muted)] text-lg leading-relaxed">
+            A handful of papers that capture where the work is going. The full record lives on the publications page.
+          </p>
+        </div>
+        <a href="/publications" class="btn btn-ghost self-start md:self-end whitespace-nowrap">
+          All publications →
+        </a>
+      </div>
+
+      <ol class="divide-y divide-[var(--color-border)]" data-fade-stagger>
+        {featuredPubs.map((pub, i) => (
+          <li class="py-7 grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-1">
+              <p class="font-mono text-xs text-[var(--color-text-soft)]">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+            </div>
+            <div class="md:col-span-11">
+              <div class="flex items-start gap-3 flex-wrap mb-2">
+                <span class="inline-block px-2 py-0.5 text-[0.7rem] uppercase tracking-wider font-medium bg-[var(--color-paper-deep)] text-[var(--color-ink)] rounded">
+                  {pub.tag}
+                </span>
+                <p class="text-sm text-[var(--color-text-muted)] italic">{pub.venue}</p>
+              </div>
+              <p class="font-display text-lg leading-snug text-[var(--color-text)] mb-2">
+                {pub.citation}
+              </p>
+              <a href={pub.doi} class="text-sm text-[var(--color-ink)] tracking-tight">
+                {pub.doi.replace("https://", "")}
+              </a>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <Fleuron />
+
+  {/* ============================================================ CTA ============================================================ */}
+  <section>
+    <div class="wrap py-24" data-fade>
+      <div class="max-w-2xl">
+        <p class="eyebrow mb-4">Get in touch</p>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-5">
+          For invitations to speak, collaborate, or comment
+        </h2>
+        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8">
+          I'm available for keynotes, workshops, journalist comment on HRD and Southeast Asia topics, and collaborative research with scholars working on similar questions.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href={`mailto:${AUTHOR.email}`} class="btn btn-primary">
+            {AUTHOR.email}
+          </a>
+          <a href="/contact" class="btn btn-ghost">Other ways to reach me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

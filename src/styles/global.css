@@ -1,0 +1,372 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap");
+@import "tailwindcss";
+
+/* =============================================================================
+   Design tokens — warm paper + ink navy + subtle gold
+   ============================================================================= */
+@theme {
+  /* Type families */
+  --font-display: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Colors — warm paper palette */
+  --color-paper: #FAF7F2;
+  --color-paper-warm: #F2EDE3;
+  --color-paper-deep: #E8E0D0;
+
+  --color-ink: #14213D;
+  --color-ink-light: #2D4263;
+  --color-ink-soft: #4A5878;
+
+  --color-text: #1A1F2E;
+  --color-text-muted: #5C6577;
+  --color-text-soft: #8A8F9B;
+
+  --color-gold: #B8860B;
+  --color-gold-light: #D4A82C;
+  --color-rust: #8B3A1F;
+
+  --color-border: rgba(20, 33, 61, 0.10);
+  --color-border-strong: rgba(20, 33, 61, 0.18);
+
+  /* Type scale (size / line-height pairs) */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.7;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.65;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.5;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.4;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 1.25;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 1.15;
+  --text-5xl: 3.25rem;
+  --text-5xl--line-height: 1.08;
+  --text-6xl: 4rem;
+  --text-6xl--line-height: 1.04;
+  --text-display: 5rem;
+  --text-display--line-height: 1.0;
+}
+
+/* =============================================================================
+   Base styles
+   ============================================================================= */
+html {
+  background: var(--color-paper);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* Use serif by default for prose / display headings */
+h1, h2, h3, h4, h5, h6,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--color-text);
+}
+
+h1 { font-size: var(--text-5xl); line-height: 1.08; }
+h2 { font-size: var(--text-4xl); line-height: 1.15; }
+h3 { font-size: var(--text-3xl); line-height: 1.25; }
+h4 { font-size: var(--text-2xl); line-height: 1.4; }
+
+a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(20, 33, 61, 0.25);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
+}
+
+a:hover {
+  text-decoration-color: var(--color-ink);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* =============================================================================
+   Utility classes (used across components)
+   ============================================================================= */
+
+/* Container — comfortable reading width */
+.wrap {
+  width: 100%;
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .wrap { padding-left: 2.5rem; padding-right: 2.5rem; }
+}
+
+/* Narrower wrap for prose */
+.wrap-narrow {
+  width: 100%;
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Hairline divider */
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+/* "Eyebrow" small caps label (used above section headings) */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-ink);
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  letter-spacing: 0.005em;
+}
+
+.btn-primary {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.btn-primary:hover {
+  background: var(--color-ink-light);
+  text-decoration-color: transparent;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-border-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-ink);
+  background: var(--color-paper-warm);
+  text-decoration-color: transparent;
+}
+
+/* Prose styles for blog post bodies */
+.prose {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.prose p { margin-block: 1.25em; }
+.prose h2 { margin-block: 2em 0.75em; font-size: 1.875rem; }
+.prose h3 { margin-block: 1.75em 0.5em; font-size: 1.5rem; }
+.prose a { color: var(--color-ink); }
+.prose blockquote {
+  border-left: 3px solid var(--color-gold);
+  padding-left: 1.25em;
+  margin-block: 1.5em;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+.prose ul, .prose ol { padding-left: 1.5em; margin-block: 1em; }
+.prose li { margin-block: 0.4em; }
+.prose img {
+  border-radius: 4px;
+  margin-block: 2em;
+  width: 100%;
+  height: auto;
+}
+.prose figure { margin-block: 2em; }
+.prose figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 0.5em;
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin-block: 3em;
+}
+
+/* Subtle grain on hero background — feels more "paper" */
+.paper-grain {
+  background-image:
+    radial-gradient(rgba(20, 33, 61, 0.025) 1px, transparent 1px);
+  background-size: 3px 3px;
+  background-position: 0 0;
+}
+
+/* =============================================================================
+   Drop cap (used on the lead paragraph of long-form content)
+   ============================================================================= */
+.drop-cap::first-letter {
+  font-family: var(--font-display);
+  font-size: 4.5em;
+  font-weight: 600;
+  float: left;
+  line-height: 0.85;
+  margin: 0.05em 0.1em 0 -0.05em;
+  color: var(--color-ink);
+}
+
+/* =============================================================================
+   Pull quote (editorial element for long-form)
+   ============================================================================= */
+.pullquote {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1.3;
+  color: var(--color-ink);
+  font-style: italic;
+  position: relative;
+  padding: 1.5rem 0;
+  margin: 2.5rem auto;
+  max-width: 36rem;
+  text-align: center;
+  border-top: 1px solid var(--color-border-strong);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.pullquote::before {
+  content: "\201C"; /* left double quotation mark */
+  font-size: 5rem;
+  line-height: 0;
+  position: absolute;
+  top: 0.6em;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-paper);
+  width: 3rem;
+  text-align: center;
+  color: var(--color-gold);
+  font-style: normal;
+}
+
+/* =============================================================================
+   Oversized faded section numerals (editorial section numbering)
+   ============================================================================= */
+.section-numeral {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 600;
+  line-height: 0.85;
+  color: var(--color-gold);
+  opacity: 0.18;
+  letter-spacing: -0.02em;
+}
+
+/* =============================================================================
+   Quiet motion: fade-up on scroll
+   Elements with data-fade attribute start invisible & translated; the
+   IntersectionObserver in BaseLayout adds .in-view to reveal them.
+   ============================================================================= */
+[data-fade] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+[data-fade].in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children with data-fade-stagger */
+[data-fade-stagger] > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+[data-fade-stagger].in-view > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+[data-fade-stagger].in-view > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+[data-fade-stagger].in-view > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+[data-fade-stagger].in-view > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+[data-fade-stagger].in-view > *:nth-child(5) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-fade],
+  [data-fade-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Smooth lift on hover for interactive cards */
+.lift {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lift:hover {
+  transform: translateY(-3px);
+}
+
+/* Dark section override — used on Three Streams */
+.section-dark {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.section-dark h2,
+.section-dark h3,
+.section-dark .eyebrow {
+  color: var(--color-paper);
+}
+.section-dark .eyebrow {
+  color: var(--color-gold);
+}
+.section-dark p {
+  color: rgba(250, 247, 242, 0.78);
+}
+.section-dark .border-t {
+  border-color: rgba(250, 247, 242, 0.18);
+}

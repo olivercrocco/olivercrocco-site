@@ -1,0 +1,72 @@
+---
+import { NAV, AUTHOR } from "../site.config";
+
+const { pathname } = Astro.url;
+const isActive = (href: string) =>
+  href === "/" ? pathname === "/" : pathname.startsWith(href);
+---
+
+<header class="border-b border-[var(--color-border)] bg-[var(--color-paper)]/85 backdrop-blur-sm sticky top-0 z-40">
+  <div class="wrap flex items-center justify-between py-5">
+    <a
+      href="/"
+      class="font-display text-lg font-semibold tracking-tight no-underline text-[var(--color-text)] hover:text-[var(--color-ink)]"
+    >
+      {AUTHOR.name}
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8">
+      {NAV.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            "text-[0.9375rem] no-underline tracking-tight transition-colors",
+            isActive(item.href)
+              ? "text-[var(--color-ink)] font-medium"
+              : "text-[var(--color-text-muted)] hover:text-[var(--color-ink)]",
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <button
+      id="mobile-menu-toggle"
+      aria-label="Toggle menu"
+      class="md:hidden p-2 -mr-2 text-[var(--color-ink)]"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <nav id="mobile-menu" class="hidden md:hidden border-t border-[var(--color-border)]">
+    <div class="wrap py-4 flex flex-col gap-1">
+      {NAV.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            "py-2 no-underline",
+            isActive(item.href)
+              ? "text-[var(--color-ink)] font-medium"
+              : "text-[var(--color-text-muted)]",
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById("mobile-menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  toggle?.addEventListener("click", () => {
+    menu?.classList.toggle("hidden");
+  });
+</script>

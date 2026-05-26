@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { AUTHOR, SOCIAL, RESEARCH_THEMES } from "../site.config";
+
+const education = [
+  {
+    degree: "Doctor of Education",
+    field: "Human and Organizational Learning",
+    institution: "The George Washington University",
+    location: "Washington, D.C.",
+    year: 2018,
+  },
+  {
+    degree: "Master of Education",
+    field: "Human Development and Psychology",
+    institution: "Harvard University Graduate School of Education",
+    location: "Cambridge, Massachusetts",
+    year: 2012,
+  },
+  {
+    degree: "Bachelor of Arts",
+    field: "Theology, Minor in Biblical Languages",
+    institution: "Whitworth University",
+    location: "Spokane, Washington",
+    year: 2008,
+  },
+];
+
+const editorialRoles = [
+  { role: "Associate Editor", venue: "Human Resource Development Review", current: true },
+  { role: "Editorial Board", venue: "Advances in Developing Human Resources", current: true },
+  { role: "Editorial Board", venue: "Human Resource Development International", current: true },
+  { role: "Editorial Board", venue: "Industrial and Commercial Training", current: true },
+  { role: "Board of Directors", venue: "Academy of Human Resource Development", current: false, dates: "2021–2024" },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="Oliver S. Crocco is Associate Professor of Leadership and Human Resource Development at Louisiana State University, with research on HRD, leadership, and human development across Southeast Asia and ASEAN."
+>
+  {/* HERO */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">About</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
+        Oliver S. (Ozzie) Crocco
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        Associate Professor of Leadership and Human Resource Development at Louisiana State University.
+        Visiting Professor at Chulalongkorn University, Bangkok.
+      </p>
+    </div>
+  </section>
+
+  {/* BIO */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <aside class="md:col-span-4">
+          <img
+            src="/headshot-800.jpg"
+            srcset="/headshot-400.jpg 400w, /headshot-800.jpg 800w, /headshot-1200.jpg 1200w"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            alt="Oliver S. Crocco"
+            class="w-full aspect-[3/4] object-cover rounded shadow-xl border border-[var(--color-border-strong)] mb-8"
+          />
+          <p class="eyebrow mb-3">In short</p>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-2">
+            My name is pronounced like the bird —
+            <a href={AUTHOR.namedropUrl} class="text-[var(--color-ink)]">hear it</a>.
+            People who know me call me Ozzie.
+          </p>
+        </aside>
+
+        <div class="md:col-span-8 prose">
+          <p class="drop-cap">
+            My research focuses on human resource development, leadership, and human development across Southeast Asia and ASEAN — examining how nations and institutions build human capability under different cultural, political, and economic conditions, and what other regions can learn from those dynamics.
+          </p>
+          <p>
+            I'm an <a href={AUTHOR.lsuProfileUrl}>Associate Professor of Leadership and Human Resource Development</a> at Louisiana State University and a Visiting Professor at Chulalongkorn University in Bangkok. My doctorate is from George Washington University in Human and Organizational Learning; my master's from Harvard in Human Development and Psychology.
+          </p>
+          <p>
+            Before LSU, I taught at GW in Washington and, before that, at Payap University in Chiang Mai for four years. My interest in HRD took root during that time, through fieldwork with community-based organizations on the Thai-Myanmar border and inside Myanmar — work that continues to shape the questions I ask today.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* RESEARCH */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">Research</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-12 max-w-2xl">
+        Three streams that interweave
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {RESEARCH_THEMES.map((theme, i) => (
+          <article class="border-t border-[var(--color-border-strong)] pt-6">
+            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">0{i + 1}</p>
+            <h3 class="font-display text-xl font-semibold mb-3 leading-tight">
+              {theme.title}
+            </h3>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+              {theme.summary}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* EDITORIAL & SERVICE */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <div class="md:col-span-4">
+          <p class="eyebrow mb-4">Editorial & service</p>
+          <h2 class="font-display text-3xl font-semibold tracking-tight mb-4 leading-tight">
+            Roles in the field
+          </h2>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+            Editing, reviewing, and shaping the conversation in HRD scholarship.
+          </p>
+        </div>
+        <div class="md:col-span-8">
+          <ul class="divide-y divide-[var(--color-border)]">
+            {editorialRoles.map((role) => (
+              <li class="py-4 grid grid-cols-1 md:grid-cols-12 gap-2">
+                <div class="md:col-span-5">
+                  <p class="font-display text-lg text-[var(--color-text)] font-medium leading-snug">
+                    {role.role}
+                  </p>
+                </div>
+                <div class="md:col-span-7">
+                  <p class="text-[var(--color-text-muted)] italic leading-snug">
+                    {role.venue}
+                    {role.dates && <span class="not-italic text-[var(--color-text-soft)] text-sm ml-2">({role.dates})</span>}
+                    {role.current && <span class="not-italic text-[var(--color-gold)] text-xs ml-2 uppercase tracking-wider font-medium">Current</span>}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* EDUCATION */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-10">Education</p>
+      <ul class="divide-y divide-[var(--color-border)]">
+        {education.map((ed) => (
+          <li class="py-6 grid grid-cols-1 md:grid-cols-12 gap-3">
+            <p class="md:col-span-1 font-mono text-sm text-[var(--color-gold)]">{ed.year}</p>
+            <div class="md:col-span-7">
+              <p class="font-display text-xl text-[var(--color-text)] font-semibold leading-snug">
+                {ed.degree}
+                <span class="font-normal italic text-[var(--color-text-muted)]"> — {ed.field}</span>
+              </p>
+            </div>
+            <p class="md:col-span-4 text-[var(--color-text-muted)] text-[0.9375rem] leading-snug md:text-right">
+              {ed.institution}
+              <br />
+              <span class="text-[var(--color-text-soft)] text-sm">{ed.location}</span>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* CTA */}
+  <section>
+    <div class="wrap py-20">
+      <div class="max-w-2xl">
+        <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-5">
+          The longer version
+        </h2>
+        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8">
+          A full CV with publications, presentations, teaching, and service is available on Dropbox. The auto-updated publication record lives on Google Scholar and ORCID.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="https://www.dropbox.com/scl/fi/8e451lgbxa85tgupyxwuu/Oliver-S.-Crocco_CV.docx?rlkey=7ibodut9wc9k3jgw2o1jc743c&st=xz46bcsn&dl=0"
+            class="btn btn-primary"
+          >
+            Download CV
+          </a>
+          <a href={SOCIAL.googleScholar} class="btn btn-ghost">Google Scholar →</a>
+          <a href={SOCIAL.orcid} class="btn btn-ghost">ORCID →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

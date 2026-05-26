@@ -1,0 +1,159 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const allBooks = await getCollection("books");
+const books = allBooks.sort((a, b) => a.data.order - b.data.order);
+
+const statusLabels: Record<string, string> = {
+  "published": "Published",
+  "in-press": "In press",
+  "in-production": "In production",
+  "under-contract": "Under contract",
+  "in-progress": "In progress",
+};
+
+const coverGradients: Record<string, string> = {
+  "navy": "from-[var(--color-ink)] to-[var(--color-ink-light)]",
+  "burgundy": "from-[#5C1A1A] to-[#8B3A1F]",
+  "ink": "from-[#1A1F2E] to-[var(--color-ink)]",
+  "rust": "from-[#7C2D12] to-[#8B3A1F]",
+  "forest": "from-[#14532D] to-[#1F6A3F]",
+  "default": "from-[var(--color-ink)] to-[var(--color-ink-light)]",
+};
+
+const goldText: Record<string, string> = {
+  "navy": "text-[var(--color-gold)]",
+  "burgundy": "text-[#D4A82C]",
+  "ink": "text-[var(--color-gold)]",
+  "rust": "text-[#E8C547]",
+  "forest": "text-[#D4A82C]",
+  "default": "text-[var(--color-gold)]",
+};
+---
+
+<BaseLayout
+  title="Books"
+  description="Books authored, co-authored, and edited by Oliver S. Crocco — with Palgrave Macmillan, Cambridge University Press, and Cornell University Press."
+>
+  {/* HEADER */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Books</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-6 max-w-3xl">
+        Long-form scholarship
+      </h1>
+      <p class="font-display text-xl text-[var(--color-text-muted)] leading-snug max-w-2xl">
+        Books — published, in production, and under contract — with Palgrave Macmillan and Cambridge University Press. The work spans regional human capability development in Southeast Asia, leadership development, paradox, and case-based teaching.
+      </p>
+    </div>
+  </section>
+
+  {/* BOOKS LIST */}
+  <section>
+    <div class="wrap py-20">
+      <div class="space-y-32">
+        {books.map((book, i) => {
+          const grad = coverGradients[book.data.coverColor || "default"];
+          const gold = goldText[book.data.coverColor || "default"];
+          return (
+            <article
+              id={book.id}
+              class={`grid grid-cols-1 md:grid-cols-12 gap-12 items-start ${i % 2 === 1 ? "md:flex-row-reverse" : ""}`}
+            >
+              {/* Cover */}
+              <div class={`md:col-span-4 ${i % 2 === 1 ? "md:order-2" : ""}`}>
+                {book.data.cover ? (
+                  (() => {
+                    const base = book.data.cover.replace(/\.jpg$/i, "");
+                    return (
+                      <img
+                        src={`${base}-800.jpg`}
+                        srcset={`${base}-400.jpg 400w, ${base}-800.jpg 800w, ${base}-1200.jpg 1200w`}
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        alt={`Cover of ${book.data.title}`}
+                        class="aspect-[2/3] w-full object-cover rounded shadow-2xl border border-black/20"
+                      />
+                    );
+                  })()
+                ) : (
+                  <div class={`aspect-[2/3] bg-gradient-to-br ${grad} rounded shadow-2xl relative overflow-hidden border border-black/30`}>
+                    <div class="absolute inset-0 flex flex-col justify-between p-7">
+                      <div>
+                        <p class={`${gold} text-[0.65rem] uppercase tracking-[0.2em] font-medium mb-3`}>
+                          {book.data.publisher}
+                        </p>
+                        <p class="text-white font-display text-xl leading-tight font-semibold">
+                          {book.data.title}
+                        </p>
+                        {book.data.subtitle && (
+                          <p class="text-white/80 font-display text-xs italic mt-3 leading-snug">
+                            {book.data.subtitle}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <div class={`w-10 h-px ${gold === "text-[var(--color-gold)]" ? "bg-[var(--color-gold)]" : "bg-[#D4A82C]"} mb-3`}></div>
+                        <p class="text-white font-display text-xs font-medium leading-snug">
+                          {book.data.authors.join(" · ")}
+                        </p>
+                        {book.data.role !== "author" && (
+                          <p class="text-white/70 font-display text-[0.65rem] uppercase tracking-wider mt-1">
+                            {book.data.role.replace("-", " ")}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Metadata */}
+              <div class={`md:col-span-8 ${i % 2 === 1 ? "md:order-1" : ""}`}>
+                <p class="eyebrow mb-3">{statusLabels[book.data.status]} · {book.data.year}</p>
+                <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-3 leading-tight">
+                  {book.data.title}
+                </h2>
+                {book.data.subtitle && (
+                  <p class="font-display text-xl text-[var(--color-text-muted)] italic mb-3">
+                    {book.data.subtitle}
+                  </p>
+                )}
+                <p class="text-sm text-[var(--color-text-soft)] mb-6">
+                  {book.data.authors.join(", ")} · {book.data.publisher}
+                </p>
+                <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8 max-w-2xl">
+                  {book.data.description}
+                </p>
+                {book.data.buyLinks.length > 0 && (
+                  <div class="flex flex-wrap gap-3">
+                    {book.data.buyLinks.map((link, idx) => (
+                      <a href={link.url} class={idx === 0 ? "btn btn-primary" : "btn btn-ghost"}>
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  {/* CTA */}
+  <section class="border-t border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <div class="max-w-2xl">
+        <h2 class="font-display text-3xl font-semibold tracking-tight mb-4">
+          Reviewers, editors, and journalists welcome
+        </h2>
+        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8">
+          For review copies, interviews, or to discuss any of these projects, please get in touch.
+        </p>
+        <a href="/contact" class="btn btn-primary">Contact me</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
