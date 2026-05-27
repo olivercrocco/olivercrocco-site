@@ -11,7 +11,7 @@ cover: "/book-covers/developing-human-resources-southeast-asia.jpg"
 coverColor: "navy"
 buyLinks:
   - label: "Palgrave Macmillan"
-    url: "https://link.springer.com/book/10.1007/978-3-030-79114-4"
+    url: "https://link.springer.com/book/10.1007/978-3-030-79697-6"
   - label: "Amazon"
     url: "https://www.amazon.com/Developing-Resources-Southeast-Palgrave-Business/dp/3030791130"
 awards: []
