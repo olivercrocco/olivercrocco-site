@@ -1,0 +1,126 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { AUTHOR } from "../../site.config";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const notes = await getCollection("notes", ({ data }) => !data.draft);
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await render(note);
+
+// Reading time: ~220 words/min on average. Use the raw body word count.
+const wordCount = note.body ? note.body.trim().split(/\s+/).length : 0;
+const minutes = Math.max(1, Math.round(wordCount / 220));
+
+// Prev / next (chronological)
+const all = (await getCollection("notes", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const idx = all.findIndex((n) => n.id === note.id);
+const newer = idx > 0 ? all[idx - 1] : null;
+const older = idx < all.length - 1 ? all[idx + 1] : null;
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+const laneColor = "text-[var(--color-gold)]";
+---
+
+<BaseLayout title={note.data.title} description={note.data.dek}>
+  <article>
+    {/* HEADER */}
+    <header class="border-b border-[var(--color-border)]">
+      <div class="wrap-narrow py-16">
+        <p class="font-mono text-xs text-[var(--color-text-soft)] mb-8">
+          <a href="/notes" class="no-underline text-[var(--color-text-muted)] hover:text-[var(--color-ink)]">
+            ← All notes
+          </a>
+        </p>
+        <div class="font-mono text-[0.7rem] uppercase tracking-[0.12em] text-[var(--color-text-soft)] flex items-center gap-4 mb-5">
+          <span class={`${laneColor} font-medium`}>{note.data.lane}</span>
+          <span>{formatDate(note.data.date)}</span>
+          <span>{minutes} min</span>
+        </div>
+        <h1 class="font-display text-3xl md:text-5xl font-semibold tracking-tight leading-[1.15] mb-5">
+          {note.data.title}
+        </h1>
+        {note.data.dek && (
+          <p class="font-display text-xl text-[var(--color-text-muted)] leading-relaxed italic">
+            {note.data.dek}
+          </p>
+        )}
+      </div>
+    </header>
+
+    {/* BODY */}
+    <div class="wrap-narrow py-14">
+      <div class="prose note-prose">
+        <Content />
+      </div>
+    </div>
+
+    {/* PREV / NEXT */}
+    {(newer || older) && (
+      <nav class="border-t border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+        <div class="wrap-narrow py-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {newer ? (
+              <a href={`/notes/${newer.id}/`} class="group no-underline block">
+                <p class="eyebrow mb-2">← Newer</p>
+                <p class="font-display text-xl text-[var(--color-text)] group-hover:text-[var(--color-ink)] leading-snug">
+                  {newer.data.title}
+                </p>
+              </a>
+            ) : <div />}
+            {older ? (
+              <a href={`/notes/${older.id}/`} class="group no-underline block md:text-right">
+                <p class="eyebrow mb-2">Older →</p>
+                <p class="font-display text-xl text-[var(--color-text)] group-hover:text-[var(--color-ink)] leading-snug">
+                  {older.data.title}
+                </p>
+              </a>
+            ) : <div />}
+          </div>
+        </div>
+      </nav>
+    )}
+
+    {/* QUIET SUBSCRIBE — repeated from index so the bottom of a single note has the same hook */}
+    <section class="border-t border-[var(--color-border)]">
+      <div class="wrap-narrow py-14">
+        <div class="bg-[var(--color-paper-warm)] border border-[var(--color-border)] rounded-sm p-7">
+          <p class="font-display text-lg font-medium mb-2">New notes by email</p>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-4">
+            A couple of times a month. The occasional essay when one lands elsewhere. Nothing else.
+          </p>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+            Email
+            <a href={`mailto:${AUTHOR.email}?subject=Notes%20early%20list`} class="text-[var(--color-ink)]">
+              {AUTHOR.email}
+            </a>{" "}
+            to be added.
+          </p>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  /* Drop cap on the first paragraph of the body */
+  .note-prose :global(p:first-of-type::first-letter) {
+    font-family: var(--font-display);
+    font-size: 3.1em;
+    font-weight: 600;
+    line-height: 0.85;
+    float: left;
+    padding: 0.05em 0.1em 0 0;
+    color: var(--color-gold);
+  }
+</style>

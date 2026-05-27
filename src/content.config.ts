@@ -34,4 +34,25 @@ const books = defineCollection({
   }),
 });
 
-export const collections = { books };
+/**
+ * Notes — the ideas-writing channel.
+ * Four lanes per the handover brief:
+ *   Ideas    — arguments and conversation warm-ups
+ *   Region   — Southeast Asia / development field notes
+ *   Method   — AI-in-research and how the work happens
+ *   Reading  — short book notes (the backbone)
+ *
+ * Cadence target: 2x/month. Never weekly.
+ */
+const notes = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/notes" }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    lane: z.enum(["Ideas", "Region", "Method", "Reading"]),
+    dek: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { books, notes };

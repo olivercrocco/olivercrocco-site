@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { AUTHOR } from "../../site.config";
+import { getCollection } from "astro:content";
+
+const allNotes = await getCollection("notes", ({ data }) => !data.draft);
+const notes = allNotes.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const isPrelaunch = notes.length === 0;
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+// Lane → color treatment. Sticking with the site's existing gold accent
+// for all lanes for now; can introduce per-lane color later if desired.
+const laneColor = "text-[var(--color-gold)]";
+---
+
+<BaseLayout
+  title="Notes"
+  description="Ideas, field notes from Southeast Asia, method, and reading — by Oliver S. Crocco. A couple of times a month."
+>
+  {/* HEADER */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Notes</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-6 max-w-3xl leading-[1.05]">
+        Notes
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-2xl italic">
+        Shorter than an essay, longer than a thought — ideas, field notes from the region, method, and reading. A couple of times a month.
+      </p>
+    </div>
+  </section>
+
+  {/* INDEX or PRE-LAUNCH STATE */}
+  {isPrelaunch ? (
+    <section class="border-b border-[var(--color-border)]">
+      <div class="wrap-narrow py-20">
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-gold)] mb-6">
+          Coming soon
+        </p>
+        <p class="font-display text-2xl leading-[1.4] text-[var(--color-text)] mb-6">
+          The first notes are being drafted now. The plan: two pieces a month, across four lanes — Ideas, Region, Method, and Reading.
+        </p>
+        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed">
+          Sign up below to get them by email when they land. Or check back here.
+        </p>
+      </div>
+    </section>
+  ) : (
+    <section class="border-b border-[var(--color-border)]">
+      <div class="wrap-narrow py-16">
+        <ul class="list-none m-0 p-0">
+          {notes.map((note) => (
+            <li class="py-7 border-t border-[var(--color-border)] first:border-t-0">
+              <div class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-[var(--color-text-soft)] flex items-center gap-4 mb-2">
+                <span class={`${laneColor} font-medium`}>{note.data.lane}</span>
+                <span>{formatDate(note.data.date)}</span>
+              </div>
+              <h2 class="font-display text-2xl md:text-[1.75rem] font-semibold leading-[1.2] tracking-tight mb-2">
+                <a
+                  href={`/notes/${note.id}/`}
+                  class="text-[var(--color-text)] hover:text-[var(--color-ink)] no-underline"
+                >
+                  {note.data.title}
+                </a>
+              </h2>
+              {note.data.dek && (
+                <p class="text-[var(--color-text-muted)] text-[1.0625rem] leading-relaxed mt-2">
+                  {note.data.dek}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {/* QUIET SUBSCRIBE BLOCK */}
+  <section>
+    <div class="wrap-narrow py-16">
+      <div class="bg-[var(--color-paper-warm)] border border-[var(--color-border)] rounded-sm p-8 md:p-10">
+        <p class="font-display text-xl font-medium mb-2">New notes by email</p>
+        <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-6">
+          A couple of times a month. The occasional essay when one lands elsewhere. Nothing else.
+        </p>
+        {/*
+          Newsletter form placeholder.
+          When the Buttondown/Ghost tool is set up, swap this for the embed.
+        */}
+        <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+          The newsletter launches with the first notes — email
+          <a href={`mailto:${AUTHOR.email}?subject=Notes%20early%20list`} class="text-[var(--color-ink)] ml-1">
+            {AUTHOR.email}
+          </a>
+          to be added to the early list.
+        </p>
+        <p class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-[var(--color-text-soft)] mt-5">
+          No tracking · no spam · unsubscribe anytime
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
