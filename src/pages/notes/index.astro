@@ -40,13 +40,36 @@ const laneColor = "text-[var(--color-gold)]";
     <section class="border-b border-[var(--color-border)]">
       <div class="wrap-narrow py-20">
         <p class="font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-gold)] mb-6">
-          Coming soon
+          The four lanes
         </p>
-        <p class="font-display text-2xl leading-[1.4] text-[var(--color-text)] mb-6">
-          The first notes are being drafted now. The plan: two pieces a month, across four lanes — Ideas, Region, Method, and Reading.
-        </p>
-        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed">
-          Sign up below to get them by email when they land. Or check back here.
+        <ul class="list-none m-0 p-0 space-y-5">
+          <li>
+            <p class="font-display text-xl text-[var(--color-text)] leading-snug">
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Ideas</span>
+              Arguments and conversation warm-ups — where the channel earns its keep.
+            </p>
+          </li>
+          <li>
+            <p class="font-display text-xl text-[var(--color-text)] leading-snug">
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Region</span>
+              Southeast Asia field notes — what shows up between conferences and journal pages.
+            </p>
+          </li>
+          <li>
+            <p class="font-display text-xl text-[var(--color-text)] leading-snug">
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Method</span>
+              How the research actually gets done — including the role of AI in serious scholarship.
+            </p>
+          </li>
+          <li>
+            <p class="font-display text-xl text-[var(--color-text)] leading-snug">
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Reading</span>
+              Short notes on books worth more than a tweet.
+            </p>
+          </li>
+        </ul>
+        <p class="text-[var(--color-text-muted)] text-[1.0625rem] leading-relaxed mt-10 italic">
+          First pieces publishing soon. Subscribe via RSS below to catch them as they land.
         </p>
       </div>
     </section>
@@ -84,23 +107,24 @@ const laneColor = "text-[var(--color-gold)]";
   <section>
     <div class="wrap-narrow py-16">
       <div class="bg-[var(--color-paper-warm)] border border-[var(--color-border)] rounded-sm p-8 md:p-10">
-        <p class="font-display text-xl font-medium mb-2">New notes by email</p>
+        <p class="font-display text-xl font-medium mb-2">Follow along</p>
         <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-6">
           A couple of times a month. The occasional essay when one lands elsewhere. Nothing else.
         </p>
-        {/*
-          Newsletter form placeholder.
-          When the Buttondown/Ghost tool is set up, swap this for the embed.
-        */}
-        <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
-          The newsletter launches with the first notes — email
-          <a href={`mailto:${AUTHOR.email}?subject=Notes%20early%20list`} class="text-[var(--color-ink)] ml-1">
-            {AUTHOR.email}
-          </a>
-          to be added to the early list.
+        <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-3">
+          <span class="text-[var(--color-text)] font-medium">Subscribe by RSS</span> — add the feed to Feedly, NetNewsWire, Inoreader, or any RSS reader:
         </p>
-        <p class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-[var(--color-text-soft)] mt-5">
-          No tracking · no spam · unsubscribe anytime
+        <p class="font-mono text-[0.875rem] mb-6">
+          <a href="/notes/rss.xml" class="text-[var(--color-ink)] break-all">
+            olivercrocco.com/notes/rss.xml
+          </a>
+        </p>
+        <p class="text-[var(--color-text-muted)] text-[0.875rem] leading-relaxed">
+          Email subscription is on the way. In the meantime, drop a line to
+          <a href={`mailto:${AUTHOR.email}?subject=Notes%20list`} class="text-[var(--color-ink)] ml-1">
+            {AUTHOR.email}
+          </a>{" "}
+          and I'll add you when it launches.
         </p>
       </div>
     </div>

@@ -95,16 +95,14 @@ const laneColor = "text-[var(--color-gold)]";
     <section class="border-t border-[var(--color-border)]">
       <div class="wrap-narrow py-14">
         <div class="bg-[var(--color-paper-warm)] border border-[var(--color-border)] rounded-sm p-7">
-          <p class="font-display text-lg font-medium mb-2">New notes by email</p>
-          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-4">
-            A couple of times a month. The occasional essay when one lands elsewhere. Nothing else.
+          <p class="font-display text-lg font-medium mb-2">Follow along</p>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-3">
+            New notes appear a couple of times a month. Subscribe via RSS:
           </p>
-          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
-            Email
-            <a href={`mailto:${AUTHOR.email}?subject=Notes%20early%20list`} class="text-[var(--color-ink)]">
-              {AUTHOR.email}
-            </a>{" "}
-            to be added.
+          <p class="font-mono text-[0.875rem]">
+            <a href="/notes/rss.xml" class="text-[var(--color-ink)] break-all">
+              olivercrocco.com/notes/rss.xml
+            </a>
           </p>
         </div>
       </div>
