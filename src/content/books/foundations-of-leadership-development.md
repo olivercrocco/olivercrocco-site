@@ -1,7 +1,7 @@
 ---
 title: "Foundations of Leadership Development"
 subtitle: "The Self-Leadership Journey"
-authors: ["Oliver S. Crocco", "Tomika Greer", "Erica Gibbons"]
+authors: ["Oliver S. Crocco", "Tomika Greer", "Edward A. Gibbons III"]
 role: co-author
 publisher: "Palgrave Macmillan"
 year: "Forthcoming"
