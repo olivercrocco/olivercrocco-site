@@ -1,0 +1,316 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Reviewer Finder"
+  description="A free, confidential, browser-based tool for editors: find well-matched, conflict-free, diverse peer reviewers across 97 journals in HRD and adjacent fields. Runs entirely in your browser — your title and abstract never leave the page."
+>
+  {/* HERO */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-16 md:py-20">
+      <p class="eyebrow mb-4">Tools · Prototype</p>
+      <h1 class="font-display text-4xl md:text-5xl font-semibold tracking-tight mb-5 leading-[1.08]">
+        Reviewer Finder
+      </h1>
+      <p class="font-display text-lg md:text-xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        Find well-matched, conflict-free, and diverse peer reviewers for a manuscript —
+        across 97 journals in human resource development and adjacent fields, drawn from
+        OpenAlex. The editor decides; this supplies the evidence and a defensible shortlist.
+      </p>
+    </div>
+  </section>
+
+  {/* CONFIDENTIALITY */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-6">
+      <p class="text-[0.9rem] text-[var(--color-text-muted)] leading-relaxed max-w-3xl">
+        <strong class="text-[var(--color-text)]">Confidential by design.</strong>
+        This runs entirely in your browser. Your <strong>title and abstract never leave this page</strong>;
+        only your topic keywords are sent to the OpenAlex scholarly database (the same search a
+        librarian would run). No login, no server, nothing stored. No AI reads the manuscript.
+      </p>
+    </div>
+  </section>
+
+  {/* APP */}
+  <section>
+    <div class="wrap py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* FORM */}
+        <form id="rf-form" class="lg:col-span-5">
+          <div class="rf-field">
+            <label class="rf-label" for="title">Manuscript title <span class="rf-muted">(optional, stays local)</span></label>
+            <input class="rf-input" id="title" type="text" placeholder="Working title for your reference" />
+          </div>
+          <div class="rf-field">
+            <label class="rf-label" for="abstract">Abstract <span class="rf-muted">(optional, stays local)</span></label>
+            <textarea class="rf-input" id="abstract" rows="3" placeholder="Pasting it helps you draft keywords. It is never sent anywhere."></textarea>
+          </div>
+
+          <p class="eyebrow mt-8 mb-1">Keywords by tier</p>
+          <p class="rf-help mb-4">Comma-separated. Tier them by how central each is to the paper — this is what makes the matching good.</p>
+
+          <div class="rf-field">
+            <label class="rf-label" for="core">Core <span class="rf-muted">— the paper's defining subject (weighted most)</span></label>
+            <input class="rf-input" id="core" type="text" placeholder="e.g. psychological safety, team learning" />
+          </div>
+          <div class="rf-field">
+            <label class="rf-label" for="secondary">Secondary <span class="rf-muted">— related constructs it touches</span></label>
+            <input class="rf-input" id="secondary" type="text" placeholder="e.g. knowledge sharing, employee voice" />
+          </div>
+          <div class="rf-field">
+            <label class="rf-label" for="methodPrimary">Method — the paper's own <span class="rf-muted">— e.g. meta-analysis, bibliometrics</span></label>
+            <input class="rf-input" id="methodPrimary" type="text" placeholder="e.g. meta-analysis" />
+          </div>
+          <div class="rf-field">
+            <label class="rf-label" for="methodGeneric">Method — common review types <span class="rf-muted">(weaker signal)</span></label>
+            <input class="rf-input" id="methodGeneric" type="text" placeholder="e.g. systematic literature review" />
+          </div>
+          <div class="rf-field">
+            <label class="rf-label" for="context">Context <span class="rf-muted">— the setting</span></label>
+            <input class="rf-input" id="context" type="text" placeholder="e.g. remote work" />
+          </div>
+
+          <details class="rf-details">
+            <summary class="rf-summary">Conflicts &amp; options</summary>
+            <div class="rf-field mt-4">
+              <label class="rf-label" for="authorInstitutions">Submitting authors' institutions <span class="rf-muted">(excludes them &amp; colleagues — no names needed)</span></label>
+              <input class="rf-input" id="authorInstitutions" type="text" placeholder="e.g. University of Minnesota, Texas A&M University" />
+            </div>
+            <div class="rf-field">
+              <label class="rf-label" for="excludeNames">Exclude specific people <span class="rf-muted">(optional, comma-separated names)</span></label>
+              <input class="rf-input" id="excludeNames" type="text" placeholder="e.g. Jane Doe, John Roe" />
+            </div>
+            <div class="rf-field">
+              <label class="rf-label">Disciplines to search</label>
+              <div id="rf-disciplines" class="rf-checks"></div>
+            </div>
+            <div class="rf-field rf-inline">
+              <label class="rf-label" for="panelSize">Panel size</label>
+              <input class="rf-input rf-num" id="panelSize" type="number" min="3" max="20" value="9" />
+            </div>
+          </details>
+
+          <div class="rf-actions">
+            <button class="btn btn-primary" id="rf-run" type="submit">Find reviewers</button>
+            <button class="btn btn-ghost" id="rf-example" type="button">Load example</button>
+          </div>
+          <p id="rf-status" class="rf-status" role="status" aria-live="polite"></p>
+          <div id="rf-bar" class="rf-bar" hidden><div id="rf-bar-fill" class="rf-bar-fill"></div></div>
+        </form>
+
+        {/* RESULTS */}
+        <div class="lg:col-span-7">
+          <div id="rf-empty" class="rf-empty">
+            <p>Your suggested panel will appear here. A run makes a series of live calls to OpenAlex, so it usually takes 10–30 seconds.</p>
+          </div>
+          <div id="rf-results" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .rf-field { margin-bottom: 1rem; }
+  .rf-label { display: block; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; color: var(--color-text); margin-bottom: 0.35rem; }
+  .rf-muted { font-weight: 400; color: var(--color-text-soft); }
+  .rf-help { font-size: 0.85rem; color: var(--color-text-muted); }
+  .rf-input { width: 100%; font-family: var(--font-sans); font-size: 0.95rem; color: var(--color-text); background: var(--color-paper); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 0.55rem 0.7rem; line-height: 1.5; }
+  .rf-input:focus { outline: none; border-color: var(--color-ink); box-shadow: 0 0 0 3px rgba(20,33,61,0.08); }
+  textarea.rf-input { resize: vertical; }
+  .rf-num { width: 6rem; }
+  .rf-inline { display: flex; align-items: center; gap: 1rem; }
+  .rf-inline .rf-label { margin-bottom: 0; }
+  .rf-details { margin: 0.5rem 0 0.5rem; border-top: 1px solid var(--color-border); padding-top: 0.75rem; }
+  .rf-summary { cursor: pointer; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; color: var(--color-ink); }
+  .rf-checks { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
+  .rf-checks label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--color-text-muted); }
+  .rf-actions { display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap; }
+  .rf-status { margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-muted); min-height: 1.1rem; }
+  .rf-bar { margin-top: 0.5rem; height: 4px; background: var(--color-paper-deep); border-radius: 2px; overflow: hidden; }
+  .rf-bar-fill { height: 100%; width: 0; background: var(--color-gold); transition: width 0.3s ease; }
+  .rf-empty { border: 1px dashed var(--color-border-strong); border-radius: 6px; padding: 2rem; color: var(--color-text-soft); font-size: 0.95rem; }
+
+  .rf-summary-line { font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 1rem; }
+  .rf-scorecard { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .rf-pill { font-family: var(--font-mono); font-size: 0.72rem; padding: 0.2rem 0.5rem; border-radius: 999px; border: 1px solid var(--color-border-strong); color: var(--color-text-muted); white-space: nowrap; }
+  .rf-pill.ok { color: #2f6b3a; border-color: rgba(47,107,58,0.4); background: rgba(47,107,58,0.06); }
+  .rf-pill.miss { color: var(--color-rust); border-color: rgba(139,58,31,0.4); background: rgba(139,58,31,0.06); }
+  .rf-card { border: 1px solid var(--color-border); border-radius: 6px; padding: 1.1rem 1.25rem; margin-bottom: 0.85rem; background: var(--color-paper); }
+  .rf-card h3 { font-size: 1.15rem; margin: 0; line-height: 1.3; }
+  .rf-rank { color: var(--color-gold); font-family: var(--font-mono); font-size: 0.85rem; }
+  .rf-meta { font-family: var(--font-sans); font-size: 0.82rem; color: var(--color-text-muted); margin: 0.3rem 0; }
+  .rf-tag { display: inline-block; font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink); background: var(--color-paper-warm); border: 1px solid var(--color-border); border-radius: 3px; padding: 0.1rem 0.4rem; margin-left: 0.4rem; }
+  .rf-why { font-size: 0.8rem; color: var(--color-gold); font-family: var(--font-mono); }
+  .rf-papers { list-style: none; padding: 0; margin: 0.6rem 0 0; }
+  .rf-papers li { font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.45; margin-bottom: 0.2rem; }
+  .rf-links a { font-size: 0.8rem; margin-right: 0.8rem; }
+  .rf-export { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 0.5rem 0 1.5rem; }
+  .rf-ranked { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 0.5rem; }
+  .rf-ranked th, .rf-ranked td { text-align: left; padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--color-border); }
+  .rf-ranked th { color: var(--color-text-soft); font-weight: 600; }
+  .rf-note { font-size: 0.8rem; color: var(--color-text-soft); margin-top: 1rem; }
+  .rf-error { color: var(--color-rust); font-size: 0.9rem; }
+</style>
+
+<script>
+  import { runReviewerFinder, allDisciplines, careerStage, isActive, currentAffiliation, disciplinesOf, evidence } from "../lib/reviewerFinder.js";
+  import registry from "../data/journals.json";
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const list = (s) => (s || "").split(",").map((x) => x.trim()).filter(Boolean);
+
+  // discipline checkboxes
+  const discWrap = $("rf-disciplines");
+  for (const d of allDisciplines(registry)) {
+    const id = "disc-" + d.replace(/\W+/g, "");
+    const label = document.createElement("label");
+    label.innerHTML = `<input type="checkbox" value="${esc(d)}" checked /> ${esc(d)}`;
+    discWrap.appendChild(label);
+  }
+
+  const EXAMPLE = {
+    title: "Psychological Safety and Team Learning in Distributed Teams",
+    core: "psychological safety, team learning, virtual teams",
+    secondary: "knowledge sharing, employee voice, team performance",
+    methodPrimary: "meta-analysis",
+    methodGeneric: "systematic literature review",
+    context: "remote work",
+    authorInstitutions: "",
+  };
+  $("rf-example").addEventListener("click", () => {
+    for (const k of Object.keys(EXAMPLE)) if ($(k)) $(k).value = EXAMPLE[k];
+  });
+
+  function readSpec() {
+    return {
+      title: $("title").value.trim(),
+      core_terms: list($("core").value),
+      secondary_terms: list($("secondary").value),
+      method_primary_terms: list($("methodPrimary").value),
+      method_generic_terms: list($("methodGeneric").value),
+      context_terms: list($("context").value),
+      author_institutions: list($("authorInstitutions").value),
+      exclude_author_names: list($("excludeNames").value),
+      disciplines: [...discWrap.querySelectorAll("input:checked")].map((c) => c.value),
+      panel: { size: Math.max(3, Math.min(20, parseInt($("panelSize").value) || 9)) },
+    };
+  }
+
+  let lastResult = null;
+
+  $("rf-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const spec = readSpec();
+    const runBtn = $("rf-run");
+    runBtn.disabled = true;
+    $("rf-bar").hidden = false;
+    $("rf-results").hidden = true;
+    $("rf-empty").hidden = true;
+    const setBar = (p) => { $("rf-bar-fill").style.width = Math.round(p * 100) + "%"; };
+    const status = (t) => { $("rf-status").textContent = t; };
+    setBar(0.02); status("Starting…");
+    try {
+      const result = await runReviewerFinder(spec, registry, {
+        onProgress: (p) => {
+          if (p.phase === "search") { status(p.term ? `Searching: ${p.term}  (${p.done}/${p.total})` : "Searching…"); setBar(0.05 + 0.7 * (p.done / Math.max(1, p.total))); }
+          else if (p.phase === "enrich") { status(`Profiling ${p.count} candidates…`); setBar(0.85); }
+          else if (p.phase === "panel") { status("Building the panel…"); setBar(0.95); }
+        },
+      });
+      lastResult = result;
+      render(result);
+      setBar(1); status(`Done — ${result.nCandidates} candidates from ${result.nJournals} journals.`);
+    } catch (err) {
+      $("rf-results").hidden = false;
+      $("rf-results").innerHTML = `<p class="rf-error">${esc(err.message || err)}</p>`;
+      status("");
+    } finally {
+      runBtn.disabled = false;
+      setTimeout(() => { $("rf-bar").hidden = true; }, 800);
+    }
+  });
+
+  function pill(label, pair) {
+    if (!pair) return "";
+    const [actual, target] = pair;
+    if (target === null) return `<span class="rf-pill">${esc(label)} ${actual}</span>`;
+    const cls = actual >= target ? "ok" : "miss";
+    return `<span class="rf-pill ${cls}">${actual >= target ? "✓" : "✗"} ${esc(label)} ${actual}/${target}</span>`;
+  }
+
+  function render(r) {
+    const cy = r.currentYear;
+    const sc = r.scorecard;
+    const cardHtml = (c, s, kind, why, rank) => {
+      const [aff, ctry] = currentAffiliation(c);
+      const stage = careerStage(c.prof);
+      const active = isActive(c.prof, cy) ? "" : ` · <span style="color:var(--color-rust)">no pubs in ~3y</span>`;
+      const links = [`<a href="https://openalex.org/${esc(c.id)}" target="_blank" rel="noopener">OpenAlex</a>`];
+      if (c.orcid) links.push(`<a href="${esc(c.orcid)}" target="_blank" rel="noopener">ORCID</a>`);
+      const papers = evidence(c, 3).map((w) => `<li>“${esc(w.title)}” — ${esc(w.journal)} ${w.year || ""} <span style="color:var(--color-text-soft)">[${esc(Object.keys(w.terms).join(", "))}]</span></li>`).join("");
+      return `<article class="rf-card">
+        <div style="display:flex;justify-content:space-between;gap:1rem;align-items:baseline">
+          <h3>${rank ? `<span class="rf-rank">${rank}.</span> ` : ""}${esc(c.name)}<span class="rf-tag">${esc(kind)}</span><span class="rf-tag">${esc(stage)}</span></h3>
+          <span class="rf-rank">${s.score}</span>
+        </div>
+        <p class="rf-meta">${esc(aff || "—")}${ctry ? ` (${esc(ctry)})` : ""} · h-index ${c.prof?.h_index ?? "?"} · ${c.prof?.works_count ?? "?"} works${active}</p>
+        ${why ? `<p class="rf-why">in panel: ${esc(why)}</p>` : ""}
+        <ul class="rf-papers">${papers}</ul>
+        <p class="rf-links">${links.join(" ")}</p>
+      </article>`;
+    };
+
+    let html = `<p class="rf-summary-line">${r.panel.length} proposed reviewers, ranked by fit, from ${r.nCandidates} candidates across ${r.nJournals} journals${r.sameInstBlocked ? ` · ${r.sameInstBlocked} removed for shared institution` : ""}.</p>`;
+    html += `<div class="rf-scorecard">${pill("size", sc.size)}${pill("institutions", sc.institutions)}${pill("countries", sc.countries)}${pill("disciplines", sc.disciplines)}${pill("method", sc.method_experts)}${pill("early-career", sc.early_career)}${pill("senior", sc.senior)}</div>`;
+    html += `<div class="rf-export"><button class="btn btn-ghost" id="rf-copy" type="button">Copy as email</button><button class="btn btn-ghost" id="rf-csv" type="button">Download CSV</button></div>`;
+    html += r.panel.map(([c, s, kind, why], i) => cardHtml(c, s, kind, why, i + 1)).join("");
+
+    if (r.allRows.length > r.panel.length) {
+      const panelIds = new Set(r.panel.map(([c]) => c.id));
+      const rows = r.allRows.map(([c, s, kind]) => {
+        const [aff, ctry] = currentAffiliation(c);
+        return `<tr><td>${esc(c.name)}${panelIds.has(c.id) ? " ★" : ""}</td><td>${esc(kind)}</td><td>${s.score}</td><td>${esc(aff || "—")}</td><td>${esc(ctry || "")}</td></tr>`;
+      }).join("");
+      html += `<details style="margin-top:1.5rem"><summary class="rf-summary">Full ranked list (${r.allRows.length})</summary>
+        <table class="rf-ranked"><thead><tr><th>Name</th><th>Role</th><th>Score</th><th>Institution</th><th>Country</th></tr></thead><tbody>${rows}</tbody></table></details>`;
+    }
+    html += `<p class="rf-note">★ = in suggested panel. Verify each invitee's current affiliation and email before inviting — directory affiliations can lag. The tool proposes; you decide.</p>`;
+
+    $("rf-results").innerHTML = html;
+    $("rf-results").hidden = false;
+    $("rf-copy")?.addEventListener("click", copyEmail);
+    $("rf-csv")?.addEventListener("click", downloadCsv);
+  }
+
+  function copyEmail() {
+    const r = lastResult; if (!r) return;
+    const lines = r.panel.map(([c, s, kind, why], i) => {
+      const [aff, ctry] = currentAffiliation(c);
+      return `${i + 1}. ${c.name} — ${aff || "—"}${ctry ? ` (${ctry})` : ""} · ${kind}\n   https://openalex.org/${c.id}${c.orcid ? "  " + c.orcid : ""}`;
+    });
+    const text = `Suggested reviewers${r.title ? ` for: ${r.title}` : ""}\n\n${lines.join("\n")}\n\n(Generated with the Reviewer Finder — verify current affiliation and email before inviting.)`;
+    navigator.clipboard.writeText(text).then(() => { $("rf-copy").textContent = "Copied ✓"; setTimeout(() => ($("rf-copy").textContent = "Copy as email"), 1500); });
+  }
+
+  function downloadCsv() {
+    const r = lastResult; if (!r) return;
+    const panelIds = new Set(r.panel.map(([c]) => c.id));
+    const head = ["rank", "name", "in_panel", "kind", "score", "career_stage", "institution", "country", "disciplines", "recency", "works_count", "h_index", "orcid", "openalex"];
+    const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const rows = r.allRows.map(([c, s, kind], i) => {
+      const [aff, ctry] = currentAffiliation(c);
+      return [i + 1, c.name, panelIds.has(c.id) ? "yes" : "", kind, s.score, careerStage(c.prof), aff, ctry, disciplinesOf(c).join("; "), s.recency ?? "", c.prof?.works_count ?? "", c.prof?.h_index ?? "", c.orcid || "", "https://openalex.org/" + c.id].map(q).join(",");
+    });
+    const csv = head.map(q).join(",") + "\n" + rows.join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "reviewer-candidates.csv";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+</script>

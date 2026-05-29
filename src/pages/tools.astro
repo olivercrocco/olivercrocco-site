@@ -7,15 +7,18 @@ const tools = [
     audience: "For HRD & adjacent-field editors",
     tagline:
       "Find well-matched, conflict-free, and diverse peer reviewers for a manuscript in human resource development and adjacent fields.",
-    body: "Given a manuscript's title, abstract, and a few keywords, along with the submitting authors' institutions, it searches a registry of 83 journals spanning human resource development and five adjacent disciplines — adult and continuing education, management and organizational behavior, higher education, career and workforce development, and international and comparative education — on OpenAlex for scholars whose published work genuinely matches. It screens out conflicts of interest, then returns a relevance-ranked panel with institutional and national diversity built in. The editor still decides; the tool supplies the evidence and a defensible shortlist.",
+    body: "Given a manuscript's title, abstract, and a few keywords, along with the submitting authors' institutions, it searches a registry of 97 journals spanning human resource development and six adjacent disciplines — adult and continuing education, management and organizational behavior, industrial-organizational psychology, higher education, career and workforce development, and international and comparative education — on OpenAlex for scholars whose published work genuinely matches. It screens out conflicts of interest, then returns a relevance-ranked panel with institutional and national diversity built in. The editor still decides; the tool supplies the evidence and a defensible shortlist.",
     features: [
-      "Searches 83 journals across HRD and five adjacent disciplines via OpenAlex",
+      "Searches 97 journals across HRD and six adjacent disciplines via OpenAlex",
       "Screens conflicts of interest by shared institution and co-authorship",
       "Proposes a diverse, relevance-ranked shortlist with alternates",
-      "Runs on your machine and sends no manuscript text to any AI",
+      "Runs locally or in your browser — sends no manuscript text to any AI",
     ],
     repo: "https://github.com/olivercrocco/peer-reviewer-finder",
-    stack: "Python · OpenAlex · MIT",
+    version: "0.2.0",
+    demo: "/reviewer-finder",
+    demoLabel: "Try it in your browser →",
+    stack: "Python · JavaScript · OpenAlex · MIT",
     proof: null,
   },
   {
@@ -114,7 +117,7 @@ const principles = [
             <p class="font-mono text-xs text-[var(--color-gold)] mb-6">{tool.stack}</p>
             <div class="flex flex-wrap gap-3">
               {tool.demo
-                ? <a href={tool.demo} class="btn btn-primary">Try the live demo →</a>
+                ? <a href={tool.demo} class="btn btn-primary">{tool.demoLabel || "Try the live demo →"}</a>
                 : <a href={tool.repo} class="btn btn-primary">View on GitHub →</a>}
               {tool.demo && <a href={tool.repo} class="btn btn-ghost">View on GitHub →</a>}
             </div>
@@ -185,4 +188,46 @@ const principles = [
       </div>
     </div>
   </section>
+
+  {/* HOW TO CITE */}
+  <section class="border-t border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-4">Citation</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-6 max-w-2xl">
+        How to cite
+      </h2>
+      <p class="text-[var(--color-text-muted)] leading-relaxed max-w-2xl mb-8">
+        If a tool supports your work, a citation is appreciated. APA 7th edition:
+      </p>
+      <div class="max-w-3xl space-y-6">
+        {tools.map((tool) => {
+          const cite = `Crocco, O. S. (2026). ${tool.name}${tool.version ? ` (Version ${tool.version})` : ""} [Computer software]. GitHub. ${tool.repo}`;
+          return (
+            <div class="border-t border-[var(--color-border-strong)] pt-5">
+              <p
+                class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
+                style="padding-left:1.5rem;text-indent:-1.5rem"
+              >
+                Crocco, O. S. (2026). <em>{tool.name}</em>{tool.version ? ` (Version ${tool.version})` : ""} [Computer software]. GitHub. <a href={tool.repo}>{tool.repo}</a>
+              </p>
+              <button class="btn btn-ghost" type="button" data-cite={cite}>Copy citation</button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll("[data-cite]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const text = btn.getAttribute("data-cite") || "";
+        navigator.clipboard.writeText(text).then(() => {
+          const prev = btn.textContent;
+          btn.textContent = "Copied ✓";
+          setTimeout(() => { btn.textContent = prev; }, 1500);
+        });
+      });
+    });
+  </script>
 </BaseLayout>

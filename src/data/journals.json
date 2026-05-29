@@ -1,0 +1,946 @@
+[
+{
+"openalex_id": "S71326023",
+"name": "The Journal of Higher Education",
+"disciplines": [
+"Higher Education"
+],
+"tier": "flagship",
+"works_count": 19263
+},
+{
+"openalex_id": "S166002381",
+"name": "Journal of Applied Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 13607
+},
+{
+"openalex_id": "S168329810",
+"name": "Comparative Education Review",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 7651
+},
+{
+"openalex_id": "S117778295",
+"name": "Academy of Management Journal",
+"disciplines": [
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 6911
+},
+{
+"openalex_id": "S46763546",
+"name": "Academy of Management Review",
+"disciplines": [
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 5684
+},
+{
+"openalex_id": "S94908168",
+"name": "Higher Education",
+"disciplines": [
+"Higher Education",
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 4975
+},
+{
+"openalex_id": "S84664706",
+"name": "Personnel Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "flagship",
+"works_count": 4090
+},
+{
+"openalex_id": "S20152851",
+"name": "International Journal of Educational Development",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 4021
+},
+{
+"openalex_id": "S134094273",
+"name": "Human Resource Management",
+"disciplines": [
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 3705
+},
+{
+"openalex_id": "S162196882",
+"name": "Studies in Higher Education",
+"disciplines": [
+"Higher Education",
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 3660
+},
+{
+"openalex_id": "S160573970",
+"name": "Journal of Organizational Behavior",
+"disciplines": [
+"Industrial-Organizational Psychology",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 3408
+},
+{
+"openalex_id": "S122767448",
+"name": "Journal of Management",
+"disciplines": [
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 3375
+},
+{
+"openalex_id": "S205875998",
+"name": "Adult Education Quarterly",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Higher Education",
+"Human Resource Development",
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 2800
+},
+{
+"openalex_id": "S4210176587",
+"name": "Higher Education Research & Development",
+"disciplines": [
+"Higher Education"
+],
+"tier": "flagship",
+"works_count": 2634
+},
+{
+"openalex_id": "S64744539",
+"name": "Organizational Behavior and Human Decision Processes",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "flagship",
+"works_count": 2612
+},
+{
+"openalex_id": "S130619902",
+"name": "Research in Higher Education",
+"disciplines": [
+"Higher Education"
+],
+"tier": "flagship",
+"works_count": 2440
+},
+{
+"openalex_id": "S129145296",
+"name": "Compare A Journal of Comparative and International Education",
+"disciplines": [
+"Higher Education",
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 2339
+},
+{
+"openalex_id": "S56255037",
+"name": "International Journal of Lifelong Education",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Higher Education",
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 2231
+},
+{
+"openalex_id": "S109675028",
+"name": "Comparative Education",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "flagship",
+"works_count": 2169
+},
+{
+"openalex_id": "S152304618",
+"name": "The Leadership Quarterly",
+"disciplines": [
+"Industrial-Organizational Psychology",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 2073
+},
+{
+"openalex_id": "S191693275",
+"name": "Human Resource Development Quarterly",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 1542
+},
+{
+"openalex_id": "S140059072",
+"name": "Human Resource Development International",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 1306
+},
+{
+"openalex_id": "S161695446",
+"name": "Journal of Workplace Learning",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Higher Education",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 1249
+},
+{
+"openalex_id": "S147712636",
+"name": "Studies in Continuing Education",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Higher Education",
+"Human Resource Development",
+"International & Comparative Education",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 980
+},
+{
+"openalex_id": "S49321836",
+"name": "Advances in Developing Human Resources",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 940
+},
+{
+"openalex_id": "S114439130",
+"name": "International Journal of Training and Development",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"International & Comparative Education",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 917
+},
+{
+"openalex_id": "S37660120",
+"name": "Human Resource Development Review",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "flagship",
+"works_count": 609
+},
+{
+"openalex_id": "S2764459744",
+"name": "Education + Training",
+"disciplines": [
+"Career, Vocational & Workforce Development"
+],
+"tier": "core",
+"works_count": 5282
+},
+{
+"openalex_id": "S184846731",
+"name": "The International Journal of Human Resource Management",
+"disciplines": [
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 4262
+},
+{
+"openalex_id": "S25746158",
+"name": "Journal of Vocational Behavior",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Industrial-Organizational Psychology",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 4034
+},
+{
+"openalex_id": "S64594800",
+"name": "International Review of Education",
+"disciplines": [
+"Adult & Continuing Education",
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 3971
+},
+{
+"openalex_id": "S29659387",
+"name": "Industrial and Commercial Training",
+"disciplines": [
+"Human Resource Development"
+],
+"tier": "core",
+"works_count": 3859
+},
+{
+"openalex_id": "S184445340",
+"name": "Higher Education Quarterly",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 3622
+},
+{
+"openalex_id": "S47864991",
+"name": "Applied Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 3217
+},
+{
+"openalex_id": "S4210201494",
+"name": "Prospects",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 2727
+},
+{
+"openalex_id": "S10595604",
+"name": "Journal of college student development",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 2539
+},
+{
+"openalex_id": "S204305389",
+"name": "Journal of Management Development",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development"
+],
+"tier": "core",
+"works_count": 2492
+},
+{
+"openalex_id": "S206927904",
+"name": "Asia Pacific Journal of Human Resources",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 2459
+},
+{
+"openalex_id": "S142259175",
+"name": "Assessment & Evaluation in Higher Education",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 2457
+},
+{
+"openalex_id": "S82530051",
+"name": "Journal of Career Development",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development"
+],
+"tier": "core",
+"works_count": 2260
+},
+{
+"openalex_id": "S186832212",
+"name": "Review of higher education/\u0098The \u009creview of higher education",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 2212
+},
+{
+"openalex_id": "S162482565",
+"name": "New Directions for Adult and Continuing Education",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "core",
+"works_count": 2198
+},
+{
+"openalex_id": "S47924309",
+"name": "Journal of Education Policy",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 2140
+},
+{
+"openalex_id": "S135873401",
+"name": "Teaching in Higher Education",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 2136
+},
+{
+"openalex_id": "S187239619",
+"name": "Industrial and Organizational Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1967
+},
+{
+"openalex_id": "S95227037",
+"name": "Higher Education Policy",
+"disciplines": [
+"Higher Education",
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 1869
+},
+{
+"openalex_id": "S53726244",
+"name": "Journal of Managerial Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1810
+},
+{
+"openalex_id": "S61413993",
+"name": "Journal of Business and Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1782
+},
+{
+"openalex_id": "S99768379",
+"name": "Management Learning",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "core",
+"works_count": 1737
+},
+{
+"openalex_id": "S2764492969",
+"name": "Adult Learning",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "core",
+"works_count": 1675
+},
+{
+"openalex_id": "S105044966",
+"name": "The Career Development Quarterly",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development"
+],
+"tier": "core",
+"works_count": 1635
+},
+{
+"openalex_id": "S87328381",
+"name": "Journal of Occupational and Organizational Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1617
+},
+{
+"openalex_id": "S53132383",
+"name": "Innovative Higher Education",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 1576
+},
+{
+"openalex_id": "S45682993",
+"name": "Academy of Management Learning and Education",
+"disciplines": [
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 1549
+},
+{
+"openalex_id": "S187270080",
+"name": "European Journal of Work and Organizational Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1483
+},
+{
+"openalex_id": "S113497174",
+"name": "Human Resource Management Journal",
+"disciplines": [
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 1421
+},
+{
+"openalex_id": "S182336501",
+"name": "Career Development International",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 1399
+},
+{
+"openalex_id": "S3481703",
+"name": "Journal of Occupational Health Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1391
+},
+{
+"openalex_id": "S4210171403",
+"name": "Journal of Vocational Education and Training",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 1343
+},
+{
+"openalex_id": "S104568202",
+"name": "Journal of Higher Education Policy and Management",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 1278
+},
+{
+"openalex_id": "S192266589",
+"name": "Group & Organization Management",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1263
+},
+{
+"openalex_id": "S187925018",
+"name": "Globalisation Societies and Education",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 1242
+},
+{
+"openalex_id": "S141527467",
+"name": "Work & Stress",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 1225
+},
+{
+"openalex_id": "S102624508",
+"name": "The Learning Organization",
+"disciplines": [
+"Adult & Continuing Education",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 1192
+},
+{
+"openalex_id": "S50258942",
+"name": "Journal of Studies in International Education",
+"disciplines": [
+"Higher Education",
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 1068
+},
+{
+"openalex_id": "S16240985",
+"name": "The International Journal for Academic Development",
+"disciplines": [
+"Higher Education"
+],
+"tier": "core",
+"works_count": 1033
+},
+{
+"openalex_id": "S32136629",
+"name": "Journal of Education and Work",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Higher Education",
+"Human Resource Development",
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 979
+},
+{
+"openalex_id": "S60010591",
+"name": "Action Learning Research and Practice",
+"disciplines": [
+"Adult & Continuing Education",
+"Human Resource Development"
+],
+"tier": "core",
+"works_count": 889
+},
+{
+"openalex_id": "S2764428444",
+"name": "Higher Education Skills and Work-based Learning",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development"
+],
+"tier": "core",
+"works_count": 867
+},
+{
+"openalex_id": "S2764552160",
+"name": "Studies in the Education of Adults",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "core",
+"works_count": 835
+},
+{
+"openalex_id": "S3835251",
+"name": "Human Performance",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "core",
+"works_count": 809
+},
+{
+"openalex_id": "S4210206506",
+"name": "International Journal for Educational and Vocational Guidance",
+"disciplines": [
+"Career, Vocational & Workforce Development"
+],
+"tier": "core",
+"works_count": 781
+},
+{
+"openalex_id": "S2764516016",
+"name": "European journal of training and development",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 760
+},
+{
+"openalex_id": "S47223233",
+"name": "Research in Comparative and International Education",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "core",
+"works_count": 700
+},
+{
+"openalex_id": "S84210283",
+"name": "International Journal of Human Resources Development and Management",
+"disciplines": [
+"Human Resource Development"
+],
+"tier": "core",
+"works_count": 617
+},
+{
+"openalex_id": "S4210218730",
+"name": "Journal of Adult and Continuing Education",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "core",
+"works_count": 580
+},
+{
+"openalex_id": "S9600176",
+"name": "Vocations and Learning",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development",
+"Higher Education",
+"Human Resource Development",
+"International & Comparative Education",
+"Management & Organizational Behavior"
+],
+"tier": "core",
+"works_count": 386
+},
+{
+"openalex_id": "S2765072924",
+"name": "European Journal for Research on the Education and Learning of Adults",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "core",
+"works_count": 354
+},
+{
+"openalex_id": "S2736341217",
+"name": "International Journal for Research in Vocational Education and Training",
+"disciplines": [
+"Career, Vocational & Workforce Development"
+],
+"tier": "core",
+"works_count": 223
+},
+{
+"openalex_id": "S143668711",
+"name": "Administrative Science Quarterly",
+"disciplines": [
+"Management & Organizational Behavior"
+],
+"tier": "adjacent",
+"works_count": 4342
+},
+{
+"openalex_id": "S128457257",
+"name": "Educational Gerontology",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "adjacent",
+"works_count": 3689
+},
+{
+"openalex_id": "S71191459",
+"name": "European Journal of Education",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "adjacent",
+"works_count": 2958
+},
+{
+"openalex_id": "S139232146",
+"name": "Personnel Review",
+"disciplines": [
+"Career, Vocational & Workforce Development",
+"Management & Organizational Behavior"
+],
+"tier": "adjacent",
+"works_count": 2696
+},
+{
+"openalex_id": "S4210189271",
+"name": "Leadership & Organization Development Journal",
+"disciplines": [
+"Human Resource Development"
+],
+"tier": "adjacent",
+"works_count": 2514
+},
+{
+"openalex_id": "S201037040",
+"name": "International Journal of Manpower",
+"disciplines": [
+"Career, Vocational & Workforce Development"
+],
+"tier": "adjacent",
+"works_count": 2218
+},
+{
+"openalex_id": "S157687834",
+"name": "Asia Pacific Journal of Education",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "adjacent",
+"works_count": 1450
+},
+{
+"openalex_id": "S184932276",
+"name": "Asia Pacific Education Review",
+"disciplines": [
+"Higher Education",
+"International & Comparative Education"
+],
+"tier": "adjacent",
+"works_count": 1356
+},
+{
+"openalex_id": "S4394735601",
+"name": "Australian Journal of Career Development",
+"disciplines": [
+"Career, Vocational & Workforce Development"
+],
+"tier": "adjacent",
+"works_count": 1190
+},
+{
+"openalex_id": "S97033246",
+"name": "Equality Diversity and Inclusion An International Journal",
+"disciplines": [
+"Human Resource Development",
+"Management & Organizational Behavior"
+],
+"tier": "adjacent",
+"works_count": 1144
+},
+{
+"openalex_id": "S5043877",
+"name": "Education Economics",
+"disciplines": [
+"International & Comparative Education"
+],
+"tier": "adjacent",
+"works_count": 1141
+},
+{
+"openalex_id": "S20419620",
+"name": "Research in Post-Compulsory Education",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "adjacent",
+"works_count": 915
+},
+{
+"openalex_id": "S175013504",
+"name": "Gender in Management An International Journal",
+"disciplines": [
+"Management & Organizational Behavior"
+],
+"tier": "adjacent",
+"works_count": 865
+},
+{
+"openalex_id": "S63896471",
+"name": "Active Learning in Higher Education",
+"disciplines": [
+"Higher Education"
+],
+"tier": "adjacent",
+"works_count": 681
+},
+{
+"openalex_id": "S29210485",
+"name": "Journal of Personnel Psychology",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "adjacent",
+"works_count": 399
+},
+{
+"openalex_id": "S165736896",
+"name": "Australian Journal of Adult Learning",
+"disciplines": [
+"Adult & Continuing Education"
+],
+"tier": "adjacent",
+"works_count": 300
+},
+{
+"openalex_id": "S4210173744",
+"name": "Occupational Health Science",
+"disciplines": [
+"Industrial-Organizational Psychology"
+],
+"tier": "adjacent",
+"works_count": 264
+},
+{
+"openalex_id": "S3035624105",
+"name": "Empirical research in vocational education and training",
+"disciplines": [
+"Adult & Continuing Education",
+"Career, Vocational & Workforce Development"
+],
+"tier": "adjacent",
+"works_count": 251
+}
+]
