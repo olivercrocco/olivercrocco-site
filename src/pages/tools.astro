@@ -31,6 +31,7 @@ const tools = [
       "Drafts a methodology paragraph for your paper",
     ],
     repo: "https://github.com/olivercrocco/cross-tool-statistical-verification",
+    demo: "https://olivercrocco.shinyapps.io/ctsv-demo/",
     stack: "Python · R · MIT",
     proof: `crossverify — OLS regression: mpg ~ wt + hp (mtcars)
   Phase 3  consistency       8 pass
@@ -111,7 +112,12 @@ const principles = [
               {tool.tagline}
             </p>
             <p class="font-mono text-xs text-[var(--color-gold)] mb-6">{tool.stack}</p>
-            <a href={tool.repo} class="btn btn-primary">View on GitHub →</a>
+            <div class="flex flex-wrap gap-3">
+              {tool.demo
+                ? <a href={tool.demo} class="btn btn-primary">Try the live demo →</a>
+                : <a href={tool.repo} class="btn btn-primary">View on GitHub →</a>}
+              {tool.demo && <a href={tool.repo} class="btn btn-ghost">View on GitHub →</a>}
+            </div>
           </div>
 
           <div class="md:col-span-7">
