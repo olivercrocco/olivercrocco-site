@@ -1,0 +1,182 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const tools = [
+  {
+    name: "peer-reviewer-finder",
+    audience: "For journal editors",
+    tagline:
+      "Find well-matched, conflict-free, and diverse peer reviewers for a manuscript.",
+    body: "Given a manuscript's title, abstract, and a few keywords, along with the submitting authors' institutions, it searches a registry of 83 journals across six disciplines on OpenAlex for scholars whose published work genuinely matches. It screens out conflicts of interest, then returns a relevance-ranked panel with institutional and national diversity built in. The editor still decides; the tool supplies the evidence and a defensible shortlist.",
+    features: [
+      "Searches 83 journals across six disciplines via OpenAlex",
+      "Screens conflicts of interest by shared institution and co-authorship",
+      "Proposes a diverse, relevance-ranked shortlist with alternates",
+      "Runs on your machine and sends no manuscript text to any AI",
+    ],
+    repo: "https://github.com/olivercrocco/peer-reviewer-finder",
+    stack: "Python · OpenAlex · MIT",
+    proof: null,
+  },
+  {
+    name: "cross-tool-statistical-verification",
+    audience: "For quantitative researchers",
+    tagline:
+      "Confirm a statistical result holds up in a second program, not only the one you ran it in.",
+    body: "You write your analysis twice, once in Python and once in R, and the tool reconciles them. It runs a six-phase protocol that inspects the data, checks every reported number for internal consistency, re-runs the analysis to confirm it reproduces, and compares the two implementations statistic by statistic. It then writes the evidence: a verification log, a side-by-side comparison table, and a methodology paragraph you can adapt for a manuscript.",
+    features: [
+      "Compares Python and R statistic by statistic, within tolerance",
+      "Checks internal consistency and exact reproducibility",
+      "Produces a verification log and a comparison table as evidence",
+      "Drafts a methodology paragraph for your paper",
+    ],
+    repo: "https://github.com/olivercrocco/cross-tool-statistical-verification",
+    stack: "Python · R · MIT",
+    proof: `crossverify — OLS regression: mpg ~ wt + hp (mtcars)
+  Phase 3  consistency       8 pass
+  Phase 4  reproducibility   9 pass
+  Phase 5  triangulation     9 pass
+  Cross-tool: 9/9 statistics matched within tolerance.
+
+Result: PASS`,
+  },
+];
+
+const principles = [
+  {
+    title: "Open source",
+    body: "Every line is on GitHub under an MIT license. You can read exactly what each tool does, adapt it to your work, and cite it.",
+  },
+  {
+    title: "Runs locally",
+    body: "Your data stays on your own computer. The tools make no calls to any AI service and keep your files out of version control by default.",
+  },
+  {
+    title: "Built for trust",
+    body: "Each tool produces a record you can hand to a reviewer, an editor, or a co-author: a log, a table, a shortlist with its reasoning attached.",
+  },
+];
+---
+
+<BaseLayout
+  title="Tools"
+  description="Free, open-source research tools by Oliver S. Crocco: peer-reviewer-finder for matching journal reviewers, and cross-tool-statistical-verification for checking that a statistical result is sound. Each runs locally."
+>
+  {/* HERO */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Tools</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
+        Open-source research tools
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        Small, free tools I build for the day-to-day work of research — finding the
+        right peer reviewers, and checking that a statistical result is sound. Each
+        one runs on your own machine.
+      </p>
+    </div>
+  </section>
+
+  {/* INTRO */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16">
+      <div class="prose max-w-3xl">
+        <p class="drop-cap">
+          Good research depends on small, unglamorous tasks done well: matching a
+          manuscript to reviewers who can actually judge it, or confirming that a
+          result is real before it reaches a journal. I build tools for tasks like
+          these and release them openly, so other researchers can use them, see
+          exactly how they work, and trust what comes out.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* TOOLS */}
+  {tools.map((tool, i) => (
+    <section
+      class:list={[
+        "border-b border-[var(--color-border)]",
+        i % 2 === 0 && "bg-[var(--color-paper-warm)]",
+      ]}
+    >
+      <div class="wrap py-20">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+          <div class="md:col-span-5">
+            <p class="eyebrow mb-4">{tool.audience}</p>
+            <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-4 leading-tight break-words">
+              {tool.name}
+            </h2>
+            <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-6">
+              {tool.tagline}
+            </p>
+            <p class="font-mono text-xs text-[var(--color-gold)] mb-6">{tool.stack}</p>
+            <a href={tool.repo} class="btn btn-primary">View on GitHub →</a>
+          </div>
+
+          <div class="md:col-span-7">
+            <p class="text-[var(--color-text-muted)] leading-relaxed mb-8">
+              {tool.body}
+            </p>
+            <ul class="space-y-3">
+              {tool.features.map((f) => (
+                <li class="flex gap-3 text-[var(--color-text)] text-[0.9375rem] leading-relaxed">
+                  <span class="text-[var(--color-gold)] mt-1.5 shrink-0" aria-hidden="true">▪</span>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            {tool.proof && (
+              <pre class="mt-8 overflow-x-auto rounded border border-[var(--color-border-strong)] bg-[var(--color-paper)] p-5 font-mono text-xs leading-relaxed text-[var(--color-text)]">{tool.proof}</pre>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  {/* PRINCIPLES */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">How they work</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-12 max-w-2xl">
+        Shared principles
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {principles.map((p, i) => (
+          <article class="border-t border-[var(--color-border-strong)] pt-6">
+            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">0{i + 1}</p>
+            <h3 class="font-display text-xl font-semibold mb-3 leading-tight">
+              {p.title}
+            </h3>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+              {p.body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* CLOSING — the "Support this work" donation section drops in here once GitHub Sponsors is live */}
+  <section>
+    <div class="wrap py-20">
+      <div class="max-w-2xl">
+        <p class="eyebrow mb-4">Get the tools</p>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-5">
+          Free to use, and free to inspect
+        </h2>
+        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8">
+          Both tools are free and open source under the MIT license. Read exactly how
+          they work, adapt them to your own research, or open an issue if something
+          could be better. Setup instructions live in each repository.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="https://github.com/olivercrocco" class="btn btn-primary">
+            All my code on GitHub →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
