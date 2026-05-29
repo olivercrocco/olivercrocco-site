@@ -6,7 +6,7 @@ dek: "A free, confidential tool for finding well-matched peer reviewers, with a 
 draft: false
 ---
 
-When a manuscript lands in my queue as an associate editor, I face the same quiet puzzle: who is best fit to review this? The paper often sits at the seam of different fields related to HRD, discusses various topics related to HRD, leans on different methods. I also know it's getting harder and harder to find good reviewers.
+When a manuscript lands in my queue as an associate editor, I face the same quiet puzzle: who is best fit to review this? The paper often sits at the seam of different fields related to HRD, discusses various topics related to HRD, and leans on different methods. I also know it's getting harder and harder to find good reviewers.
 
 Peer review runs on goodwill, and goodwill is finite. Response rates to review invitations keep falling, and the scholars who fit a paper best are frequently the ones already buried under requests. The people who would bring a genuinely different angle — an early-career voice, a methodologist who catches what a topic expert misses, someone working in Manila or Nairobi or Ljubljana — rarely surface from memory alone. Memory favors the familiar.
 
