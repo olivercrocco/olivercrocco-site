@@ -110,6 +110,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
     </div>
   </section>
+
+  {/* CITE */}
+  <section class="border-t border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-12">
+      <p class="eyebrow mb-3">Cite this tool</p>
+      <p
+        class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3 max-w-3xl"
+        style="padding-left:1.5rem;text-indent:-1.5rem"
+      >
+        Crocco, O. S. (2026). <em>peer-reviewer-finder</em> (Version 0.2.0) [Computer software]. GitHub. <a href="https://github.com/olivercrocco/peer-reviewer-finder">https://github.com/olivercrocco/peer-reviewer-finder</a>
+      </p>
+      <button class="btn btn-ghost" type="button" data-cite="Crocco, O. S. (2026). peer-reviewer-finder (Version 0.2.0) [Computer software]. GitHub. https://github.com/olivercrocco/peer-reviewer-finder">Copy citation</button>
+    </div>
+  </section>
 </BaseLayout>
 
 <style is:global>
@@ -313,4 +327,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     a.click();
     URL.revokeObjectURL(a.href);
   }
+
+  // "Cite this tool" copy button
+  document.querySelectorAll("[data-cite]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      navigator.clipboard.writeText(btn.getAttribute("data-cite") || "").then(() => {
+        const prev = btn.textContent;
+        btn.textContent = "Copied ✓";
+        setTimeout(() => { btn.textContent = prev; }, 1500);
+      });
+    });
+  });
 </script>
