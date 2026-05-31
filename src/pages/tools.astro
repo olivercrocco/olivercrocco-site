@@ -16,6 +16,7 @@ const tools = [
     ],
     repo: "https://github.com/olivercrocco/peer-reviewer-finder",
     version: "0.2.0",
+    doi: "10.5281/zenodo.20448662",
     demo: "/reviewer-finder",
     demoLabel: "Try it in your browser →",
     stack: "Python · JavaScript · OpenAlex · MIT",
@@ -35,6 +36,8 @@ const tools = [
     ],
     repo: "https://github.com/WarderHouse/cross-tool-statistical-verification",
     demo: "https://olivercrocco.shinyapps.io/ctsv-demo/",
+    version: "0.1.0",
+    doi: "10.5281/zenodo.20448660",
     stack: "Python · R · MIT",
     proof: `crossverify — OLS regression: mpg ~ wt + hp (mtcars)
   Phase 3  consistency       8 pass
@@ -201,14 +204,18 @@ const principles = [
       </p>
       <div class="max-w-3xl space-y-6">
         {tools.map((tool) => {
-          const cite = `Crocco, O. S. (2026). ${tool.name}${tool.version ? ` (Version ${tool.version})` : ""} [Computer software]. GitHub. ${tool.repo}`;
+          const ver = tool.version ? ` (Version ${tool.version})` : "";
+          const src = tool.doi ? `Zenodo. https://doi.org/${tool.doi}` : `GitHub. ${tool.repo}`;
+          const cite = `Crocco, O. S. (2026). ${tool.name}${ver} [Computer software]. ${src}`;
+          const href = tool.doi ? `https://doi.org/${tool.doi}` : tool.repo;
+          const srcText = tool.doi ? `https://doi.org/${tool.doi}` : tool.repo;
           return (
             <div class="border-t border-[var(--color-border-strong)] pt-5">
               <p
                 class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
                 style="padding-left:1.5rem;text-indent:-1.5rem"
               >
-                Crocco, O. S. (2026). <em>{tool.name}</em>{tool.version ? ` (Version ${tool.version})` : ""} [Computer software]. GitHub. <a href={tool.repo}>{tool.repo}</a>
+                Crocco, O. S. (2026). <em>{tool.name}</em>{ver} [Computer software]. {tool.doi ? "Zenodo." : "GitHub."} <a href={href}>{srcText}</a>
               </p>
               <button class="btn btn-ghost" type="button" data-cite={cite}>Copy citation</button>
             </div>
