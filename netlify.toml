@@ -19,11 +19,13 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    # CSP in report-only mode: it observes violations (browser console) without
-    # blocking anything, so it can't break the site or the Reviewer Finder. Once
-    # you've confirmed the console reports no violations, rename this key to
-    # "Content-Security-Policy" to enforce it.
-    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.openalex.org; frame-ancestors 'none'; base-uri 'self'"
+    # Content-Security-Policy (enforcing). Every script is emitted as an external
+    # /_astro/ file (see astro.config.mjs `build.assetsInlineLimit`), so `script-src
+    # 'self'` covers them all with no per-script hashes — and stays correct as the
+    # site grows. style-src keeps 'unsafe-inline' for the many inline style
+    # attributes (style injection is low-risk); Google Fonts and the OpenAlex fetch
+    # are allowlisted; frame-ancestors 'none' mirrors X-Frame-Options.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.openalex.org; frame-ancestors 'none'; base-uri 'self'"
 
 # Long cache for fingerprinted assets
 [[headers]]
