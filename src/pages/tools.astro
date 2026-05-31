@@ -25,22 +25,22 @@ const tools = [
     name: "cross-tool-statistical-verification",
     audience: "For quantitative researchers",
     tagline:
-      "Confirm a statistical result holds up in a second program, not only the one you ran it in.",
-    body: "You write your analysis twice, once in Python and once in R, and the tool reconciles them. It runs a six-phase protocol that inspects the data, checks every reported number for internal consistency, re-runs the analysis to confirm it reproduces, and compares the two implementations statistic by statistic. It then writes the evidence: a verification log, a side-by-side comparison table, and a methodology paragraph you can adapt for a manuscript.",
+      "Check whether a statistical result reproduces in a second program, or is an artifact of the one you ran it in.",
+    body: "You write your analysis twice, once in Python and once in R, and the tool reconciles them. It runs a six-phase protocol that inspects the data, checks every reported number for internal consistency, re-runs the analysis to confirm it reproduces, and compares the two implementations statistic by statistic. It then writes the evidence: a verification log, a side-by-side comparison table, and a methodology paragraph you can adapt for a manuscript. Agreement across the two shows a result is independent of one library's defaults — strong evidence it is reproducible, though not on its own proof the analysis is correct.",
     features: [
       "Compares Python and R statistic by statistic, within tolerance",
-      "Checks internal consistency and exact reproducibility",
+      "Checks internal consistency and re-run reproducibility",
       "Produces a verification log and a comparison table as evidence",
       "Drafts a methodology paragraph for your paper",
     ],
-    repo: "https://github.com/olivercrocco/cross-tool-statistical-verification",
+    repo: "https://github.com/WarderHouse/cross-tool-statistical-verification",
     demo: "https://olivercrocco.shinyapps.io/ctsv-demo/",
     stack: "Python · R · MIT",
     proof: `crossverify — OLS regression: mpg ~ wt + hp (mtcars)
   Phase 3  consistency       8 pass
-  Phase 4  reproducibility   9 pass
-  Phase 5  triangulation     9 pass
-  Cross-tool: 9/9 statistics matched within tolerance.
+  Phase 4  reproducibility   11 pass
+  Phase 5  triangulation     11 pass
+  Cross-tool: 11/11 statistics matched within tolerance.
 
 Result: PASS`,
   },
