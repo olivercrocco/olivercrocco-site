@@ -10,6 +10,10 @@ export default defineConfig({
   site: 'https://olivercrocco.com',
   vite: {
     plugins: [tailwindcss()],
+    // Emit every script as an external file (never inline a <script>), so a strict
+    // Content-Security-Policy with `script-src 'self'` covers them all without
+    // per-script hashes — and stays correct as the site grows.
+    build: { assetsInlineLimit: 0 },
   },
   integrations: [sitemap(), mdx()],
 });
