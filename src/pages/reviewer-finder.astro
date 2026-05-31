@@ -175,6 +175,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  // Security: only treat a value as a link target if its scheme is https, so a
+  // malicious javascript:/data: URL returned by the API can't become a clickable
+  // link (XSS guard for author-supplied URLs such as ORCID).
+  const httpsUrl = (u) => { try { return new URL(u).protocol === "https:" ? u : null; } catch { return null; } };
   const list = (s) => (s || "").split(",").map((x) => x.trim()).filter(Boolean);
 
   // discipline checkboxes
@@ -264,7 +268,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const stage = careerStage(c.prof);
       const active = isActive(c.prof, cy) ? "" : ` · <span style="color:var(--color-rust)">no pubs in ~3y</span>`;
       const links = [`<a href="https://openalex.org/${esc(c.id)}" target="_blank" rel="noopener">OpenAlex</a>`];
-      if (c.orcid) links.push(`<a href="${esc(c.orcid)}" target="_blank" rel="noopener">ORCID</a>`);
+      const orcidHref = httpsUrl(c.orcid);
+      if (orcidHref) links.push(`<a href="${esc(orcidHref)}" target="_blank" rel="noopener">ORCID</a>`);
       const papers = evidence(c, 3).map((w) => `<li>“${esc(w.title)}” — ${esc(w.journal)} ${w.year || ""} <span style="color:var(--color-text-soft)">[${esc(Object.keys(w.terms).join(", "))}]</span></li>`).join("");
       return `<article class="rf-card">
         <div style="display:flex;justify-content:space-between;gap:1rem;align-items:baseline">
