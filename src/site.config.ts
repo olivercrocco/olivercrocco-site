@@ -22,7 +22,7 @@ export const AUTHOR = {
   department: "School of Leadership & Human Resource Development",
   institution: "Louisiana State University",
   visitingRole: "Visiting Professor",
-  visitingInstitution: "Chulalongkorn University, Bangkok",
+  visitingInstitution: "Chulalongkorn University, Bangkok (2025–2026)",
   email: "olivercrocco@lsu.edu",
   namedropUrl: "https://namedrop.io/olivercrocco",
   lsuProfileUrl:
@@ -43,7 +43,6 @@ export const NAV = [
   { label: "Publications", href: "/publications" },
   { label: "Notes", href: "/notes" },
   { label: "Tools", href: "/tools" },
-  { label: "Speaking", href: "/speaking" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
