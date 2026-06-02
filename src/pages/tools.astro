@@ -47,6 +47,24 @@ const tools = [
 
 Result: PASS`,
   },
+  {
+    name: "citation-verifier",
+    audience: "For researchers and graduate students",
+    tagline:
+      "Check whether the references in your bibliography actually exist, before you cite them.",
+    body: "Paste a reference list and it checks each one against CrossRef and OpenAlex. A resolved DOI, or a title match in either database, confirms that a reference exists. A reference with no scholarly match is flagged as likely grey literature, a book, report, or website to verify yourself, and a DOI that resolves nowhere is flagged as possibly fabricated or mistyped. It reads the title and DOI out of each line and shows you what it looked up, so you can see exactly what was checked. It confirms a work is real, not that it says what you claim.",
+    features: [
+      "Cross-checks CrossRef and OpenAlex; one confirming source is enough",
+      "Treats a resolved DOI as confirmation, and flags a DOI that resolves to a different title",
+      "Flags non-indexed books, reports, and websites as grey literature, never as fabrication",
+      "Runs from the command line or in the browser; queries public databases only, no AI",
+    ],
+    repo: "https://github.com/WarderHouse/citation-verifier",
+    version: "0.1.0",
+    doi: "10.5281/zenodo.20508955",
+    stack: "Python · JavaScript · CrossRef · OpenAlex · MIT",
+    proof: null,
+  },
 ];
 
 const principles = [
