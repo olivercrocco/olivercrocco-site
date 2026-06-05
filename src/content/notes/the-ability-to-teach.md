@@ -2,7 +2,7 @@
 title: "Maybe the most important skill with AI is the ability to teach"
 date: 2026-06-05
 lane: "Ideas"
-dek: "We name critical thinking and continuous learning as the skills for working with AI. The one that gets less attention may matter most: the ability to teach — and the domain mastery beneath it."
+dek: "Critical thinking and continuous learning get the attention. The skill that may matter most gets far less: the ability to teach."
 draft: false
 ---
 
