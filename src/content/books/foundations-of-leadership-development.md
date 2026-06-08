@@ -1,12 +1,13 @@
 ---
 title: "Foundations of Leadership Development"
 subtitle: "The Self-Leadership Journey"
-authors: ["Oliver S. Crocco", "Tomika Greer", "Edward A. Gibbons III"]
+authors: ["Oliver S. Crocco", "Tomika W. Greer", "Edward A. Gibbons III"]
 role: co-author
 publisher: "Palgrave Macmillan"
 year: "Forthcoming"
 status: in-production
 description: "A foundational text on leadership development that begins from the inside out — situating the work of becoming a leader within the longer arc of self-leadership, identity formation, and developmental practice. Forthcoming from Palgrave Macmillan."
+cover: "/book-covers/foundations-of-leadership-development.jpg"
 coverColor: "burgundy"
 buyLinks: []
 awards: []
