@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 /* =============================================================================
-   Design tokens — warm paper + ink navy + subtle gold
+   Design tokens — warm stone + plum + copper
    ============================================================================= */
 @theme {
   /* Type families */
@@ -10,25 +10,26 @@
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Colors — warm paper palette */
-  --color-paper: #FAF7F2;
-  --color-paper-warm: #F2EDE3;
-  --color-paper-deep: #E8E0D0;
+  /* Colors — Plum & Copper palette (warm stone · plum · copper) */
+  --color-paper: #F3EFEA;
+  --color-paper-warm: #E9E2DA;
+  --color-paper-deep: #DCD3C8;
 
-  --color-ink: #14213D;
-  --color-ink-light: #2D4263;
-  --color-ink-soft: #4A5878;
+  --color-ink: #34243A;
+  --color-ink-light: #4A3550;
+  --color-ink-soft: #65526D;
 
-  --color-text: #1A1F2E;
-  --color-text-muted: #5C6577;
-  --color-text-soft: #8A8F9B;
+  --color-text: #2A2230;
+  --color-text-muted: #645A63;
+  --color-text-soft: #948A93;
 
-  --color-gold: #B8860B;
-  --color-gold-light: #D4A82C;
+  /* accent — copper/terracotta (token kept as --color-gold so usages don't change) */
+  --color-gold: #B0613C;
+  --color-gold-light: #CD8A5A;
   --color-rust: #8B3A1F;
 
-  --color-border: rgba(20, 33, 61, 0.10);
-  --color-border-strong: rgba(20, 33, 61, 0.18);
+  --color-border: rgba(52, 36, 58, 0.11);
+  --color-border-strong: rgba(52, 36, 58, 0.20);
 
   /* Type scale (size / line-height pairs) */
   --text-xs: 0.75rem;
@@ -93,7 +94,7 @@ h4 { font-size: var(--text-2xl); line-height: 1.4; }
 a {
   color: var(--color-ink);
   text-decoration: underline;
-  text-decoration-color: rgba(20, 33, 61, 0.25);
+  text-decoration-color: rgba(52, 36, 58, 0.28);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
   transition: text-decoration-color 0.15s ease, color 0.15s ease;
@@ -235,7 +236,7 @@ a:hover {
 /* Subtle grain on hero background — feels more "paper" */
 .paper-grain {
   background-image:
-    radial-gradient(rgba(20, 33, 61, 0.025) 1px, transparent 1px);
+    radial-gradient(rgba(52, 36, 58, 0.030) 1px, transparent 1px);
   background-size: 3px 3px;
   background-position: 0 0;
 }
@@ -365,8 +366,8 @@ a:hover {
   color: var(--color-gold);
 }
 .section-dark p {
-  color: rgba(250, 247, 242, 0.78);
+  color: rgba(243, 239, 234, 0.80);
 }
 .section-dark .border-t {
-  border-color: rgba(250, 247, 242, 0.18);
+  border-color: rgba(243, 239, 234, 0.18);
 }

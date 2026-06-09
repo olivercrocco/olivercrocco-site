@@ -50,19 +50,19 @@ const statusLabels: Record<string, string> = {
 
 const coverGradients: Record<string, string> = {
   "navy": "from-[var(--color-ink)] to-[var(--color-ink-light)]",
-  "burgundy": "from-[#5C1A1A] to-[#8B3A1F]",
-  "ink": "from-[#1A1F2E] to-[var(--color-ink)]",
-  "rust": "from-[#7C2D12] to-[#8B3A1F]",
-  "forest": "from-[#14532D] to-[#1F6A3F]",
+  "burgundy": "from-[#46233F] to-[#8B3A1F]",
+  "ink": "from-[#231A29] to-[var(--color-ink)]",
+  "rust": "from-[#7C2D12] to-[#A85A2E]",
+  "forest": "from-[#3A2A22] to-[#8B5A2B]",
   "default": "from-[var(--color-ink)] to-[var(--color-ink-light)]",
 };
 
 const goldText: Record<string, string> = {
   "navy": "text-[var(--color-gold)]",
-  "burgundy": "text-[#D4A82C]",
+  "burgundy": "text-[#CD8A5A]",
   "ink": "text-[var(--color-gold)]",
-  "rust": "text-[#E8C547]",
-  "forest": "text-[#D4A82C]",
+  "rust": "text-[#ECC79A]",
+  "forest": "text-[#CD8A5A]",
   "default": "text-[var(--color-gold)]",
 };
 ---
@@ -130,7 +130,7 @@ const goldText: Record<string, string> = {
                         )}
                       </div>
                       <div>
-                        <div class={`w-10 h-px ${gold === "text-[var(--color-gold)]" ? "bg-[var(--color-gold)]" : "bg-[#D4A82C]"} mb-3`}></div>
+                        <div class={`w-10 h-px ${gold === "text-[var(--color-gold)]" ? "bg-[var(--color-gold)]" : "bg-[#CD8A5A]"} mb-3`}></div>
                         <p class="text-white font-display text-xs font-medium leading-snug">
                           {book.data.authors.join(" · ")}
                         </p>
