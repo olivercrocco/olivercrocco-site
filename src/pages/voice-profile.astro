@@ -1,0 +1,250 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import promptText from "../data/scholarly-voice-profile.md?raw";
+
+const updated = "June 2026";
+const version = "1.0";
+const citeUrl = "https://olivercrocco.com/voice-profile";
+const apaCitation = `Crocco, O. S. (2026). Scholarly Voice and Identity Interviewer (Version ${version}) [Large language model prompt]. ${citeUrl}`;
+
+const steps = [
+  {
+    n: "01",
+    title: "Open Claude with Opus and extended thinking",
+    body: "The interview asks Claude to read closely and reason about your writing, so the strongest model and thinking mode matter. Start a fresh conversation.",
+  },
+  {
+    n: "02",
+    title: "Paste the prompt and bring your materials",
+    body: "Copy the full prompt below into the chat. Have your CV ready, along with a spread of writing samples across the genres you actually write in.",
+  },
+  {
+    n: "03",
+    title: "Answer the interview",
+    body: "Claude reads what you give it, reports what your work already revealed, then asks only what the corpus could not tell it. It auto-scales to how much you brought and lets you stop at checkpoints.",
+  },
+  {
+    n: "04",
+    title: "Save the two documents and reuse them",
+    body: "You walk away with a Researcher Identity Profile and a Scholarly Voice Profile. Paste them back into any future chat and name the register, and Claude drafts and revises as you.",
+  },
+];
+
+const outputs = [
+  {
+    title: "Researcher Identity Profile",
+    body: "Your intellectual DNA: the questions that animate your program, the position you stake out and whom you argue against, your theoretical toolkit, the quality markers you will not compromise and the filters that make you walk away, your publishing strategy, and the analytical moves a careful reader would recognize as yours.",
+  },
+  {
+    title: "Scholarly Voice Profile",
+    body: "Your prose DNA: a CV-grounded context section, a genre-by-genre reading of how your writing is actually built, your sentence mechanics and aesthetic crimes and hard nos, a register guide that calibrates your voice from journal article to keynote to grant, and an anti-AI-tell ruleset you can run as a check on any later draft.",
+  },
+];
+---
+
+<BaseLayout
+  title="Scholarly Voice and Identity Interviewer"
+  description="A free prompt that interviews you about your research identity and reads your published work, then builds two reference documents so an AI assistant can write and think in your scholarly voice, in place of the flat, generic default."
+>
+  {/* HERO */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Tools · Writing</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
+        Scholarly Voice &amp; Identity Interviewer
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        A free prompt that reads your published work and interviews you about
+        your research identity, then builds two reference documents so an AI
+        assistant writes and thinks in your scholarly voice, in place of the flat,
+        generic default.
+      </p>
+      <div class="flex flex-wrap gap-3 mt-10">
+        <a href="#prompt" class="btn btn-primary">Get the prompt →</a>
+        <a href="#how" class="btn btn-ghost">How to use it</a>
+      </div>
+    </div>
+  </section>
+
+  {/* RATIONALE */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-6">Why this exists</p>
+      <div class="prose max-w-3xl">
+        <p class="drop-cap">
+          Every scholar already has a voice. The trouble is that AI assistants
+          flatten it into competent, anonymous prose. Ask a chatbot to write in
+          your voice and you get something clean and recognizable as no one. This
+          tool fixes that the way a careful reader would: it starts from your
+          actual published work and your research identity, then treats your prose
+          style as the expression of how you think.
+        </p>
+        <p>
+          Two things separate it from a generic voice prompt. It captures
+          intellectual identity, the thinking under the prose: the questions that
+          drive your work, whom you argue against, the moves you make on evidence
+          that others would not, and what you refuse to publish. And it calibrates voice
+          by genre, because your journal articles, your grant narratives, your
+          keynotes, and your public writing do not sound the same, and a single
+          profile that ignores that will overfit. It reads your corpus first and
+          spends its questions on what the corpus cannot tell it.
+        </p>
+        <p>
+          It is also built to resist the tells that give AI prose away: em dashes
+          dropped in everywhere, defining by negation, claims about best practices
+          offered without context. You decide which of those rules apply to you,
+          and at what strength, and the profile records them as a check you can run
+          on any later draft.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* WHAT IT PRODUCES */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">What it produces</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-12 max-w-2xl">
+        Two linked documents you keep and reuse
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {outputs.map((o, i) => (
+          <article class="border-t border-[var(--color-border-strong)] pt-6">
+            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">0{i + 1}</p>
+            <h3 class="font-display text-xl font-semibold mb-3 leading-tight">{o.title}</h3>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{o.body}</p>
+          </article>
+        ))}
+      </div>
+      <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed max-w-3xl mt-10">
+        Each document works on its own, and they cross-reference each other. Load
+        the voice profile for a copy-edit, the identity profile for a framing or
+        design question, or both to draft.
+      </p>
+    </div>
+  </section>
+
+  {/* HOW TO USE */}
+  <section id="how" class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">How to use it</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-12 max-w-2xl">
+        Four steps, about 35 to 90 minutes
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+        {steps.map((s) => (
+          <article class="border-t border-[var(--color-border-strong)] pt-6">
+            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">{s.n}</p>
+            <h3 class="font-display text-xl font-semibold mb-3 leading-tight">{s.title}</h3>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{s.body}</p>
+          </article>
+        ))}
+      </div>
+      <div class="prose max-w-3xl mt-12">
+        <p>
+          Bring as much as you reasonably can: a CV, and a representative spread
+          across genres such as a sole-authored article, a co-authored one, a
+          chapter or book, a review, a grant narrative, a talk, and a public-facing
+          piece. More range gives a sharper profile. If you have little to share,
+          it still works and leans harder on the interview.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* THE PROMPT */}
+  <section id="prompt" class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">The prompt</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-6 max-w-2xl">
+        Copy it, or download a file
+      </h2>
+      <p class="text-[var(--color-text-muted)] leading-relaxed max-w-3xl mb-8">
+        Paste the whole thing into a fresh Claude conversation and answer as
+        yourself. The Word file is convenient for sharing with colleagues.
+      </p>
+      <div class="flex flex-wrap gap-3 mb-8">
+        <button id="copy-prompt" type="button" class="btn btn-primary">Copy prompt</button>
+        <a href="/tools/scholarly-voice-and-identity-interviewer.md" class="btn btn-ghost" download>Download .md</a>
+        <a href="/tools/scholarly-voice-and-identity-interviewer.docx" class="btn btn-ghost" download>Download .docx</a>
+      </div>
+      <pre
+        id="prompt-text"
+        class="max-h-[32rem] overflow-auto whitespace-pre-wrap break-words rounded border border-[var(--color-border-strong)] bg-[var(--color-paper)] p-5 font-mono text-xs leading-relaxed text-[var(--color-text)]"
+      >{promptText}</pre>
+    </div>
+  </section>
+
+  {/* PROVENANCE */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-6">Where it comes from</p>
+      <div class="prose max-w-3xl">
+        <p>
+          This is the academic descendant of Ruben Hassid's Taste Interviewer
+          voice prompt. It keeps that prompt's interview bones and adds the parts
+          that matter for scholarly writing: a close reading of your real published
+          work, grounding in your CV, a register guide across academic genres, and
+          a researcher-identity layer the original never touches. It was developed
+          and stress-tested against the same writing rules it teaches.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* LICENSE & CITATION */}
+  <section class="bg-[var(--color-paper-warm)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-4">License &amp; citation</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-6 max-w-2xl">
+        Free to use, with credit
+      </h2>
+      <div class="prose max-w-3xl mb-8">
+        <p>
+          Released under a
+          <a href="https://creativecommons.org/licenses/by/4.0/"> Creative Commons Attribution 4.0 International (CC BY 4.0)</a>
+          license. You may use, adapt, and share it for any purpose, including in
+          your own teaching and workshops, as long as you credit the source. A
+          citable DOI is on the way; until then, please cite the page.
+        </p>
+      </div>
+      <div class="max-w-3xl border-t border-[var(--color-border-strong)] pt-5">
+        <p class="font-mono text-xs text-[var(--color-gold)] mb-3">
+          Version {version} · Updated {updated} · DOI pending
+        </p>
+        <p
+          class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
+          style="padding-left:1.5rem;text-indent:-1.5rem"
+        >
+          Crocco, O. S. (2026). <em>Scholarly Voice and Identity Interviewer</em> (Version {version}) [Large language model prompt]. <a href={citeUrl}>{citeUrl}</a>
+        </p>
+        <button class="btn btn-ghost" type="button" data-cite={apaCitation}>Copy citation</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const copyBtn = document.getElementById("copy-prompt");
+    const pre = document.getElementById("prompt-text");
+    if (copyBtn && pre) {
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(pre.textContent || "").then(() => {
+          const prev = copyBtn.textContent;
+          copyBtn.textContent = "Copied ✓";
+          setTimeout(() => { copyBtn.textContent = prev; }, 1500);
+        });
+      });
+    }
+
+    document.querySelectorAll("[data-cite]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const text = btn.getAttribute("data-cite") || "";
+        navigator.clipboard.writeText(text).then(() => {
+          const prev = btn.textContent;
+          btn.textContent = "Copied ✓";
+          setTimeout(() => { btn.textContent = prev; }, 1500);
+        });
+      });
+    });
+  </script>
+</BaseLayout>
