@@ -3,6 +3,28 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const tools = [
   {
+    name: "Scholarly Voice and Identity Interviewer",
+    audience: "For scholars who write with AI",
+    tagline:
+      "Interview yourself once and get two reference documents that give an AI assistant your scholarly voice and intellectual stance, in place of the flat, generic default.",
+    body: "Paste it into Claude and it reads your CV and a spread of your published work, reports what your writing already reveals, then interviews you only where the corpus leaves gaps. It produces a Researcher Identity Profile (your animating questions, distinctive position, theoretical toolkit, and quality filters) and a Scholarly Voice Profile (your sentence mechanics, a genre-by-genre reading of your prose, a register guide, and an anti-AI-tell ruleset). Keep both and paste them into any later chat to draft, revise, or copy-edit as yourself. It is the academic descendant of Ruben Hassid's Taste Interviewer prompt.",
+    features: [
+      "Reads your real published work across genres before it asks a single question",
+      "Captures the intellectual stance under your prose, the questions and positions that make it yours",
+      "Calibrates your voice from journal article to keynote to grant",
+      "Bakes in a check for the tells that give AI prose away",
+    ],
+    demo: "/voice-profile",
+    demoLabel: "Open the prompt →",
+    version: "1.0",
+    kind: "Large language model prompt",
+    doi: "10.5281/zenodo.20932766",
+    repo: "https://github.com/olivercrocco/scholarly-voice-profile",
+    citeUrl: "https://olivercrocco.com/voice-profile",
+    stack: "Prompt · Markdown · CC BY 4.0",
+    proof: null,
+  },
+  {
     name: "peer-reviewer-finder",
     audience: "For HRD & adjacent-field editors",
     tagline:
@@ -71,12 +93,12 @@ Result: PASS`,
 
 const principles = [
   {
-    title: "Open source",
-    body: "Every line is on GitHub under an MIT license. You can read exactly what each tool does, adapt it to your work, and cite it.",
+    title: "Open and shareable",
+    body: "Every tool here is openly licensed and citable: the code tools under MIT on GitHub, the voice prompt under Creative Commons. You can read exactly what each one does, adapt it to your work, and cite it.",
   },
   {
-    title: "Runs locally",
-    body: "Your data stays on your own computer. The tools make no calls to any AI service and keep your files out of version control by default.",
+    title: "Keeps your data yours",
+    body: "The code tools run on your own computer and make no calls to any AI service, keeping your files to yourself. The voice prompt runs in your own Claude session and lives in files you control.",
   },
   {
     title: "Built for trust",
@@ -87,7 +109,7 @@ const principles = [
 
 <BaseLayout
   title="Tools"
-  description="Free, open-source research tools by Oliver S. Crocco: peer-reviewer-finder for matching journal reviewers, and cross-tool-statistical-verification for checking that a statistical result is sound. Each runs locally."
+  description="Free research tools by Oliver S. Crocco: a peer-reviewer finder, a cross-tool statistical verifier, a citation verifier, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
 >
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">
@@ -97,9 +119,10 @@ const principles = [
         Open-source research tools
       </h1>
       <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
-        Small, free tools I build for the day-to-day work of research — finding the
-        right peer reviewers, and checking that a statistical result is sound. Each
-        one runs on your own machine.
+        Small, free tools I build for the day-to-day work of research: finding the
+        right peer reviewers, checking that a statistical result is sound, and
+        capturing your own scholarly voice. Each one is free to use and open to
+        inspect.
       </p>
     </div>
   </section>
@@ -142,7 +165,7 @@ const principles = [
               {tool.demo
                 ? <a href={tool.demo} class="btn btn-primary">{tool.demoLabel || "Try the live demo →"}</a>
                 : <a href={tool.repo} class="btn btn-primary">View on GitHub →</a>}
-              {tool.demo && <a href={tool.repo} class="btn btn-ghost">View on GitHub →</a>}
+              {tool.demo && tool.repo && <a href={tool.repo} class="btn btn-ghost">View on GitHub →</a>}
             </div>
           </div>
 
@@ -199,9 +222,10 @@ const principles = [
           Free to use, and free to inspect
         </h2>
         <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8">
-          Both tools are free and open source under the MIT license. Read exactly how
-          they work, adapt them to your own research, or open an issue if something
-          could be better. Setup instructions live in each repository.
+          Everything here is free to use. The code tools are open source under the
+          MIT license, with setup in each repository; the voice prompt is licensed
+          CC BY 4.0. Read exactly how they work, adapt them to your own research, or
+          open an issue if something could be better.
         </p>
         <div class="flex flex-wrap gap-3">
           <a href="https://github.com/olivercrocco" class="btn btn-primary">
@@ -225,17 +249,18 @@ const principles = [
       <div class="max-w-3xl space-y-6">
         {tools.map((tool) => {
           const ver = tool.version ? ` (Version ${tool.version})` : "";
-          const src = tool.doi ? `Zenodo. https://doi.org/${tool.doi}` : `GitHub. ${tool.repo}`;
-          const cite = `Crocco, O. S. (2026). ${tool.name}${ver} [Computer software]. ${src}`;
-          const href = tool.doi ? `https://doi.org/${tool.doi}` : tool.repo;
-          const srcText = tool.doi ? `https://doi.org/${tool.doi}` : tool.repo;
+          const kind = tool.kind ?? "Computer software";
+          const srcLabel = tool.doi ? "Zenodo." : tool.repo ? "GitHub." : "";
+          const srcUrl = tool.doi ? `https://doi.org/${tool.doi}` : tool.repo ? tool.repo : tool.citeUrl;
+          const srcPlain = tool.doi ? `Zenodo. https://doi.org/${tool.doi}` : tool.repo ? `GitHub. ${tool.repo}` : tool.citeUrl;
+          const cite = `Crocco, O. S. (2026). ${tool.name}${ver} [${kind}]. ${srcPlain}`;
           return (
             <div class="border-t border-[var(--color-border-strong)] pt-5">
               <p
                 class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
                 style="padding-left:1.5rem;text-indent:-1.5rem"
               >
-                Crocco, O. S. (2026). <em>{tool.name}</em>{ver} [Computer software]. {tool.doi ? "Zenodo." : "GitHub."} <a href={href}>{srcText}</a>
+                Crocco, O. S. (2026). <em>{tool.name}</em>{ver} [{kind}]. {srcLabel ? srcLabel + " " : ""}<a href={srcUrl}>{srcUrl}</a>
               </p>
               <button class="btn btn-ghost" type="button" data-cite={cite}>Copy citation</button>
             </div>
