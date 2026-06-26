@@ -4,8 +4,10 @@ import promptText from "../data/scholarly-voice-profile.md?raw";
 
 const updated = "June 2026";
 const version = "1.0";
-const citeUrl = "https://olivercrocco.com/voice-profile";
-const apaCitation = `Crocco, O. S. (2026). Scholarly Voice and Identity Interviewer (Version ${version}) [Large language model prompt]. ${citeUrl}`;
+const doi = "10.5281/zenodo.20932766";
+const doiUrl = `https://doi.org/${doi}`;
+const repoUrl = "https://github.com/olivercrocco/scholarly-voice-profile";
+const apaCitation = `Crocco, O. S. (2026). Scholarly Voice and Identity Interviewer (Version ${version}) [Large language model prompt]. Zenodo. ${doiUrl}`;
 
 const steps = [
   {
@@ -167,6 +169,7 @@ const outputs = [
         <button id="copy-prompt" type="button" class="btn btn-primary">Copy prompt</button>
         <a href="/tools/scholarly-voice-and-identity-interviewer.md" class="btn btn-ghost" download>Download .md</a>
         <a href="/tools/scholarly-voice-and-identity-interviewer.docx" class="btn btn-ghost" download>Download .docx</a>
+        <a href={repoUrl} class="btn btn-ghost">View on GitHub →</a>
       </div>
       <pre
         id="prompt-text"
@@ -204,19 +207,18 @@ const outputs = [
           Released under a
           <a href="https://creativecommons.org/licenses/by/4.0/"> Creative Commons Attribution 4.0 International (CC BY 4.0)</a>
           license. You may use, adapt, and share it for any purpose, including in
-          your own teaching and workshops, as long as you credit the source. A
-          citable DOI is on the way; until then, please cite the page.
+          your own teaching and workshops, as long as you credit the source.
         </p>
       </div>
       <div class="max-w-3xl border-t border-[var(--color-border-strong)] pt-5">
         <p class="font-mono text-xs text-[var(--color-gold)] mb-3">
-          Version {version} · Updated {updated} · DOI pending
+          Version {version} · Updated {updated} · DOI {doi}
         </p>
         <p
           class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
           style="padding-left:1.5rem;text-indent:-1.5rem"
         >
-          Crocco, O. S. (2026). <em>Scholarly Voice and Identity Interviewer</em> (Version {version}) [Large language model prompt]. <a href={citeUrl}>{citeUrl}</a>
+          Crocco, O. S. (2026). <em>Scholarly Voice and Identity Interviewer</em> (Version {version}) [Large language model prompt]. Zenodo. <a href={doiUrl}>{doiUrl}</a>
         </p>
         <button class="btn btn-ghost" type="button" data-cite={apaCitation}>Copy citation</button>
       </div>
