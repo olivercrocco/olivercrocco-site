@@ -1,17 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-// Accounts for the project. LinkedIn and Facebook URLs to be added once confirmed.
+// Accounts for the project.
 const ACCOUNTS = [
   { label: "Instagram", href: "https://www.instagram.com/poetryofwork/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/130354756" },
+  { label: "Facebook", href: "https://www.facebook.com/1096441333562680" },
 ];
 
 // The current featured post. New weeks get appended here.
+// poemCredit and photoCredit mirror the attribution lines in each post's caption.
 const thisWeek = {
   poet: "Kahlil Gibran",
   dates: "1883 to 1931",
   title: "On Work",
-  source: "from The Prophet (1923). Public domain.",
+  poemCredit:
+    'Kahlil Gibran (1883 to 1931), "On Work" (1923). Public domain. Source: Project Gutenberg (The Prophet, eBook #58585).',
+  photoCredit:
+    "Photograph: a woman at a spinning wheel, Sogn og Fjordane, Norway, early 1900s. Fylkesarkivet i Sogn og Fjordane. Public domain.",
   cards: [
     "/poetry-of-work/w01-1.jpg",
     "/poetry-of-work/w01-2.jpg",
@@ -73,9 +79,11 @@ const thisWeek = {
           />
         ))}
       </div>
-      <p class="text-[var(--color-text-muted)] text-[0.9375rem]">
-        {thisWeek.poet} ({thisWeek.dates}), {thisWeek.source}
-      </p>
+      <div class="text-[var(--color-text-muted)] text-[0.9375rem] space-y-1.5 max-w-3xl">
+        <p class="eyebrow mb-2">Sources</p>
+        <p>{thisWeek.poemCredit}</p>
+        <p>{thisWeek.photoCredit}</p>
+      </div>
     </div>
   </section>
 
