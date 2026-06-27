@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Accounts for the project. LinkedIn and Facebook URLs to be added once confirmed.
+const ACCOUNTS = [
+  { label: "Instagram", href: "https://www.instagram.com/poetryofwork/" },
+];
+
+// The current featured post. New weeks get appended here.
+const thisWeek = {
+  poet: "Kahlil Gibran",
+  dates: "1883 to 1931",
+  title: "On Work",
+  source: "from The Prophet (1923). Public domain.",
+  cards: [
+    "/poetry-of-work/w01-1.jpg",
+    "/poetry-of-work/w01-2.jpg",
+    "/poetry-of-work/w01-3.jpg",
+    "/poetry-of-work/w01-4.jpg",
+  ],
+};
+---
+
+<BaseLayout
+  title="The Poetry of Work"
+  description="A weekly public-domain poem on work, craft, and vocation. Curated by Oliver S. Crocco."
+  image="/poetry-of-work/w01-1.jpg"
+>
+  {/* HERO */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">A weekly poem</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
+        The Poetry of Work
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        Public-domain poems on work, craft, and vocation. A quiet pause in the working day.
+      </p>
+    </div>
+  </section>
+
+  {/* INTRO */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16 md:py-20">
+      <div class="prose max-w-3xl" data-fade>
+        <p class="drop-cap">
+          People have long turned to poetry to make sense of their working lives, the hard parts and the good. This is a small weekly gathering of those poems, drawn entirely from the public domain: voices from across the centuries on labor and craft, the sea and the land, vocation and rest.
+        </p>
+        <p>
+          Work keeps changing, and quickly. Sitting for a moment with how earlier generations wrote about it is one way to keep the human part of it close. Each week brings one poem, paired with a public-domain photograph, posted across Instagram, LinkedIn, and Facebook.
+        </p>
+        <p>
+          The project is curated by <a href="/about">Oliver S. Crocco</a>, a professor of leadership and human resource development, with care taken to get the sources and the public-domain status right.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* THIS WEEK */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16 md:py-20">
+      <p class="eyebrow mb-3">This week</p>
+      <h2 class="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+        {thisWeek.poet}, &ldquo;{thisWeek.title}&rdquo;
+      </h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" data-fade-stagger>
+        {thisWeek.cards.map((src, i) => (
+          <img
+            src={src}
+            alt={`${thisWeek.poet}, ${thisWeek.title}, card ${i + 1} of ${thisWeek.cards.length}`}
+            loading="lazy"
+            class="w-full aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
+          />
+        ))}
+      </div>
+      <p class="text-[var(--color-text-muted)] text-[0.9375rem]">
+        {thisWeek.poet} ({thisWeek.dates}), {thisWeek.source}
+      </p>
+    </div>
+  </section>
+
+  {/* FOLLOW */}
+  <section>
+    <div class="wrap py-16 md:py-20">
+      <p class="eyebrow mb-3">Follow along</p>
+      <p class="text-[var(--color-text-muted)] mb-6 max-w-2xl">
+        A new poem each week. Follow wherever you keep your quiet corners of the day.
+      </p>
+      <ul class="flex flex-wrap gap-x-6 gap-y-3">
+        {ACCOUNTS.map((a) => (
+          <li>
+            <a href={a.href} class="text-[var(--color-ink)] underline underline-offset-4">{a.label}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
