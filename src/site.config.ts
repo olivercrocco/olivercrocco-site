@@ -43,6 +43,7 @@ export const NAV = [
   { label: "Publications", href: "/publications" },
   { label: "Notes", href: "/notes" },
   { label: "Tools", href: "/tools" },
+  { label: "Poetry of Work", href: "/poetry-of-work" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
