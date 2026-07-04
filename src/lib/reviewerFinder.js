@@ -17,7 +17,7 @@ const W_REQ = 12.0, W_SOFT = 2.0;
 
 export const PANEL_DEFAULTS = {
   size: 9, max_per_institution: 1, min_countries: 4, min_disciplines: 2,
-  min_method_experts: 1, min_early_career: 1, min_senior: 1,
+  min_method_experts: 1, min_early_career: 2, min_mid_career: 2, min_senior: 1, max_senior: 3,
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -143,8 +143,11 @@ function scoreCandidate(c, currentYear) {
   const recency = years.length ? Math.max(...years) : null;
   const recencyBonus = recency && recency >= currentYear - 3 ? 2 : (recency && recency >= currentYear - 6 ? 1 : 0);
   const wc = (c.prof && c.prof.works_count) || 0;
-  const seniority = wc >= 15 ? 1.5 : wc >= 6 ? 1.0 : wc >= 3 ? 0.5 : 0.0;
-  const total = coreC + secC + methodC + ctxC - 0.5 * overflow + 1.0 * breadth.core.size + recencyBonus + seniority;
+  // Flat track-record floor (not an escalating output bonus): distinguishes an
+  // established scholar from a one-off author without rewarding sheer productivity,
+  // which was a thumb on the scale for senior scholars. Fit ranks reviewers, not volume.
+  const trackRecord = wc >= 5 ? 0.6 : wc >= 2 ? 0.3 : 0.0;
+  const total = coreC + secC + methodC + ctxC - 0.5 * overflow + 1.0 * breadth.core.size + recencyBonus + trackRecord;
   return {
     score: round2(total),
     core_credit: round2(coreC), secondary_credit: round2(secC), method_credit: round2(methodC),
@@ -168,9 +171,28 @@ function prelimValue(c) {
   for (const w of Object.values(c.works)) { const pos = w.lead ? 1.0 : 0.6; for (const info of Object.values(w.terms)) v += TIER_WEIGHT[info.bucket] * info.strength * pos; }
   return v;
 }
-export function careerStage(prof) {
+// Years since first publication, from counts_by_year (no extra API call). Reaches
+// back ~20 years, deep enough to place early- and mid-career scholars; saturates for
+// long careers, which still reads as senior. Returns null if there's no year data.
+export function academicAge(prof, currentYear) {
+  const cby = (prof && prof.counts_by_year) || [];
+  const years = cby.filter((c) => c.year && (c.works_count || 0) > 0).map((c) => c.year);
+  return years.length ? Math.max(0, currentYear - Math.min(...years)) : null;
+}
+
+// Career stage keyed off academic age (time in the field), refined by h-index —
+// not lifetime output, which over-labels prolific-but-recent scholars "senior".
+// Senior needs a long career AND an established record, so the count doesn't re-inflate.
+export function careerStage(prof, currentYear) {
+  const cy = currentYear || new Date().getFullYear();
   const h = (prof && prof.h_index) || 0, wc = (prof && prof.works_count) || 0;
-  if (h >= 25 || wc >= 100) return "senior";
+  const age = academicAge(prof, cy);
+  if (age !== null) {
+    if (age <= 7 && h < 20) return "early-career";
+    if ((age >= 16 && h >= 20) || h >= 40) return "senior";
+    return "mid-career";
+  }
+  if (h >= 30 || wc >= 120) return "senior";
   if (h <= 10 && wc <= 30) return "early-career";
   return "mid-career";
 }
@@ -239,17 +261,20 @@ function coauthorGraph(cands) {
 function selectPanel(ranked, coauthors, reqs, currentYear) {
   const { size, max_per_institution: maxinst, min_countries: minC, min_disciplines: minD,
     min_method_experts: minM, min_early_career: minE, min_senior: minS } = reqs;
+  const minMid = reqs.min_mid_career || 0;
+  const maxS = reqs.max_senior === undefined ? null : reqs.max_senior;   // null => no cap
   const items = ranked.map(([c, sc, kind]) => ({
     c, sc, kind, inst: institutionKey(c), country: currentCountry(c), discs: new Set(disciplinesOf(c)),
-    method: isMethodExpert(sc), primary: isPrimaryMethodExpert(sc), stage: careerStage(c.prof),
+    method: isMethodExpert(sc), primary: isPrimaryMethodExpert(sc), stage: careerStage(c.prof, currentYear),
   }));
   const chosen = [], instCounts = {}, countries = new Set(), disciplines = new Set(), picked = new Set();
-  let nMethod = 0, nEarly = 0, nSenior = 0;
+  let nMethod = 0, nEarly = 0, nMid = 0, nSenior = 0;
   while (chosen.length < size && items.length) {
     let best = null, bestVal = null, bestIdx = null;
     for (let idx = 0; idx < items.length; idx++) {
       const it = items[idx];
       if ((instCounts[it.inst] || 0) >= maxinst) continue;
+      if (maxS !== null && it.stage === "senior" && nSenior >= maxS) continue;   // senior cap
       let conflict = false;
       for (const p of picked) if (coauthors[it.c.id] && coauthors[it.c.id].has(p)) { conflict = true; break; }
       if (conflict) continue;
@@ -258,6 +283,7 @@ function selectPanel(ranked, coauthors, reqs, currentYear) {
       const newDiscs = [...it.discs].some((d) => !disciplines.has(d));
       if (it.method && nMethod < minM) val += W_REQ + (it.primary ? W_REQ * 0.4 : 0);
       if (it.stage === "early-career" && nEarly < minE) val += W_REQ;
+      if (it.stage === "mid-career" && nMid < minMid) val += W_REQ;
       if (it.stage === "senior" && nSenior < minS) val += W_REQ;
       if (newCountry && countries.size < minC) val += W_REQ * 0.8;
       if (newDiscs && disciplines.size < minD) val += W_REQ * 0.8;
@@ -269,6 +295,7 @@ function selectPanel(ranked, coauthors, reqs, currentYear) {
     const it = best, why = [];
     if (it.method && nMethod < minM) why.push("method" + (it.primary ? " (primary)" : ""));
     if (it.stage === "early-career" && nEarly < minE) why.push("early-career");
+    if (it.stage === "mid-career" && nMid < minMid) why.push("mid-career");
     if (it.stage === "senior" && nSenior < minS) why.push("senior anchor");
     if (it.country && !countries.has(it.country)) why.push("+" + it.country);
     const nd = [...it.discs].filter((d) => !disciplines.has(d)).sort();
@@ -278,7 +305,8 @@ function selectPanel(ranked, coauthors, reqs, currentYear) {
     if (it.country) countries.add(it.country);
     for (const d of it.discs) disciplines.add(d);
     picked.add(it.c.id);
-    nMethod += it.method ? 1 : 0; nEarly += it.stage === "early-career" ? 1 : 0; nSenior += it.stage === "senior" ? 1 : 0;
+    nMethod += it.method ? 1 : 0; nEarly += it.stage === "early-career" ? 1 : 0;
+    nMid += it.stage === "mid-career" ? 1 : 0; nSenior += it.stage === "senior" ? 1 : 0;
     items.splice(bestIdx, 1);
   }
   return {
@@ -286,7 +314,8 @@ function selectPanel(ranked, coauthors, reqs, currentYear) {
     scorecard: {
       size: [chosen.length, size], institutions: [Object.values(instCounts).filter((v) => v).length, null],
       countries: [countries.size, minC], disciplines: [disciplines.size, minD],
-      method_experts: [nMethod, minM], early_career: [nEarly, minE], senior: [nSenior, minS],
+      method_experts: [nMethod, minM], early_career: [nEarly, minE],
+      mid_career: [nMid, minMid], senior: [nSenior, minS],
     },
   };
 }
@@ -317,6 +346,75 @@ export function evidence(c, limit = 4) {
     .map((w) => ({ ...w, _s: Math.max(0, ...Object.values(w.terms).map((i) => i.strength)) }))
     .sort((a, b) => (b._s - a._s) || ((b.year || 0) - (a.year || 0)))
     .slice(0, limit);
+}
+
+// ---- contact lookup via the public ORCID API -----------------------------
+// Opt-in, run only for the suggested panel. Sends only the reviewers' own public
+// ORCID iDs to pub.orcid.org (never the manuscript or authors) to fetch a public
+// email, if the researcher published one, and their current employer. Mirrors the
+// Python tool's --contacts. pub.orcid.org must be in the CSP connect-src.
+const ORCID_BASE = "https://pub.orcid.org/v3.0";
+const ORCID_RE = /^(?:https?:\/\/orcid\.org\/)?(\d{4}-\d{4}-\d{4}-\d{3}[\dX])$/;
+function bareOrcid(s) { const m = ORCID_RE.exec((s || "").trim()); return m ? m[1] : null; }
+
+async function orcidGet(path, tries = 3) {
+  const url = `${ORCID_BASE}/${path.replace(/^\//, "")}`;
+  for (let attempt = 0; attempt < tries; attempt++) {
+    try {
+      const r = await fetch(url, { headers: { Accept: "application/json" } });
+      if (r.ok) return await r.json();
+      if (r.status === 404 || r.status === 409 || r.status === 410) return {};
+      if (r.status === 429) { await sleep(1500 * (attempt + 1)); continue; }
+      throw new Error("ORCID HTTP " + r.status);
+    } catch (e) {
+      if (attempt === tries - 1) return {};
+      await sleep(1000 * (attempt + 1));
+    }
+  }
+  return {};
+}
+
+async function orcidContact(orcid) {
+  const oid = bareOrcid(orcid);
+  if (!oid) return null;
+  const [emailData, empData] = await Promise.all([orcidGet(`${oid}/email`), orcidGet(`${oid}/employments`)]);
+  let email = "";
+  for (const e of ((emailData && emailData.email) || [])) if (e.email) { email = e.email; break; }
+  // most-current employment: a post with no end-date wins; else the latest end year.
+  const lt = (a, b) => (a[0] !== b[0] ? a[0] < b[0] : a[1] < b[1]);
+  let best = null, bestKey = null;
+  for (const g of ((empData && empData["affiliation-group"]) || [])) {
+    for (const s of (g.summaries || [])) {
+      const emp = s["employment-summary"] || {};
+      const end = emp["end-date"];
+      const key = !end ? [0, 0] : [1, -(parseInt((end.year || {}).value, 10) || 0)];
+      if (bestKey === null || lt(key, bestKey)) { bestKey = key; best = emp; }
+    }
+  }
+  let affiliation = "", role = "", country = "";
+  if (best) {
+    const o = best.organization || {};
+    affiliation = o.name || ""; role = best["role-title"] || ""; country = (o.address || {}).country || "";
+  }
+  return { orcid: oid, email, affiliation, role, country };
+}
+
+// Look up public contacts for the panel. Returns { candidateId: {email, affiliation, role, country} }.
+export async function fetchContacts(panel, opts = {}) {
+  const onProgress = opts.onProgress || (() => {});
+  const out = {};
+  let i = 0;
+  for (const [c] of panel) {
+    onProgress({ done: i, total: panel.length });
+    if (c.orcid) {
+      const info = await orcidContact(c.orcid);
+      if (info) out[c.id] = info;
+    }
+    i++;
+    await sleep(120);
+  }
+  onProgress({ done: panel.length, total: panel.length });
+  return out;
 }
 
 export async function runReviewerFinder(spec, registry, opts = {}) {

@@ -23,9 +23,10 @@
     # /_astro/ file (see astro.config.mjs `build.assetsInlineLimit`), so `script-src
     # 'self'` covers them all with no per-script hashes — and stays correct as the
     # site grows. style-src keeps 'unsafe-inline' for the many inline style
-    # attributes (style injection is low-risk); Google Fonts and the OpenAlex and
-    # CrossRef fetches are allowlisted; frame-ancestors 'none' mirrors X-Frame-Options.
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.openalex.org https://api.crossref.org; frame-ancestors 'none'; base-uri 'self'"
+    # attributes (style injection is low-risk); Google Fonts and the OpenAlex,
+    # CrossRef, and public-ORCID (reviewer contact lookup) fetches are allowlisted;
+    # frame-ancestors 'none' mirrors X-Frame-Options.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.openalex.org https://api.crossref.org https://pub.orcid.org; frame-ancestors 'none'; base-uri 'self'"
 
 # Long cache for fingerprinted assets
 [[headers]]

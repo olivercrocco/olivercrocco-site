@@ -170,7 +170,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </style>
 
 <script>
-  import { runReviewerFinder, allDisciplines, careerStage, isActive, currentAffiliation, disciplinesOf, evidence } from "../lib/reviewerFinder.js";
+  import { runReviewerFinder, fetchContacts, allDisciplines, careerStage, isActive, currentAffiliation, disciplinesOf, evidence } from "../lib/reviewerFinder.js";
   import registry from "../data/journals.json";
 
   const $ = (id) => document.getElementById(id);
@@ -180,6 +180,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   // link (XSS guard for author-supplied URLs such as ORCID).
   const httpsUrl = (u) => { try { return new URL(u).protocol === "https:" ? u : null; } catch { return null; } };
   const list = (s) => (s || "").split(",").map((x) => x.trim()).filter(Boolean);
+  // A plain email shape check, so only a well-formed address becomes a mailto: link.
+  const isEmail = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s || "").trim());
+  const searchUrl = (name, aff) => `https://www.google.com/search?q=${encodeURIComponent(`"${name || ""}" ${aff || ""} email`.trim())}`;
+  const scholarUrl = (name) => `https://scholar.google.com/scholar?q=${encodeURIComponent(name || "")}`;
 
   // discipline checkboxes
   const discWrap = $("rf-disciplines");
@@ -219,12 +223,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   let lastResult = null;
+  let contacts = {};          // candidateId -> { email, affiliation, role, country } from ORCID
 
   $("rf-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const spec = readSpec();
     const runBtn = $("rf-run");
     runBtn.disabled = true;
+    contacts = {};            // a fresh run drops any prior contact lookups
     $("rf-bar").hidden = false;
     $("rf-results").hidden = true;
     $("rf-empty").hidden = true;
@@ -264,19 +270,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const cy = r.currentYear;
     const sc = r.scorecard;
     const cardHtml = (c, s, kind, why, rank) => {
-      const [aff, ctry] = currentAffiliation(c);
-      const stage = careerStage(c.prof);
+      const ct = contacts[c.id] || {};
+      const [affOa, ctryOa] = currentAffiliation(c);
+      const aff = ct.affiliation || affOa;          // ORCID current employer beats stale last-known
+      const ctry = ct.country || ctryOa;
+      const stage = careerStage(c.prof, cy);
       const active = isActive(c.prof, cy) ? "" : ` · <span style="color:var(--color-rust)">no pubs in ~3y</span>`;
       const links = [`<a href="https://openalex.org/${esc(c.id)}" target="_blank" rel="noopener">OpenAlex</a>`];
       const orcidHref = httpsUrl(c.orcid);
       if (orcidHref) links.push(`<a href="${esc(orcidHref)}" target="_blank" rel="noopener">ORCID</a>`);
+      const roleBit = ct.role ? ` · ${esc(ct.role)}` : "";
+      const emailLine = (ct.email && isEmail(ct.email))
+        ? `Email: <a href="mailto:${esc(ct.email)}">${esc(ct.email)}</a> <span style="color:var(--color-text-soft)">(public ORCID)</span>`
+        : `Email: <a href="${esc(searchUrl(c.name, aff))}" target="_blank" rel="noopener">find ↗</a> · <a href="${esc(scholarUrl(c.name))}" target="_blank" rel="noopener">Scholar</a>`;
       const papers = evidence(c, 3).map((w) => `<li>“${esc(w.title)}” — ${esc(w.journal)} ${w.year || ""} <span style="color:var(--color-text-soft)">[${esc(Object.keys(w.terms).join(", "))}]</span></li>`).join("");
       return `<article class="rf-card">
         <div style="display:flex;justify-content:space-between;gap:1rem;align-items:baseline">
           <h3>${rank ? `<span class="rf-rank">${rank}.</span> ` : ""}${esc(c.name)}<span class="rf-tag">${esc(kind)}</span><span class="rf-tag">${esc(stage)}</span></h3>
           <span class="rf-rank">${s.score}</span>
         </div>
-        <p class="rf-meta">${esc(aff || "—")}${ctry ? ` (${esc(ctry)})` : ""} · h-index ${c.prof?.h_index ?? "?"} · ${c.prof?.works_count ?? "?"} works${active}</p>
+        <p class="rf-meta">${esc(aff || "—")}${ctry ? ` (${esc(ctry)})` : ""}${roleBit} · h-index ${c.prof?.h_index ?? "?"} · ${c.prof?.works_count ?? "?"} works${active}</p>
+        <p class="rf-meta">${emailLine}</p>
         ${why ? `<p class="rf-why">in panel: ${esc(why)}</p>` : ""}
         <ul class="rf-papers">${papers}</ul>
         <p class="rf-links">${links.join(" ")}</p>
@@ -284,8 +298,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     };
 
     let html = `<p class="rf-summary-line">${r.panel.length} proposed reviewers, ranked by fit, from ${r.nCandidates} candidates across ${r.nJournals} journals${r.sameInstBlocked ? ` · ${r.sameInstBlocked} removed for shared institution` : ""}.</p>`;
-    html += `<div class="rf-scorecard">${pill("size", sc.size)}${pill("institutions", sc.institutions)}${pill("countries", sc.countries)}${pill("disciplines", sc.disciplines)}${pill("method", sc.method_experts)}${pill("early-career", sc.early_career)}${pill("senior", sc.senior)}</div>`;
-    html += `<div class="rf-export"><button class="btn btn-ghost" id="rf-copy" type="button">Copy as email</button><button class="btn btn-ghost" id="rf-csv" type="button">Download CSV</button></div>`;
+    html += `<div class="rf-scorecard">${pill("size", sc.size)}${pill("institutions", sc.institutions)}${pill("countries", sc.countries)}${pill("disciplines", sc.disciplines)}${pill("method", sc.method_experts)}${pill("early-career", sc.early_career)}${pill("mid-career", sc.mid_career)}${pill("senior", sc.senior)}</div>`;
+    const nContacts = Object.keys(contacts).length;
+    const contactBtn = nContacts
+      ? `<button class="btn btn-ghost" id="rf-contacts" type="button" disabled>Emails loaded ✓</button>`
+      : `<button class="btn btn-ghost" id="rf-contacts" type="button">Find emails &amp; affiliations</button>`;
+    html += `<div class="rf-export">${contactBtn}<button class="btn btn-ghost" id="rf-copy" type="button">Copy as email</button><button class="btn btn-ghost" id="rf-csv" type="button">Download CSV</button></div>`;
+    html += `<p class="rf-note" style="margin-top:0">“Find emails” looks up each panel member's public ORCID record — their public email, if they published one, plus their current employer. It sends only their public ORCID iD to ORCID, never your manuscript. Most emails aren't public there, so use the “find ↗” search links for the rest.</p>`;
     html += r.panel.map(([c, s, kind, why], i) => cardHtml(c, s, kind, why, i + 1)).join("");
 
     if (r.allRows.length > r.panel.length) {
@@ -303,13 +322,35 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     $("rf-results").hidden = false;
     $("rf-copy")?.addEventListener("click", copyEmail);
     $("rf-csv")?.addEventListener("click", downloadCsv);
+    $("rf-contacts")?.addEventListener("click", findContacts);
+  }
+
+  async function findContacts() {
+    const r = lastResult; if (!r) return;
+    const btn = $("rf-contacts");
+    if (btn) { btn.disabled = true; btn.textContent = "Looking up…"; }
+    const status = (t) => { $("rf-status").textContent = t; };
+    try {
+      contacts = await fetchContacts(r.panel, {
+        onProgress: (p) => status(`Looking up ORCID contacts… (${p.done}/${p.total})`),
+      });
+      const n = Object.values(contacts).filter((c) => c.email).length;
+      render(r);      // re-render cards with emails + ORCID affiliations
+      status(`Contacts: ${n} public email(s) found; search links provided for the rest.`);
+    } catch (err) {
+      status("Contact lookup failed; use the “find ↗” search links instead.");
+      if (btn) { btn.disabled = false; btn.textContent = "Find emails & affiliations"; }
+    }
   }
 
   function copyEmail() {
     const r = lastResult; if (!r) return;
     const lines = r.panel.map(([c, s, kind, why], i) => {
-      const [aff, ctry] = currentAffiliation(c);
-      return `${i + 1}. ${c.name} — ${aff || "—"}${ctry ? ` (${ctry})` : ""} · ${kind}\n   https://openalex.org/${c.id}${c.orcid ? "  " + c.orcid : ""}`;
+      const ct = contacts[c.id] || {};
+      const [affOa, ctryOa] = currentAffiliation(c);
+      const aff = ct.affiliation || affOa, ctry = ct.country || ctryOa;
+      const email = ct.email && isEmail(ct.email) ? ct.email : "";
+      return `${i + 1}. ${c.name} — ${aff || "—"}${ctry ? ` (${ctry})` : ""} · ${kind}\n   ${email ? "Email: " + email + "  ·  " : ""}https://openalex.org/${c.id}${c.orcid ? "  " + c.orcid : ""}`;
     });
     const text = `Suggested reviewers${r.title ? ` for: ${r.title}` : ""}\n\n${lines.join("\n")}\n\n(Generated with the Reviewer Finder — verify current affiliation and email before inviting.)`;
     navigator.clipboard.writeText(text).then(() => { $("rf-copy").textContent = "Copied ✓"; setTimeout(() => ($("rf-copy").textContent = "Copy as email"), 1500); });
@@ -318,11 +359,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   function downloadCsv() {
     const r = lastResult; if (!r) return;
     const panelIds = new Set(r.panel.map(([c]) => c.id));
-    const head = ["rank", "name", "in_panel", "kind", "score", "career_stage", "institution", "country", "disciplines", "recency", "works_count", "h_index", "orcid", "openalex"];
+    const head = ["rank", "name", "in_panel", "kind", "score", "career_stage", "email", "institution", "country", "disciplines", "recency", "works_count", "h_index", "orcid", "openalex", "email_search"];
     const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
     const rows = r.allRows.map(([c, s, kind], i) => {
-      const [aff, ctry] = currentAffiliation(c);
-      return [i + 1, c.name, panelIds.has(c.id) ? "yes" : "", kind, s.score, careerStage(c.prof), aff, ctry, disciplinesOf(c).join("; "), s.recency ?? "", c.prof?.works_count ?? "", c.prof?.h_index ?? "", c.orcid || "", "https://openalex.org/" + c.id].map(q).join(",");
+      const ct = contacts[c.id] || {};
+      const [affOa, ctryOa] = currentAffiliation(c);
+      const aff = ct.affiliation || affOa;
+      const email = ct.email && isEmail(ct.email) ? ct.email : "";
+      return [i + 1, c.name, panelIds.has(c.id) ? "yes" : "", kind, s.score, careerStage(c.prof, r.currentYear), email, aff, ct.country || ctryOa, disciplinesOf(c).join("; "), s.recency ?? "", c.prof?.works_count ?? "", c.prof?.h_index ?? "", c.orcid || "", "https://openalex.org/" + c.id, searchUrl(c.name, aff)].map(q).join(",");
     });
     const csv = head.map(q).join(",") + "\n" + rows.join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
