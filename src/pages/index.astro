@@ -12,6 +12,8 @@ const featuredPubs = [
     venue: "Human Resource Development Review",
     doi: "https://doi.org/10.1177/15344843261445531",
     tag: "Forthcoming",
+    plain:
+      "Offers authors, reviewers, and editors clear guidance on when using AI tools in review and conceptual research is acceptable, questionable, or off-limits.",
   },
   {
     citation:
@@ -19,6 +21,8 @@ const featuredPubs = [
     venue: "Human Resource Development International, 28(4), 543–566",
     doi: "https://doi.org/10.1080/13678868.2024.2441089",
     tag: "2025",
+    plain:
+      "Reads 132 speeches by three ASEAN secretaries-general to trace how their words shaped who counts in developing Southeast Asia's workforce, and why.",
   },
   {
     citation:
@@ -26,6 +30,8 @@ const featuredPubs = [
     venue: "Journal of Workplace Learning, 36(1), 77–95",
     doi: "https://doi.org/10.1108/JWL-03-2023-0049",
     tag: "2024",
+    plain:
+      "Gig workers in Thailand, shut out of formal training, use social media groups to teach each other the job, often helping rivals even when it costs them.",
   },
   {
     citation:
@@ -33,6 +39,8 @@ const featuredPubs = [
     venue: "Human Resource Development International, 25(1), 40–58",
     doi: "https://doi.org/10.1080/13678868.2020.1858261",
     tag: "Award winner",
+    plain:
+      "Examines how Southeast Asian nations build human capability together through ASEAN, and names and defines a new concept: regional human resource development.",
   },
   {
     citation:
@@ -40,6 +48,41 @@ const featuredPubs = [
     venue: "European Journal of Training and Development, 45(4/5), 436–448",
     doi: "https://doi.org/10.1108/EJTD-12-2019-0198",
     tag: "Outstanding Paper",
+    plain:
+      "When members of a community enterprise in Myanmar brought back what they learned in a training program, that shared learning helped drive large-scale change.",
+  },
+];
+
+// "At a glance" credibility stats — figure on top, label beneath.
+// Same five facts and wording as before, restructured into figure/label pairs.
+const stats = [
+  { figure: "4", label: "books published or under contract" },
+  { figure: "60+", label: "peer-reviewed articles & chapters" },
+  { figure: "Associate Editor", label: "Human Resource Development Review", small: true },
+  { figure: "2×", label: "Award-winning research (AHRD, UFHRD)" },
+  { figure: "16", label: "countries of research & teaching" },
+];
+
+// "Beyond the research" — a taste of the site's more distinctive corners.
+// Blurbs drawn from each page's own copy.
+const distinctive = [
+  {
+    label: "Notes",
+    href: "/notes",
+    blurb:
+      "Ideas, notes from Southeast Asia, how the research gets done, and short takes on books.",
+  },
+  {
+    label: "Tools",
+    href: "/tools",
+    blurb:
+      "Small, free tools I build for the day-to-day work of research, each one open to inspect.",
+  },
+  {
+    label: "Poetry of Work",
+    href: "/poetry-of-work",
+    blurb:
+      "A weekly public-domain poem paired with a photograph, on work, craft, and vocation.",
   },
 ];
 
@@ -68,7 +111,7 @@ const featuredBook = {
             {SITE.positioning}
           </p>
           <p class="text-[var(--color-text-muted)] text-lg leading-relaxed max-w-xl mb-10">
-            I'm Associate Professor of Leadership and Human Resource Development at <a href={AUTHOR.lsuProfileUrl}>Louisiana State University</a>, recently on sabbatical (2025–2026) as Visiting Professor at Chulalongkorn University in Bangkok. My work brings the lens of adult learning and human development to questions of leadership and the changing nature of work, across organizations, institutions, and cultural contexts.
+            I'm Associate Professor of Leadership and Human Resource Development at <a href={AUTHOR.lsuProfileUrl}>Louisiana State University</a>, {AUTHOR.visitingRole} at {AUTHOR.visitingInstitution} ({AUTHOR.visitingYears}). My work brings the lens of adult learning and human development to questions of leadership and the changing nature of work, across organizations, institutions, and cultural contexts.
           </p>
           <div class="flex flex-wrap gap-3">
             <a href="/books" class="btn btn-primary">Read my books</a>
@@ -85,14 +128,24 @@ const featuredBook = {
             class="w-full aspect-[3/4] object-cover rounded shadow-xl border border-[var(--color-border-strong)] mb-8"
           />
           <div class="border-l border-[var(--color-border-strong)] pl-6">
-            <p class="eyebrow mb-3">At a glance</p>
-            <ul class="text-[0.9375rem] text-[var(--color-text-muted)] space-y-2 leading-relaxed">
-              <li><span class="text-[var(--color-text)] font-medium">4</span> books published or under contract</li>
-              <li><span class="text-[var(--color-text)] font-medium">60+</span> peer-reviewed articles & chapters</li>
-              <li><span class="text-[var(--color-text)] font-medium">Associate Editor,</span> Human Resource Development Review</li>
-              <li><span class="text-[var(--color-text)] font-medium">2× Award-winning</span> research (AHRD, UFHRD)</li>
-              <li><span class="text-[var(--color-text)] font-medium">16 countries</span> of research & teaching</li>
-            </ul>
+            <p class="eyebrow mb-5">At a glance</p>
+            <div class="grid grid-cols-2 gap-x-5 gap-y-6">
+              {stats.map((stat) => (
+                <div>
+                  <p
+                    class:list={[
+                      "font-display font-semibold text-[var(--color-text)] leading-[1.05] mb-1.5",
+                      stat.small ? "text-xl" : "text-3xl",
+                    ]}
+                  >
+                    {stat.figure}
+                  </p>
+                  <p class="text-[0.8125rem] text-[var(--color-text-muted)] leading-snug">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </aside>
       </div>
@@ -165,11 +218,14 @@ const featuredBook = {
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12" data-fade-stagger>
         {RESEARCH_THEMES.map((theme, i) => (
-          <article class="relative pt-12">
-            <span class="section-numeral absolute top-0 left-0" style="opacity: 0.45;">
+          <article class="relative">
+            <div
+              class="font-display font-semibold text-[3.25rem] md:text-[4rem] leading-none mb-5"
+              style="color: var(--color-gold-light);"
+            >
               {String(i + 1).padStart(2, "0")}
-            </span>
-            <div class="border-t border-white/20 pt-6 relative z-10">
+            </div>
+            <div class="border-t border-white/20 pt-6">
               <h3 class="font-display text-2xl font-semibold mb-4 leading-tight text-white">
                 {theme.title}
               </h3>
@@ -219,6 +275,11 @@ const featuredBook = {
               <p class="font-display text-lg leading-snug text-[var(--color-text)] mb-2">
                 {pub.citation}
               </p>
+              {pub.plain && (
+                <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-2 max-w-2xl">
+                  {pub.plain}
+                </p>
+              )}
               <a href={pub.doi} class="text-sm text-[var(--color-ink)] tracking-tight">
                 {pub.doi.replace("https://", "")}
               </a>
@@ -226,6 +287,34 @@ const featuredBook = {
           </li>
         ))}
       </ol>
+    </div>
+  </section>
+
+  {/* ============================================================ BEYOND THE RESEARCH — DISTINCTIVE SECTIONS ============================================================ */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-24">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-fade-stagger>
+        {distinctive.map((item) => (
+          <a
+            href={item.href}
+            class="group block border border-[var(--color-border-strong)] rounded-sm p-7 bg-[var(--color-paper)] lift"
+            style="text-decoration: none;"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-display text-xl font-semibold text-[var(--color-text)] leading-tight group-hover:underline underline-offset-4 decoration-[var(--color-border-strong)]">
+                {item.label}
+              </h3>
+              <span
+                class="text-[var(--color-gold)] transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              >→</span>
+            </div>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+              {item.blurb}
+            </p>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
