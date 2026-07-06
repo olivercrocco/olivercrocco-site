@@ -8,30 +8,53 @@ const ACCOUNTS = [
   { label: "Facebook", href: "https://www.facebook.com/1096441333562680" },
 ];
 
-// The current featured post. New weeks get appended here.
+// Every published poem, most recent first. To publish a new week, prepend a new
+// object here: the top entry becomes "This week" and the rest fall into the archive
+// below automatically, so no post ever drops off the page.
 // poemCredit and photoCredit mirror the attribution lines in each post's caption.
-const thisWeek = {
-  poet: "Walt Whitman",
-  dates: "1819 to 1892",
-  title: "Song of the Broad-Axe",
-  poemCredit:
-    'Walt Whitman (1819 to 1892), "Song of the Broad-Axe" (1856). Public domain. Source: Project Gutenberg, Leaves of Grass (eBook #1322).',
-  photoCredit:
-    "Photograph: a ship-carpenter's workshop, Altonaer Museum, Hamburg. Christoph Braun (CC0).",
-  cards: [
-    "/poetry-of-work/w02-1.jpg",
-    "/poetry-of-work/w02-2.jpg",
-    "/poetry-of-work/w02-3.jpg",
-    "/poetry-of-work/w02-4.jpg",
-    "/poetry-of-work/w02-5.jpg",
-  ],
-};
+const posts = [
+  {
+    poet: "Walt Whitman",
+    dates: "1819 to 1892",
+    title: "Song of the Broad-Axe",
+    poemCredit:
+      'Walt Whitman (1819 to 1892), "Song of the Broad-Axe" (1856). Public domain. Source: Project Gutenberg, Leaves of Grass (eBook #1322).',
+    photoCredit:
+      "Photograph: a ship-carpenter's workshop, Altonaer Museum, Hamburg. Christoph Braun (CC0).",
+    cards: [
+      "/poetry-of-work/w02-1.jpg",
+      "/poetry-of-work/w02-2.jpg",
+      "/poetry-of-work/w02-3.jpg",
+      "/poetry-of-work/w02-4.jpg",
+      "/poetry-of-work/w02-5.jpg",
+    ],
+  },
+  {
+    poet: "Kahlil Gibran",
+    dates: "1883 to 1931",
+    title: "On Work (from The Prophet)",
+    poemCredit:
+      'Kahlil Gibran (1883 to 1931), "On Work" (1923). Public domain. Source: Project Gutenberg (The Prophet, eBook #58585, Kahlil Gibran).',
+    photoCredit:
+      "Photograph: a woman at a spinning wheel, Sogn og Fjordane, Norway, early 1900s. Fylkesarkivet i Sogn og Fjordane. Public domain.",
+    cards: [
+      "/poetry-of-work/w01-1.jpg",
+      "/poetry-of-work/w01-2.jpg",
+      "/poetry-of-work/w01-3.jpg",
+      "/poetry-of-work/w01-4.jpg",
+    ],
+  },
+];
+
+// The newest post is featured; everything else becomes the archive.
+const current = posts[0];
+const archive = posts.slice(1);
 ---
 
 <BaseLayout
   title="The Poetry of Work"
   description="A weekly public-domain poem on work, craft, and vocation. Curated by Oliver S. Crocco."
-  image="/poetry-of-work/w02-1.jpg"
+  image={current.cards[0]}
 >
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">
@@ -68,13 +91,13 @@ const thisWeek = {
     <div class="wrap py-16 md:py-20">
       <p class="eyebrow mb-3">This week</p>
       <h2 class="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-8">
-        {thisWeek.poet}, &ldquo;{thisWeek.title}&rdquo;
+        {current.poet}, &ldquo;{current.title}&rdquo;
       </h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" data-fade-stagger>
-        {thisWeek.cards.map((src, i) => (
+        {current.cards.map((src, i) => (
           <img
             src={src}
-            alt={`${thisWeek.poet}, ${thisWeek.title}, card ${i + 1} of ${thisWeek.cards.length}`}
+            alt={`${current.poet}, ${current.title}, card ${i + 1} of ${current.cards.length}`}
             loading="lazy"
             class="w-full aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
           />
@@ -82,11 +105,54 @@ const thisWeek = {
       </div>
       <div class="text-[var(--color-text-muted)] text-[0.9375rem] space-y-1.5 max-w-3xl">
         <p class="eyebrow mb-2">Sources</p>
-        <p>{thisWeek.poemCredit}</p>
-        <p>{thisWeek.photoCredit}</p>
+        <p>{current.poemCredit}</p>
+        <p>{current.photoCredit}</p>
       </div>
     </div>
   </section>
+
+  {/* ARCHIVE — past poems stay on the page; each expands to its cards and sources */}
+  {archive.length > 0 && (
+    <section class="border-b border-[var(--color-border)]">
+      <div class="wrap py-16 md:py-20">
+        <p class="eyebrow mb-3">Archive</p>
+        <h2 class="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+          Past poems
+        </h2>
+        <ul class="list-none m-0 p-0 divide-y divide-[var(--color-border)]">
+          {archive.map((post) => (
+            <li>
+              <details class="group py-5">
+                <summary class="flex items-center gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                  <span class="font-display text-lg md:text-xl text-[var(--color-text)] leading-snug">
+                    {post.poet}, &ldquo;{post.title}&rdquo;
+                  </span>
+                  <span
+                    class="text-[var(--color-gold)] text-sm ml-auto shrink-0 transition-transform group-open:rotate-90"
+                    aria-hidden="true"
+                  >→</span>
+                </summary>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 mb-4">
+                  {post.cards.map((src, i) => (
+                    <img
+                      src={src}
+                      alt={`${post.poet}, ${post.title}, card ${i + 1} of ${post.cards.length}`}
+                      loading="lazy"
+                      class="w-full aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
+                    />
+                  ))}
+                </div>
+                <div class="text-[var(--color-text-muted)] text-[0.875rem] space-y-1 max-w-3xl">
+                  <p>{post.poemCredit}</p>
+                  <p>{post.photoCredit}</p>
+                </div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   {/* FOLLOW */}
   <section>
