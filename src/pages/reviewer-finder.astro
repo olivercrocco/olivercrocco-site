@@ -360,7 +360,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const r = lastResult; if (!r) return;
     const panelIds = new Set(r.panel.map(([c]) => c.id));
     const head = ["rank", "name", "in_panel", "kind", "score", "career_stage", "email", "institution", "country", "disciplines", "recency", "works_count", "h_index", "orcid", "openalex", "email_search"];
-    const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const q = (v) => {
+      let s = String(v ?? "");
+      // Guard against spreadsheet formula injection: prefix a cell that starts
+      // with =, +, -, or @ with an apostrophe so it's treated as text.
+      if (/^[=+\-@]/.test(s)) s = "'" + s;
+      return `"${s.replace(/"/g, '""')}"`;
+    };
     const rows = r.allRows.map(([c, s, kind], i) => {
       const ct = contacts[c.id] || {};
       const [affOa, ctryOa] = currentAffiliation(c);
