@@ -20,6 +20,12 @@ export const PANEL_DEFAULTS = {
   min_method_experts: 1, min_early_career: 2, min_mid_career: 2, min_senior: 1, max_senior: 3,
 };
 
+// Freshness filters (mirror the Python tool's config.FILTER_DEFAULTS). Set either to
+// 0 to disable. active_within_years: drop a candidate with no publication in the last
+// N years. max_related_paper_age: drop a candidate whose most recent MATCHING paper is
+// older than N years.
+export const FILTER_DEFAULTS = { active_within_years: 3, max_related_paper_age: 15 };
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const round2 = (x) => Math.round(x * 100) / 100;
 
@@ -199,6 +205,26 @@ export function careerStage(prof, currentYear) {
 export function isActive(prof, currentYear, window = 3) {
   const cby = (prof && prof.counts_by_year) || [];
   return cby.filter((c) => (c.year || 0) >= currentYear - window + 1).reduce((a, c) => a + (c.works_count || 0), 0) > 0;
+}
+// Most recent year with real output, from counts_by_year. null when there's no year
+// data, so callers keep (not silently drop) a thin profile rather than guess.
+export function lastPublicationYear(prof) {
+  const cby = (prof && prof.counts_by_year) || [];
+  const years = cby.filter((c) => c.year && (c.works_count || 0) > 0).map((c) => c.year);
+  return years.length ? Math.max(...years) : null;
+}
+// isStaleActivity: no publication in the last `maxGap` years (default 3) -> likely
+// inactive/nonresponsive. isRelatedPaperTooOld: the most recent MATCHING paper is more
+// than `maxAge` years old (default 15) -> stale on-topic expertise. maxGap/maxAge of 0
+// (or falsy) disables the check; a missing year (null) is never treated as failing.
+export function isStaleActivity(prof, currentYear, maxGap = 3) {
+  if (!maxGap) return false;
+  const lpy = lastPublicationYear(prof);
+  return lpy !== null && (currentYear - lpy) >= maxGap;
+}
+export function isRelatedPaperTooOld(recency, currentYear, maxAge = 15) {
+  if (!maxAge) return false;
+  return recency != null && (currentYear - recency) > maxAge;
 }
 function isMethodExpert(sc) { return sc.method_credit > 0 && (sc.method_primary_breadth + sc.method_generic_breadth) >= 1; }
 function isPrimaryMethodExpert(sc) { return sc.method_primary_breadth >= 1; }
@@ -421,6 +447,10 @@ export async function runReviewerFinder(spec, registry, opts = {}) {
   const onProgress = opts.onProgress || (() => {});
   const currentYear = opts.currentYear || new Date().getFullYear();
   const perQuery = opts.perQuery || 100, enrichTop = opts.enrichTop || 150, top = opts.top || 25;
+  // Freshness thresholds: opts > spec > default; an explicit 0 disables that filter.
+  const pick = (...vals) => { for (const v of vals) if (v !== undefined && v !== null) return v; return undefined; };
+  const activeWithinYears = pick(opts.activeWithinYears, spec.active_within_years, FILTER_DEFAULTS.active_within_years);
+  const maxRelatedPaperAge = pick(opts.maxRelatedPaperAge, spec.max_related_paper_age, FILTER_DEFAULTS.max_related_paper_age);
 
   const queryBucket = {};
   for (const tier of TIERS) for (const t of (spec[tier + "_terms"] || [])) if (t && t.trim()) queryBucket[t.trim()] = tier;
@@ -448,11 +478,14 @@ export async function runReviewerFinder(spec, registry, opts = {}) {
   const authorTokenSets = (spec.author_institutions || []).map(normalizeInst).filter((s) => s.size);
   const exclNames = new Set((spec.exclude_author_names || []).map((s) => s.toLowerCase().trim()).filter(Boolean));
 
-  const rows = []; let sameInstBlocked = 0;
+  const rows = []; let sameInstBlocked = 0, stalePubBlocked = 0, relatedAgeBlocked = 0;
   for (const c of rankedPre.slice(0, enrichTop)) {
     if (exclNames.has((c.name || "").toLowerCase())) continue;
     const sc = scoreCandidate(c, currentYear);
     if (sc.core_breadth + sc.secondary_breadth + sc.method_primary_breadth + sc.method_generic_breadth === 0) continue;
+    // freshness gates: stale on-topic expertise, or no recent publication at all
+    if (isRelatedPaperTooOld(sc.recency, currentYear, maxRelatedPaperAge)) { relatedAgeBlocked++; continue; }
+    if (isStaleActivity(c.prof, currentYear, activeWithinYears)) { stalePubBlocked++; continue; }
     if (authorTokenSets.length && sameInstitution(c, authorTokenSets)) { sameInstBlocked++; continue; }
     rows.push([c, sc, classify(sc)]);
   }
@@ -466,7 +499,9 @@ export async function runReviewerFinder(spec, registry, opts = {}) {
 
   return {
     rows: rows.slice(0, top), allRows: rows, panel, scorecard,
-    nCandidates: all.length, nJournals: ids.length, sameInstBlocked, currentYear, title: spec.title || "",
+    nCandidates: all.length, nJournals: ids.length, sameInstBlocked,
+    stalePubBlocked, relatedAgeBlocked, activeWithinYears, maxRelatedPaperAge,
+    currentYear, title: spec.title || "",
     authorInstitutions: spec.author_institutions || [],
   };
 }

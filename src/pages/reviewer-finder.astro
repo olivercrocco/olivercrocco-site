@@ -297,7 +297,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </article>`;
     };
 
-    let html = `<p class="rf-summary-line">${r.panel.length} proposed reviewers, ranked by fit, from ${r.nCandidates} candidates across ${r.nJournals} journals${r.sameInstBlocked ? ` · ${r.sameInstBlocked} removed for shared institution` : ""}.</p>`;
+    const freshBits = [];
+    if (r.relatedAgeBlocked) freshBits.push(`${r.relatedAgeBlocked} with only older (&gt;${r.maxRelatedPaperAge}y) matches`);
+    if (r.stalePubBlocked) freshBits.push(`${r.stalePubBlocked} inactive (no pubs in ${r.activeWithinYears}y)`);
+    const freshTxt = freshBits.length ? ` · ${freshBits.join(" · ")} filtered out` : "";
+    let html = `<p class="rf-summary-line">${r.panel.length} proposed reviewers, ranked by fit, from ${r.nCandidates} candidates across ${r.nJournals} journals${r.sameInstBlocked ? ` · ${r.sameInstBlocked} removed for shared institution` : ""}${freshTxt}.</p>`;
     html += `<div class="rf-scorecard">${pill("size", sc.size)}${pill("institutions", sc.institutions)}${pill("countries", sc.countries)}${pill("disciplines", sc.disciplines)}${pill("method", sc.method_experts)}${pill("early-career", sc.early_career)}${pill("mid-career", sc.mid_career)}${pill("senior", sc.senior)}</div>`;
     const nContacts = Object.keys(contacts).length;
     const contactBtn = nContacts
