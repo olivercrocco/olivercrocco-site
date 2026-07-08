@@ -4,8 +4,8 @@ import re
 import json
 from pathlib import Path
 
-ARCHIVE = Path("/Users/oz/Desktop/Claude Code/olivercrocco-archive")
-SITE = Path("/Users/oz/Desktop/Claude Code/olivercrocco-site")
+ARCHIVE = Path("/Users/oz/Developer/Claude Code/olivercrocco-archive")
+SITE = Path("/Users/oz/Developer/Claude Code/olivercrocco-site")
 
 
 def parse_md_links(line):

@@ -1,7 +1,7 @@
 """Migrate archived WP posts to Astro content collection format.
 
-Reads from:  /Users/oz/Desktop/Claude Code/olivercrocco-archive/posts-markdown/
-             /Users/oz/Desktop/Claude Code/olivercrocco-archive/media/
+Reads from:  /Users/oz/Developer/Claude Code/olivercrocco-archive/posts-markdown/
+             /Users/oz/Developer/Claude Code/olivercrocco-archive/media/
 
 Writes to:   src/content/posts/{slug}.md
              public/post-images/{filename}
@@ -20,8 +20,8 @@ import hashlib
 import urllib.parse
 from pathlib import Path
 
-ARCHIVE = Path("/Users/oz/Desktop/Claude Code/olivercrocco-archive")
-SITE = Path("/Users/oz/Desktop/Claude Code/olivercrocco-site")
+ARCHIVE = Path("/Users/oz/Developer/Claude Code/olivercrocco-archive")
+SITE = Path("/Users/oz/Developer/Claude Code/olivercrocco-site")
 
 POSTS_IN = ARCHIVE / "posts-markdown"
 MEDIA_IN = ARCHIVE / "media"

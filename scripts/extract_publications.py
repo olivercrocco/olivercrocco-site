@@ -1,6 +1,6 @@
 """Parse the archived Publications page into a structured TS data file.
 
-Reads:  /Users/oz/Desktop/Claude Code/olivercrocco-archive/pages-markdown/suggested-reading_42.md
+Reads:  /Users/oz/Developer/Claude Code/olivercrocco-archive/pages-markdown/suggested-reading_42.md
 Writes: src/data/publications.ts
 """
 
@@ -8,8 +8,8 @@ import re
 import json
 from pathlib import Path
 
-ARCHIVE = Path("/Users/oz/Desktop/Claude Code/olivercrocco-archive")
-SITE = Path("/Users/oz/Desktop/Claude Code/olivercrocco-site")
+ARCHIVE = Path("/Users/oz/Developer/Claude Code/olivercrocco-archive")
+SITE = Path("/Users/oz/Developer/Claude Code/olivercrocco-site")
 
 src_md = (ARCHIVE / "pages-markdown" / "suggested-reading_42.md").read_text()
 
