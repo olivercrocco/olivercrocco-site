@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "poetry:build": "node scripts/build-poetry-registry.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
