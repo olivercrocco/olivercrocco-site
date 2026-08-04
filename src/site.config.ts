@@ -23,6 +23,11 @@ export const AUTHOR = {
   institution: "Louisiana State University",
   visitingRole: "Visiting Professor",
   visitingInstitution: "Chulalongkorn University, Bangkok",
+  // Longer form naming the faculty. Used in flowing prose (homepage lede, About
+  // bio) where the sentence has room; the compact form above stays in the footer
+  // and contact block.
+  visitingInstitutionLong:
+    "Chulalongkorn University's Faculty of Political Science in Bangkok",
   // Year range for the current visiting appointment. Single source of truth:
   // update this one line when the appointment or dates change.
   visitingYears: "2025–2026",
