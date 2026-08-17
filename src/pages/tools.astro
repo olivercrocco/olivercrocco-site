@@ -43,6 +43,36 @@ const tools = [
     proof: null,
   },
   {
+    name: "claim-verifier",
+    audience: "For authors, reviewers, and editors",
+    tagline:
+      "Check whether the sources you cite actually say what you claim they say.",
+    body: "It reads a manuscript, finds every sentence that carries a citation, and pulls the passages from that source's full text that bear on the sentence. A language model then compares the two and returns a graded assessment, from consistent to possibly conflicting, with the passage it relied on quoted underneath. The report is ranked so the citations worth your attention come first. Quotation-error studies in medicine put source misstatement at roughly one in six citations, and few of us check, because checking one citation by hand means finding the source and reading enough of it to be sure. This makes that check cheap. It renders no verdicts: a claim marked as not found means only that support was not found in the passages retrieved, and you are sent to the source to judge.",
+    features: [
+      "Extracts every citation-bearing sentence and matches it to the cited work's full text",
+      "Grades each pairing from consistent to possibly conflicting, quoting the passage behind the call",
+      "Runs on a local model by default, so a manuscript under review never leaves your machine",
+      "Flags rather than judges: what it cannot confirm is a citation to check, not one to fix",
+    ],
+    repo: "https://github.com/WarderHouse/claim-verifier",
+    version: "0.2.0",
+    doi: "10.5281/zenodo.21985256",
+    stack: "Python · Ollama · MIT",
+    proof: `claimverify — synthetic example, local model
+
+### zarestky-2024
+> Zarestky (2024) found that women's participation in employer
+  training lagged men's by ten percentage points.
+
+Verdict: partially consistent (check the shift)
+The manuscript states a ten percentage point gap, while the source
+reports a nine percentage point gap.
+
+Evidence from the source: "We found that women's participation in
+employer-provided training lagged men's by nine percentage points,
+and the gap was concentrated in manufacturing."`,
+  },
+  {
     name: "cross-tool-statistical-verification",
     audience: "For quantitative researchers",
     tagline:
@@ -109,7 +139,7 @@ const principles = [
 
 <BaseLayout
   title="Tools"
-  description="Free research tools by Oliver S. Crocco: a peer-reviewer finder, a cross-tool statistical verifier, a citation verifier, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
+  description="Free research tools by Oliver S. Crocco: a peer-reviewer finder, a citation verifier, a claim-fidelity checker, a cross-tool statistical verifier, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
 >
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">
@@ -120,9 +150,9 @@ const principles = [
       </h1>
       <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
         Small, free tools I build for the day-to-day work of research: finding the
-        right peer reviewers, checking that a statistical result is sound, and
-        capturing your own scholarly voice. Each one is free to use and open to
-        inspect.
+        right peer reviewers, checking that a citation says what you claim, testing
+        whether a statistical result is sound, and capturing your own scholarly
+        voice. Each one is free to use and open to inspect.
       </p>
     </div>
   </section>
