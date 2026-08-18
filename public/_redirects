@@ -14,10 +14,10 @@
 /academics/             /about                301
 /education              /about                301
 /education/             /about                301
-/conferences            /speaking             301
-/conferences/           /speaking             301
-/media-appearances      /speaking             301
-/media-appearances/     /speaking             301
+/conferences            /contact              301
+/conferences/           /contact              301
+/media-appearances      /contact              301
+/media-appearances/     /contact              301
 /suggested-reading      /publications         301
 /suggested-reading/     /publications         301
 
