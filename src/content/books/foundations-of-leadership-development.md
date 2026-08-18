@@ -12,7 +12,7 @@ coverColor: "burgundy"
 buyLinks: []
 awards: []
 featured: true
-order: 2
+order: 3
 ---
 
 A book-length treatment of leadership development that takes seriously the proposition that you cannot lead others well without ongoing work on the self. The volume integrates research on adult development, leader identity construction, and reflective practice into a framework for educators, practitioners, and learners pursuing the long work of becoming.
