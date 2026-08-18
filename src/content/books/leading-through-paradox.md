@@ -1,5 +1,6 @@
 ---
 title: "Leading Through Paradox"
+subtitle: "How Global Leaders Model Learning and Becoming"
 authors: ["Oliver S. Crocco", "Rajashi Ghosh"]
 role: co-author
 publisher: "Cambridge University Press"
