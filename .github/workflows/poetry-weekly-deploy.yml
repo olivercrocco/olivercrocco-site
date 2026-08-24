@@ -1,0 +1,34 @@
+name: Weekly Poetry of Work deploy
+
+# The Poetry of Work page picks the current week at build time, so the live site
+# only advances when Netlify rebuilds. Left alone it shows whatever week was
+# current at the last push. This fires a Netlify build hook every Monday so the
+# page keeps step with the posts going out on social.
+#
+# Timing is anchored to the data, not the wall clock: every week's goLive is
+# 14:00 UTC year-round (see scripts/build-poetry-registry.mjs), so 14:30 UTC is
+# always safely past the new week opening, in both CDT and CST.
+#
+# One-time setup: in Netlify, Site configuration > Build & deploy > Build hooks >
+# Add build hook, then save the URL as the repository secret NETLIFY_BUILD_HOOK.
+
+on:
+  schedule:
+    - cron: "30 14 * * 1"
+  workflow_dispatch:
+
+jobs:
+  trigger-build:
+    runs-on: ubuntu-latest
+    if: github.repository == 'olivercrocco/olivercrocco-site'
+    steps:
+      - name: Trigger the Netlify build
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK is not set. Create a build hook in Netlify and add its URL as a repository secret."
+            exit 1
+          fi
+          curl --fail --silent --show-error -X POST -d '{}' "$HOOK"
+          echo "Netlify build triggered."
