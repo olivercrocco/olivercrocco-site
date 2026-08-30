@@ -183,6 +183,32 @@ const featuredBook = {
           </div>
         </div>
       </div>
+
+      {/* NEW RELEASE — sits under the featured book, updated when a new title lands. */}
+      <div class="mt-16 pt-10 border-t border-[var(--color-border)] grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <div class="md:col-span-2">
+          <img
+            src="/book-covers/foundations-of-leadership-development-400.jpg"
+            srcset="/book-covers/foundations-of-leadership-development-400.jpg 400w, /book-covers/foundations-of-leadership-development-800.jpg 800w"
+            sizes="(max-width: 768px) 40vw, 15vw"
+            alt="Cover of Foundations of Leadership Development: The Self-Leadership Journey"
+            class="aspect-[2/3] w-full object-cover rounded shadow-lg border border-black/20 lift"
+          />
+        </div>
+        <div class="md:col-span-10">
+          <p class="eyebrow mb-3">Just published</p>
+          <p class="font-display text-2xl font-semibold tracking-tight mb-2">
+            Foundations of Leadership Development: The Self-Leadership Journey
+          </p>
+          <p class="text-[var(--color-text-muted)] text-lg leading-relaxed max-w-2xl mb-6">
+            A leadership development textbook written with Tomika W. Greer and Edward A. Gibbons III, out now from Palgrave Macmillan. It builds from self-leadership outward, through self-awareness, wellness, motivation, resilience, communication, relationships, and leading across cultures.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/books#foundations-of-leadership-development" class="btn btn-ghost">More on the book</a>
+            <a href="https://link.springer.com/book/10.1007/978-3-032-28042-8" class="btn btn-ghost">View on Palgrave</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

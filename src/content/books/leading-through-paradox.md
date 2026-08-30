@@ -11,7 +11,7 @@ coverColor: "ink"
 buyLinks: []
 awards: []
 featured: true
-order: 2
+order: 3
 ---
 
 Co-authored with Rajashi Ghosh (Teachers College, Columbia University). Draws on developmental relationships theory and adult development research to examine how leaders navigate the paradoxes of autonomy and connection, performance and care, and stability and change without resolving them prematurely.

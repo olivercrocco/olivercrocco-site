@@ -34,7 +34,8 @@ const booksGraph = {
             award: b.data.awards,
           }
         : {}),
-      bookFormat: "https://schema.org/Hardcover",
+      ...(b.data.isbn ? { isbn: b.data.isbn } : {}),
+      bookFormat: `https://schema.org/${b.data.bookFormat || "Hardcover"}`,
       inLanguage: "en",
     };
   }),
@@ -69,7 +70,7 @@ const goldText: Record<string, string> = {
 
 <BaseLayout
   title="Books"
-  description="Books authored, co-authored, and edited by Oliver S. Crocco — with Palgrave Macmillan, Cambridge University Press, and Cornell University Press."
+  description="Books authored, co-authored, and edited by Oliver S. Crocco, with Palgrave Macmillan and Cambridge University Press."
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(booksGraph)} />
 
@@ -81,7 +82,7 @@ const goldText: Record<string, string> = {
         Long-form scholarship
       </h1>
       <p class="font-display text-xl text-[var(--color-text-muted)] leading-snug max-w-2xl">
-        Books — published, in production, and under contract — with Palgrave Macmillan and Cambridge University Press. The work spans regional human capability development in Southeast Asia, leadership development, paradox, and case-based teaching.
+        Books, published and under contract, with Palgrave Macmillan and Cambridge University Press. The work spans regional human capability development in Southeast Asia, leadership development, paradox, and case-based teaching.
       </p>
     </div>
   </section>

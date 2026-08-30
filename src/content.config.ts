@@ -20,6 +20,9 @@ const books = defineCollection({
     description: z.string(),
     cover: z.string().optional(),
     coverColor: z.string().optional(),
+    isbn: z.string().optional(),
+    // schema.org BookFormatType name, e.g. "Paperback" or "Hardcover".
+    bookFormat: z.string().optional(),
     buyLinks: z
       .array(
         z.object({
