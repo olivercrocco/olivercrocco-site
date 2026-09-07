@@ -3,46 +3,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const tools = [
   {
-    name: "peer-reviewer-finder",
-    audience: "For HRD & adjacent-field editors",
-    tagline:
-      "Find well-matched, conflict-free, and diverse peer reviewers for a manuscript in human resource development and adjacent fields.",
-    body: "Given a manuscript's title, abstract, and a few keywords, along with the submitting authors' institutions, it searches a registry of 97 journals spanning human resource development and six adjacent disciplines — adult and continuing education, management and organizational behavior, industrial-organizational psychology, higher education, career and workforce development, and international and comparative education — on OpenAlex for scholars whose published work genuinely matches. It screens out conflicts of interest, then returns a relevance-ranked panel with institutional and national diversity built in. The editor still decides; the tool supplies the evidence and a defensible shortlist.",
-    features: [
-      "Searches 97 journals across HRD and six adjacent disciplines via OpenAlex",
-      "Screens conflicts of interest by shared institution and co-authorship",
-      "Proposes a diverse, relevance-ranked shortlist with alternates",
-      "Runs locally or in your browser — sends no manuscript text to any AI",
-    ],
-    repo: "https://github.com/olivercrocco/peer-reviewer-finder",
-    version: "0.2.0",
-    doi: "10.5281/zenodo.20448662",
-    demo: "/reviewer-finder",
-    demoLabel: "Try it in your browser →",
-    stack: "Python · JavaScript · OpenAlex · MIT",
-    proof: null,
-  },
-  {
-    name: "citation-verifier",
-    audience: "For researchers and graduate students",
-    tagline:
-      "Check whether the references in your bibliography actually exist, before you cite them.",
-    body: "Paste a reference list and it checks each one against CrossRef and OpenAlex. A resolved DOI, or a title match in either database, confirms that a reference exists in one of those places. A reference with no scholarly match is flagged as likely grey literature, a book, report, or website to verify yourself, and a DOI that resolves nowhere is flagged as possibly fabricated or mistyped. It reads the title and DOI out of each line and shows you what it looked up, so you can see exactly what was checked. It confirms whether a work exists in CrossRef or OpenAlex, not that it says what you claim.",
-    features: [
-      "Cross-checks CrossRef and OpenAlex; one confirming source gets a green light",
-      "Treats a resolved DOI as confirmation, but flags a DOI that resolves to a different title",
-      "Flags non-indexed books, reports, and websites as grey literature, not necessarily fabrication or hallucination",
-      "Runs from the command line or in the browser; queries public databases only, no AI",
-    ],
-    repo: "https://github.com/WarderHouse/citation-verifier",
-    version: "0.1.0",
-    doi: "10.5281/zenodo.20508955",
-    demo: "https://warderhouse.github.io/citation-verifier/",
-    demoLabel: "Try it in your browser →",
-    stack: "Python · JavaScript · CrossRef · OpenAlex · MIT",
-    proof: null,
-  },
-  {
     name: "claim-verifier",
     audience: "For authors, reviewers, and editors",
     tagline:
@@ -98,6 +58,46 @@ and the gap was concentrated in manufacturing."`,
 Result: PASS`,
   },
   {
+    name: "citation-verifier",
+    audience: "For researchers and graduate students",
+    tagline:
+      "Check whether the references in your bibliography actually exist, before you cite them.",
+    body: "Paste a reference list and it checks each one against CrossRef and OpenAlex. A resolved DOI, or a title match in either database, confirms that a reference exists in one of those places. A reference with no scholarly match is flagged as likely grey literature, a book, report, or website to verify yourself, and a DOI that resolves nowhere is flagged as possibly fabricated or mistyped. It reads the title and DOI out of each line and shows you what it looked up, so you can see exactly what was checked. It confirms whether a work exists in CrossRef or OpenAlex, not that it says what you claim.",
+    features: [
+      "Cross-checks CrossRef and OpenAlex; one confirming source gets a green light",
+      "Treats a resolved DOI as confirmation, but flags a DOI that resolves to a different title",
+      "Flags non-indexed books, reports, and websites as grey literature, not necessarily fabrication or hallucination",
+      "Runs from the command line or in the browser; queries public databases only, no AI",
+    ],
+    repo: "https://github.com/WarderHouse/citation-verifier",
+    version: "0.1.0",
+    doi: "10.5281/zenodo.20508955",
+    demo: "https://warderhouse.github.io/citation-verifier/",
+    demoLabel: "Try it in your browser →",
+    stack: "Python · JavaScript · CrossRef · OpenAlex · MIT",
+    proof: null,
+  },
+  {
+    name: "peer-reviewer-finder",
+    audience: "For HRD & adjacent-field editors",
+    tagline:
+      "Find well-matched, conflict-free, and diverse peer reviewers for a manuscript in human resource development and adjacent fields.",
+    body: "Given a manuscript's title, abstract, and a few keywords, along with the submitting authors' institutions, it searches a registry of 97 journals spanning human resource development and six adjacent disciplines — adult and continuing education, management and organizational behavior, industrial-organizational psychology, higher education, career and workforce development, and international and comparative education — on OpenAlex for scholars whose published work genuinely matches. It screens out conflicts of interest, then returns a relevance-ranked panel with institutional and national diversity built in. The editor still decides; the tool supplies the evidence and a defensible shortlist.",
+    features: [
+      "Searches 97 journals across HRD and six adjacent disciplines via OpenAlex",
+      "Screens conflicts of interest by shared institution and co-authorship",
+      "Proposes a diverse, relevance-ranked shortlist with alternates",
+      "Runs locally or in your browser — sends no manuscript text to any AI",
+    ],
+    repo: "https://github.com/olivercrocco/peer-reviewer-finder",
+    version: "0.2.0",
+    doi: "10.5281/zenodo.20448662",
+    demo: "/reviewer-finder",
+    demoLabel: "Try it in your browser →",
+    stack: "Python · JavaScript · OpenAlex · MIT",
+    proof: null,
+  },
+  {
     name: "Scholarly Voice and Identity Interviewer",
     audience: "For scholars who write with AI",
     tagline:
@@ -139,7 +139,7 @@ const principles = [
 
 <BaseLayout
   title="Tools"
-  description="Free research tools by Oliver S. Crocco: a peer-reviewer finder, a citation verifier, a claim-fidelity checker, a cross-tool statistical verifier, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
+  description="Free research tools by Oliver S. Crocco: a claim-fidelity checker, a cross-tool statistical verifier, a citation verifier, a peer-reviewer finder, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
 >
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">
