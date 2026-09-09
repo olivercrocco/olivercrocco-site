@@ -98,6 +98,25 @@ Result: PASS`,
     proof: null,
   },
   {
+    name: "Inter-Rater Reliability Calculator",
+    audience: "For coding teams and research methods classes",
+    tagline:
+      "Krippendorff's alpha, Fleiss's kappa, Cohen's kappa, and percent agreement for any number of raters, items, and codes, computed in your browser as you type.",
+    body: "List your codes, then type or paste a rater-by-item grid, and every statistic updates at once: Krippendorff's alpha at the nominal, ordinal, or interval level with a bootstrap confidence interval, Fleiss's kappa where the design allows it, Cohen's kappa for every pair of raters, and a per-code alpha that shows which distinction carries the disagreement. Blank cells are handled. An optional reference row compares each rater, and the most common code across raters, against an existing coding or an answer key. The items are then sorted by agreement into an adjudication queue so a team can discuss the hardest cases first, and the results export as Markdown or CSV. The estimators reproduce hand-derived cases and Krippendorff's published example, and they match the R packages irr and irrCAC and the Python package krippendorff cell by cell on 240 random grids with missing values.",
+    features: [
+      "Any team size, item count, and code set; blank cells tolerated",
+      "Alpha at the nominal, ordinal, or interval level, with a bootstrap 95% confidence interval",
+      "Pairwise Cohen's kappa, per-code alpha, and a reference-row comparison",
+      "Adjudication queue sorted by agreement; results export as Markdown and CSV",
+    ],
+    demo: "/irr-calculator",
+    demoLabel: "Open the calculator →",
+    version: "1.0",
+    citeUrl: "https://olivercrocco.com/irr-calculator",
+    stack: "JavaScript · Runs in the browser · Verified against R and Python",
+    proof: null,
+  },
+  {
     name: "Scholarly Voice and Identity Interviewer",
     audience: "For scholars who write with AI",
     tagline:
@@ -139,7 +158,7 @@ const principles = [
 
 <BaseLayout
   title="Tools"
-  description="Free research tools by Oliver S. Crocco: a claim-fidelity checker, a cross-tool statistical verifier, a citation verifier, a peer-reviewer finder, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
+  description="Free research tools by Oliver S. Crocco: a claim-fidelity checker, a cross-tool statistical verifier, a citation verifier, a peer-reviewer finder, an inter-rater reliability calculator, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
 >
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">

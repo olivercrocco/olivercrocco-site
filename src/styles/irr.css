@@ -1,0 +1,87 @@
+/* Inter-rater reliability calculator. Uses the site's tokens with fallbacks so
+   the same stylesheet works in the offline single-file copy. */
+.irr { --irr-paper: var(--color-paper, #f3efea); --irr-warm: var(--color-paper-warm, #e9e2da);
+  --irr-deep: var(--color-paper-deep, #dcd3c8); --irr-ink: var(--color-ink, #34243a);
+  --irr-text: var(--color-text, #2a2230); --irr-muted: var(--color-text-muted, #645a63);
+  --irr-soft: var(--color-text-soft, #948a93); --irr-gold: var(--color-gold, #b0613c);
+  --irr-rust: var(--color-rust, #8b3a1f); --irr-border: var(--color-border, rgba(52,36,58,.11));
+  --irr-border-strong: var(--color-border-strong, rgba(52,36,58,.2));
+  --irr-good: #2f6b3a; --irr-warn: #8a5a12; --irr-bad: #8b3a1f;
+  --irr-sans: var(--font-sans, system-ui, sans-serif); --irr-serif: var(--font-display, Georgia, serif);
+  --irr-mono: var(--font-mono, ui-monospace, Menlo, monospace);
+  color: var(--irr-text); font-family: var(--irr-sans); }
+.irr * { box-sizing: border-box; }
+.irr-section { margin: 0 0 3rem; }
+.irr-h2 { font-family: var(--irr-serif); font-size: 1.6rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 1rem; display: flex; align-items: center; gap: .6rem; }
+.irr-step { display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: var(--irr-ink); color: #fff; font-family: var(--irr-mono); font-size: .8rem; font-weight: 600; }
+.irr-h3 { font-family: var(--irr-serif); font-size: 1.2rem; font-weight: 600; margin: 2rem 0 .4rem; }
+.irr-help { font-size: .88rem; color: var(--irr-muted); line-height: 1.55; max-width: 78ch; margin: .35rem 0 .9rem; }
+.irr-help:empty { display: none; }
+.irr-muted { font-weight: 400; color: var(--irr-soft); }
+.irr-setup { display: grid; grid-template-columns: minmax(16rem, 2fr) minmax(14rem, 1.4fr) 6.5rem 6.5rem; gap: .9rem 1rem; align-items: end; }
+@media (max-width: 760px) { .irr-setup { grid-template-columns: 1fr 1fr; } .irr-field-wide { grid-column: 1 / -1; } }
+.irr-field { display: block; }
+.irr-label { display: block; font-size: .85rem; font-weight: 600; color: var(--irr-text); margin-bottom: .3rem; }
+.irr-input { width: 100%; font-family: var(--irr-sans); font-size: .95rem; color: var(--irr-text); background: var(--irr-paper); border: 1px solid var(--irr-border-strong); border-radius: 4px; padding: .5rem .65rem; line-height: 1.4; }
+.irr-input:focus { outline: none; border-color: var(--irr-ink); box-shadow: 0 0 0 3px rgba(20,33,61,.08); }
+.irr-input-sm { width: auto; padding: .3rem .5rem; font-size: .85rem; }
+.irr-paste { font-family: var(--irr-mono); font-size: .82rem; resize: vertical; white-space: pre; }
+.irr-check { display: flex; gap: .5rem; align-items: flex-start; font-size: .9rem; color: var(--irr-text); margin: 1rem 0 .25rem; max-width: 78ch; }
+.irr-check input { margin-top: .3rem; }
+.irr-bar { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: .5rem 0 1rem; }
+.irr-bar-tight { margin: .6rem 0 .3rem; gap: .5rem 1rem; }
+.irr-inline { display: inline-flex; align-items: center; gap: .4rem; font-size: .85rem; color: var(--irr-muted); }
+.irr-btn { font-family: var(--irr-sans); font-size: .85rem; font-weight: 600; color: var(--irr-ink); background: transparent; border: 1px solid var(--irr-border-strong); border-radius: 4px; padding: .5rem .9rem; cursor: pointer; line-height: 1.2; }
+.irr-btn:hover { border-color: var(--irr-ink); }
+.irr-btn-primary { background: var(--irr-ink); color: #fff; border-color: var(--irr-ink); }
+.irr-btn-primary:hover { background: var(--color-ink-light, #4a3550); }
+.irr-import { border: 1px solid var(--irr-border-strong); border-radius: 6px; padding: 1rem 1.1rem .6rem; background: var(--irr-warm); margin-bottom: 1rem; }
+
+/* grid */
+.irr-grid-wrap { overflow: auto; max-height: 70vh; border: 1px solid var(--irr-border-strong); border-radius: 6px; background: var(--irr-paper); }
+.irr-grid { border-collapse: separate; border-spacing: 0; font-family: var(--irr-mono); font-size: .82rem; }
+.irr-grid th, .irr-grid td { border-right: 1px solid var(--irr-border); border-bottom: 1px solid var(--irr-border); padding: 0; text-align: center; }
+.irr-grid thead th { position: sticky; top: 0; z-index: 3; background: var(--irr-warm); padding: .35rem .3rem; font-weight: 600; font-size: .72rem; color: var(--irr-muted); min-width: var(--irr-cell-w, 2.6em); }
+.irr-grid thead th.irr-corner { left: 0; z-index: 4; text-align: left; padding-left: .6rem; }
+.irr-grid tbody th { position: sticky; left: 0; z-index: 2; background: var(--irr-warm); text-align: left; padding: 0 .3rem; }
+.irr-grid input.irr-name { width: 7.5rem; border: 0; background: transparent; font: inherit; font-weight: 600; font-size: .78rem; color: var(--irr-ink); padding: .35rem .3rem; }
+.irr-grid input.irr-name:focus { outline: 2px solid var(--irr-gold); outline-offset: -2px; }
+.irr-grid tr.irr-refrow th { color: var(--irr-gold); font-weight: 600; font-size: .78rem; padding: .35rem .6rem; white-space: nowrap; }
+.irr-grid tr.irr-refrow td { border-top: 2px solid var(--irr-gold); }
+.irr-grid input.irr-cell { width: var(--irr-cell-w, 2.6em); min-width: 2.2em; height: 2em; border: 0; background: transparent; color: inherit; text-align: center; font: inherit; padding: 0; }
+.irr-grid input.irr-cell:focus { outline: 2px solid var(--irr-ink); outline-offset: -2px; }
+.irr-grid td.irr-invalid { box-shadow: inset 0 0 0 2px var(--irr-bad); }
+.irr-swatch { display: inline-block; width: .9em; height: .9em; border-radius: 2px; border: 1px solid var(--irr-border-strong); vertical-align: -.1em; margin-right: .35em; }
+
+/* results */
+.irr-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .8rem; }
+.irr-stat { background: var(--irr-paper); border: 1px solid var(--irr-border-strong); border-radius: 6px; padding: .9rem 1rem; }
+.irr-stat .lab { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--irr-muted); margin-bottom: .35rem; }
+.irr-stat .n { font-family: var(--irr-serif); font-size: 2rem; font-weight: 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.irr-stat .sub { font-size: .78rem; color: var(--irr-muted); margin-top: .4rem; line-height: 1.45; }
+.irr .good { color: var(--irr-good); } .irr .warn { color: var(--irr-warn); } .irr .bad { color: var(--irr-bad); }
+.irr-verdict { font-size: .95rem; line-height: 1.6; max-width: 78ch; margin: 1rem 0 0; }
+.irr-verdict:empty { display: none; }
+.irr-table-wrap { overflow-x: auto; }
+.irr-table { border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.irr-table th, .irr-table td { text-align: left; padding: .35rem .6rem; border-bottom: 1px solid var(--irr-border); white-space: nowrap; }
+.irr-table th { color: var(--irr-soft); font-weight: 600; font-size: .78rem; }
+.irr-table td.num, .irr-table th.num { text-align: right; }
+.irr-table.matrix th, .irr-table.matrix td { text-align: center; font-family: var(--irr-mono); font-size: .8rem; }
+.irr-table.matrix th:first-child, .irr-table.matrix td:first-child { text-align: left; font-family: var(--irr-sans); font-weight: 600; }
+.irr-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(5.6rem, 1fr)); gap: .4rem; }
+.irr-item { background: var(--irr-paper); border: 1px solid var(--irr-border-strong); border-radius: 4px; padding: .4rem .3rem; text-align: center; }
+.irr-item .id { font-size: .7rem; color: var(--irr-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.irr-item .pc { font-family: var(--irr-serif); font-size: 1.2rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.irr-item .mix { font-family: var(--irr-mono); font-size: .68rem; color: var(--irr-muted); }
+.irr-item.flag { border: 2px solid var(--irr-bad); }
+.irr-item.diff .id::after { content: " \2260 ref"; color: var(--irr-gold); }
+.irr-queue { padding-left: 1.4rem; max-width: 80ch; font-size: .9rem; line-height: 1.5; }
+.irr-queue li { margin-bottom: .35rem; }
+.irr-queue .mix { font-family: var(--irr-mono); font-size: .8rem; color: var(--irr-muted); }
+.irr-about { max-width: 78ch; }
+.irr-about p { font-size: .95rem; line-height: 1.65; margin: 0 0 1rem; }
+.irr-about .irr-h3 { margin-top: 1.6rem; }
+.irr-refs { padding-left: 0; list-style: none; font-size: .88rem; line-height: 1.55; }
+.irr-refs li { padding-left: 1.5rem; text-indent: -1.5rem; margin-bottom: .5rem; overflow-wrap: anywhere; }
+.irr-refs a, .irr-about a { color: var(--irr-gold); }

@@ -1,0 +1,120 @@
+<div class="irr" id="irr-app">
+
+  <section class="irr-section">
+    <h2 class="irr-h2"><span class="irr-step">1</span> Set up</h2>
+    <div class="irr-setup">
+      <label class="irr-field irr-field-wide">
+        <span class="irr-label">Codes <span class="irr-muted">comma-separated; list ordered categories in order</span></span>
+        <input id="irr-codes" class="irr-input" type="text" value="A, B, C" spellcheck="false" autocomplete="off">
+      </label>
+      <label class="irr-field">
+        <span class="irr-label">Level of measurement</span>
+        <select id="irr-metric" class="irr-input">
+          <option value="nominal">Nominal (unordered categories)</option>
+          <option value="ordinal">Ordinal (ordered categories)</option>
+          <option value="interval">Interval (numeric codes)</option>
+        </select>
+      </label>
+      <label class="irr-field">
+        <span class="irr-label">Raters</span>
+        <input id="irr-nraters" class="irr-input" type="number" min="2" max="50" value="3">
+      </label>
+      <label class="irr-field">
+        <span class="irr-label">Items</span>
+        <input id="irr-nitems" class="irr-input" type="number" min="1" max="500" value="20">
+      </label>
+    </div>
+    <label class="irr-check"><input id="irr-ref" type="checkbox"> Add a reference row: an existing coding, an expert's codes, or an answer key that each rater is compared against</label>
+    <p id="irr-codes-note" class="irr-help"></p>
+  </section>
+
+  <section class="irr-section">
+    <h2 class="irr-h2"><span class="irr-step">2</span> Enter the codes</h2>
+    <div class="irr-bar">
+      <button type="button" id="irr-import-toggle" class="irr-btn">Paste or import a table</button>
+      <button type="button" id="irr-example" class="irr-btn">Load an example</button>
+      <button type="button" id="irr-clear" class="irr-btn">Clear</button>
+      <button type="button" id="irr-csv" class="irr-btn irr-btn-primary">Download the data (.csv)</button>
+    </div>
+    <div id="irr-import" class="irr-import" hidden>
+      <p class="irr-help">Paste from a spreadsheet, one row per rater or one row per item, or choose a .csv or .tsv file. A first row of item names and a first column of rater names are detected. A row or column named Reference, Criterion, Analyst, Key, Gold, or Expert becomes the reference row. If the values do not match the codes listed above, the codes are replaced with the values found.</p>
+      <textarea id="irr-paste" class="irr-input irr-paste" rows="6" spellcheck="false" placeholder="rater&#9;item1&#9;item2&#9;item3&#10;R1&#9;A&#9;B&#9;A&#10;R2&#9;A&#9;B&#9;C"></textarea>
+      <div class="irr-bar irr-bar-tight">
+        <label class="irr-inline">File <input id="irr-file" type="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"></label>
+        <label class="irr-inline">Rows are <select id="irr-rowsare" class="irr-input irr-input-sm"><option value="auto">detect</option><option value="raters">raters</option><option value="items">items</option></select></label>
+        <label class="irr-inline">First row is names <select id="irr-header" class="irr-input irr-input-sm"><option value="auto">detect</option><option value="yes">yes</option><option value="no">no</option></select></label>
+        <label class="irr-inline">First column is names <select id="irr-labels" class="irr-input irr-input-sm"><option value="auto">detect</option><option value="yes">yes</option><option value="no">no</option></select></label>
+        <button type="button" id="irr-import-run" class="irr-btn irr-btn-primary">Import</button>
+      </div>
+      <p id="irr-import-msg" class="irr-help" role="status" aria-live="polite"></p>
+    </div>
+    <p class="irr-help">Type a code in each cell. A blank cell means that rater did not code the item, which Krippendorff's alpha tolerates and Fleiss's kappa does not. Enter and the arrow keys move around the grid; Tab moves across. Pasting a block from a spreadsheet into a cell fills the grid from that cell. Rater names can be edited in place.</p>
+    <div class="irr-grid-wrap"><table id="irr-grid" class="irr-grid" aria-label="Rater by item coding grid"></table></div>
+    <p id="irr-grid-note" class="irr-help"></p>
+  </section>
+
+  <section class="irr-section">
+    <h2 class="irr-h2"><span class="irr-step">3</span> Results</h2>
+    <div id="irr-summary" class="irr-stats"></div>
+    <p id="irr-verdict" class="irr-verdict"></p>
+
+    <h3 class="irr-h3">Each code on its own</h3>
+    <p class="irr-help">Alpha for one code against all the others shows where the disagreement sits. A low value here next to an acceptable overall alpha means one distinction is unstable while the rest hold.</p>
+    <div id="irr-codes-table" class="irr-table-wrap"></div>
+
+    <h3 class="irr-h3">Between pairs of raters</h3>
+    <p class="irr-help">Cohen's kappa for every pair, with each rater's mean across their pairs. A rater whose mean sits well below the others is worth a conversation before the codebook is blamed.</p>
+    <div id="irr-pairwise" class="irr-table-wrap"></div>
+
+    <div id="irr-refsec" hidden>
+      <h3 class="irr-h3">Against the reference row</h3>
+      <p class="irr-help">Cohen's kappa for each rater against the reference, and for the most common code across raters (ties excluded) against the reference. Items where the most common code differs from the reference are listed; on those, the reference is the thing to re-examine.</p>
+      <div id="irr-refstats" class="irr-stats"></div>
+      <p id="irr-refnote" class="irr-help"></p>
+    </div>
+
+    <h3 class="irr-h3">Item by item</h3>
+    <p class="irr-help">The share of rater pairs that agreed on each item, with the count of each code. Items below 60% are outlined.</p>
+    <div id="irr-items" class="irr-items"></div>
+
+    <h3 class="irr-h3">Adjudication queue</h3>
+    <p class="irr-help">Lowest agreement first. Work down the list; the items near the top show what the codebook does not yet say.</p>
+    <ol id="irr-queue" class="irr-queue"></ol>
+
+    <div class="irr-bar">
+      <button type="button" id="irr-copy" class="irr-btn irr-btn-primary">Copy the results as Markdown</button>
+      <button type="button" id="irr-download-md" class="irr-btn">Download the results (.md)</button>
+      <span id="irr-copy-msg" class="irr-help" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="irr-section irr-about">
+    <h2 class="irr-h2">About these statistics</h2>
+    <p>Krippendorff's alpha is the headline figure. It works for any number of raters, tolerates blank cells, and can treat the codes as unordered categories, ordered categories, or numbers on an interval scale. The calculator computes it from the coincidence matrix as Krippendorff (2011) sets out and reports a 95% confidence interval from 2,000 bootstrap resamples of the items, drawn with a fixed seed so the same data always give the same interval (Zapf et al., 2016). Krippendorff (2019) suggests treating .800 as the level at which coded data can carry conclusions and .667 as the floor for tentative ones. Those are conventions from content analysis. The level that matters is the one your field and your claims can defend, and a scheme used to describe a small corpus does not carry the same burden as one used to test a hypothesis.</p>
+    <p>Fleiss's kappa is shown beside alpha for readers who expect it. It requires every item to be coded by the same number of raters and ignores which rater gave which code, so when the number of raters differs from item to item it is left blank rather than estimated from a subset. It treats the codes as unordered whatever level of measurement is selected.</p>
+    <p>Cohen's kappa compares two raters at a time and appears in three places: between every pair of raters, for each rater against the reference row, and for the most common code across raters against the reference row. The comparison with a reference is a check on an existing coding, not a validity claim. Where most of the independent raters converge against the reference, the reference deserves a second look. Landis and Koch's (1977) descriptive labels for kappa are often quoted; their authors offered them as arbitrary divisions, and they are read most safely that way.</p>
+    <p>Mean pairwise agreement is the share of rater pairs that agreed, averaged over items, with no correction for chance. It is always the most flattering number and is shown so it can be read next to the chance-corrected ones. High agreement with a low coefficient usually means one code dominates the data (Feinstein &amp; Cicchetti, 1990), so check how often each code was used before deciding what a low coefficient means.</p>
+    <p>The per-code alpha treats one code against all the others, which shows whether disagreement is spread across the scheme or concentrated in one distinction. The item view and the adjudication queue sort items by their pairwise agreement so a team can discuss the hardest cases first.</p>
+
+    <h3 class="irr-h3">How the calculations were checked</h3>
+    <p>The estimators reproduce hand-derived cases and the worked example in Krippendorff (2011). On 240 randomly generated grids with two to eight raters, with and without missing values, they match the R package irr and the Python package krippendorff to fourteen decimal places and Gwet's irrCAC package to the five decimals it reports: alpha at all three levels, Fleiss's kappa, Cohen's kappa for every pair of raters, percent agreement, and the per-code alpha. One caution for readers who use R: irr's kripp.alpha (version 0.84.1) mishandles grids with no blank cells and three or more raters, and the comparison used a workaround that forces its general code path. The verification scripts and that finding are documented in the site's repository.</p>
+
+    <h3 class="irr-h3">Privacy</h3>
+    <p>Everything runs in your browser. Nothing you enter is sent anywhere. The grid is kept in this browser's local storage so a refresh does not lose it, and Clear removes it.</p>
+
+    <h3 class="irr-h3">Citing the calculator</h3>
+    <p>Crocco, O. S. (2026). <em>Inter-rater reliability calculator</em> (Version 1.0) [Computer software]. https://olivercrocco.com/irr-calculator</p>
+
+    <h3 class="irr-h3">References</h3>
+    <ul class="irr-refs">
+      <li>Cohen, J. (1960). A coefficient of agreement for nominal scales. <em>Educational and Psychological Measurement, 20</em>(1), 37–46. <a href="https://doi.org/10.1177/001316446002000104">https://doi.org/10.1177/001316446002000104</a></li>
+      <li>Feinstein, A. R., &amp; Cicchetti, D. V. (1990). High agreement but low kappa: I. The problems of two paradoxes. <em>Journal of Clinical Epidemiology, 43</em>(6), 543–549. <a href="https://doi.org/10.1016/0895-4356(90)90158-L">https://doi.org/10.1016/0895-4356(90)90158-L</a></li>
+      <li>Fleiss, J. L. (1971). Measuring nominal scale agreement among many raters. <em>Psychological Bulletin, 76</em>(5), 378–382. <a href="https://doi.org/10.1037/h0031619">https://doi.org/10.1037/h0031619</a></li>
+      <li>Hayes, A. F., &amp; Krippendorff, K. (2007). Answering the call for a standard reliability measure for coding data. <em>Communication Methods and Measures, 1</em>(1), 77–89. <a href="https://doi.org/10.1080/19312450709336664">https://doi.org/10.1080/19312450709336664</a></li>
+      <li>Krippendorff, K. (2011). <em>Computing Krippendorff's alpha-reliability</em>. University of Pennsylvania, Annenberg School for Communication. <a href="https://repository.upenn.edu/items/034a6030-c584-4d14-9d3d-7b7e8d16df20">https://repository.upenn.edu/items/034a6030-c584-4d14-9d3d-7b7e8d16df20</a></li>
+      <li>Krippendorff, K. (2019). <em>Content analysis: An introduction to its methodology</em> (4th ed.). SAGE.</li>
+      <li>Landis, J. R., &amp; Koch, G. G. (1977). The measurement of observer agreement for categorical data. <em>Biometrics, 33</em>(1), 159–174. <a href="https://doi.org/10.2307/2529310">https://doi.org/10.2307/2529310</a></li>
+      <li>Zapf, A., Castell, S., Morawietz, L., &amp; Karch, A. (2016). Measuring inter-rater reliability for nominal data: Which coefficients and confidence intervals are appropriate? <em>BMC Medical Research Methodology, 16</em>, Article 93. <a href="https://doi.org/10.1186/s12874-016-0200-9">https://doi.org/10.1186/s12874-016-0200-9</a></li>
+    </ul>
+  </section>
+</div>

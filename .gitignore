@@ -39,3 +39,6 @@ pnpm-debug.log*
 /*.jpg
 /*.png
 !public/**
+
+# cross-tool verification output
+scripts/irr-verify/out/

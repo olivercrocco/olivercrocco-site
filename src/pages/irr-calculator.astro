@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/irr.css";
+import app from "../components/irr-app.html?raw";
+---
+
+<BaseLayout
+  title="Inter-Rater Reliability Calculator"
+  description="A free, browser-based calculator for Krippendorff's alpha (nominal, ordinal, interval), Fleiss's kappa, Cohen's kappa, and percent agreement, for any number of raters, items, and codes, with missing values, bootstrap confidence intervals, a per-item adjudication queue, and a reference-row comparison. Nothing you enter leaves your browser."
+>
+  {/* HERO */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-16 md:py-20">
+      <p class="eyebrow mb-4">Tools</p>
+      <h1 class="font-display text-4xl md:text-5xl font-semibold tracking-tight mb-5 leading-[1.08]">
+        Inter-Rater Reliability Calculator
+      </h1>
+      <p class="font-display text-lg md:text-xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        Krippendorff's alpha, Fleiss's kappa, Cohen's kappa, and percent agreement for a
+        coding team of any size, on any number of items, with any set of codes. Blank cells
+        are handled, every statistic updates as you type, and the items that need adjudication
+        are sorted for you.
+      </p>
+    </div>
+  </section>
+
+  {/* PRIVACY */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-6">
+      <p class="text-[0.9rem] text-[var(--color-text-muted)] leading-relaxed max-w-3xl">
+        <strong class="text-[var(--color-text)]">Private by design.</strong>
+        This runs entirely in your browser. Nothing you enter is sent anywhere, so student and
+        participant data stay on your machine. The grid is kept in this browser's local storage
+        so a refresh does not lose it; Clear removes it.
+      </p>
+    </div>
+  </section>
+
+  {/* APP */}
+  <section>
+    <div class="wrap py-12">
+      <Fragment set:html={app} />
+    </div>
+  </section>
+
+  <script>
+    import "../lib/irrUi.js";
+  </script>
+</BaseLayout>
