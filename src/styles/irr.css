@@ -12,6 +12,12 @@
   color: var(--irr-text); font-family: var(--irr-sans); }
 .irr * { box-sizing: border-box; }
 .irr-section { margin: 0 0 3rem; }
+.irr-scope { border: 1px solid var(--irr-border-strong); border-left: 3px solid var(--irr-gold); border-radius: 4px; background: var(--irr-warm); padding: 1rem 1.25rem; margin: 0 0 2.5rem; max-width: 82ch; }
+.irr-scope p { font-size: .89rem; line-height: 1.6; color: var(--irr-muted); margin: 0 0 .7rem; }
+.irr-scope p:last-child { margin-bottom: 0; }
+.irr-scope strong { color: var(--irr-text); font-weight: 600; }
+.irr-scope a { color: var(--irr-gold); }
+
 .irr-h2 { font-family: var(--irr-serif); font-size: 1.6rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 1rem; display: flex; align-items: center; gap: .6rem; }
 .irr-step { display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: var(--irr-ink); color: #fff; font-family: var(--irr-mono); font-size: .8rem; font-weight: 600; }
 .irr-h3 { font-family: var(--irr-serif); font-size: 1.2rem; font-weight: 600; margin: 2rem 0 .4rem; }
