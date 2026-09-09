@@ -97,13 +97,13 @@
     <p>The per-code alpha treats one code against all the others, which shows whether disagreement is spread across the scheme or concentrated in one distinction. The item view and the adjudication queue sort items by their pairwise agreement so a team can discuss the hardest cases first.</p>
 
     <h3 class="irr-h3">How the calculations were checked</h3>
-    <p>The estimators reproduce hand-derived cases and the worked example in Krippendorff (2011). On 240 randomly generated grids with two to eight raters, with and without missing values, they match the R package irr and the Python package krippendorff to fourteen decimal places and Gwet's irrCAC package to the five decimals it reports: alpha at all three levels, Fleiss's kappa, Cohen's kappa for every pair of raters, percent agreement, and the per-code alpha. One caution for readers who use R: irr's kripp.alpha (version 0.84.1) mishandles grids with no blank cells and three or more raters, and the comparison used a workaround that forces its general code path. The verification scripts and that finding are documented in the site's repository.</p>
+    <p>The estimators reproduce hand-derived cases and the worked example in Krippendorff (2011). On 240 randomly generated grids with two to eight raters, with and without missing values, they match the R package irr and the Python package krippendorff to fourteen decimal places and Gwet's irrCAC package to the five decimals it reports: alpha at all three levels, Fleiss's kappa, Cohen's kappa for every pair of raters, percent agreement, and the per-code alpha. One caution for readers who use R: irr's kripp.alpha (version 0.84.1) mishandles grids with no blank cells and three or more raters, and the comparison used a workaround that forces its general code path. The verification scripts and that finding are documented in the calculator's repository at <a href="https://github.com/olivercrocco/irr-calculator">github.com/olivercrocco/irr-calculator</a>.</p>
 
     <h3 class="irr-h3">Privacy</h3>
     <p>Everything runs in your browser. Nothing you enter is sent anywhere. The grid is kept in this browser's local storage so a refresh does not lose it, and Clear removes it.</p>
 
     <h3 class="irr-h3">Citing the calculator</h3>
-    <p>Crocco, O. S. (2026). <em>Inter-rater reliability calculator</em> (Version 1.0) [Computer software]. https://olivercrocco.com/irr-calculator</p>
+    <p>Crocco, O. S. (2026). <em>Inter-rater reliability calculator</em> (Version 1.0.0) [Computer software]. https://olivercrocco.com/irr-calculator</p>
 
     <h3 class="irr-h3">References</h3>
     <ul class="irr-refs">
