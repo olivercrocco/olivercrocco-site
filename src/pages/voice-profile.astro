@@ -7,7 +7,8 @@ const version = "1.0";
 const doi = "10.5281/zenodo.20932766";
 const doiUrl = `https://doi.org/${doi}`;
 const repoUrl = "https://github.com/olivercrocco/scholarly-voice-profile";
-const apaCitation = `Crocco, O. S. (2026). Scholarly Voice and Identity Interviewer (Version ${version}) [Large language model prompt]. Zenodo. ${doiUrl}`;
+const citeTitle = "Scholarly voice and identity interviewer";
+const apaCitation = `Crocco, O. S. (2026). ${citeTitle} (Version ${version}) [Large language model prompt]. Zenodo. ${doiUrl}`;
 
 const steps = [
   {
@@ -217,7 +218,7 @@ const outputs = [
           class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
           style="padding-left:1.5rem;text-indent:-1.5rem"
         >
-          Crocco, O. S. (2026). <em>Scholarly Voice and Identity Interviewer</em> (Version {version}) [Large language model prompt]. Zenodo. <a href={doiUrl}>{doiUrl}</a>
+          Crocco, O. S. (2026). <em>{citeTitle}</em> (Version {version}) [Large language model prompt]. Zenodo. <a href={doiUrl}>{doiUrl}</a>
         </p>
         <button class="btn btn-ghost" type="button" data-cite={apaCitation}>Copy citation</button>
       </div>
