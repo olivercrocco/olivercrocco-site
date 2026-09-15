@@ -17,6 +17,8 @@ on:
     - cron: "30 14 * * 1"
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   trigger-build:
     runs-on: ubuntu-latest
