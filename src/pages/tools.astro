@@ -99,6 +99,7 @@ Result: PASS`,
   },
   {
     name: "Inter-Rater Reliability Calculator",
+    citeTitle: "Inter-rater reliability calculator",
     audience: "For coding teams and research methods classes",
     tagline:
       "Krippendorff's alpha, Fleiss's kappa, Cohen's kappa, and percent agreement for any number of raters, items, and codes, computed in your browser as you type.",
@@ -119,6 +120,7 @@ Result: PASS`,
   },
   {
     name: "Scholarly Voice and Identity Interviewer",
+    citeTitle: "Scholarly voice and identity interviewer",
     audience: "For scholars who write with AI",
     tagline:
       "Interview yourself once and get two reference documents that give an AI assistant your scholarly voice and intellectual perspectives, in place of the flat, generic default.",
@@ -298,19 +300,20 @@ const principles = [
       </p>
       <div class="max-w-3xl space-y-6">
         {tools.map((tool) => {
+          const title = tool.citeTitle ?? tool.name;
           const ver = tool.version ? ` (Version ${tool.version})` : "";
           const kind = tool.kind ?? "Computer software";
           const srcLabel = tool.doi ? "Zenodo." : tool.repo ? "GitHub." : "";
           const srcUrl = tool.doi ? `https://doi.org/${tool.doi}` : tool.repo ? tool.repo : tool.citeUrl;
           const srcPlain = tool.doi ? `Zenodo. https://doi.org/${tool.doi}` : tool.repo ? `GitHub. ${tool.repo}` : tool.citeUrl;
-          const cite = `Crocco, O. S. (2026). ${tool.name}${ver} [${kind}]. ${srcPlain}`;
+          const cite = `Crocco, O. S. (2026). ${title}${ver} [${kind}]. ${srcPlain}`;
           return (
             <div class="border-t border-[var(--color-border-strong)] pt-5">
               <p
                 class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
                 style="padding-left:1.5rem;text-indent:-1.5rem"
               >
-                Crocco, O. S. (2026). <em>{tool.name}</em>{ver} [{kind}]. {srcLabel ? srcLabel + " " : ""}<a href={srcUrl}>{srcUrl}</a>
+                Crocco, O. S. (2026). <em>{title}</em>{ver} [{kind}]. {srcLabel ? srcLabel + " " : ""}<a href={srcUrl}>{srcUrl}</a>
               </p>
               <button class="btn btn-ghost" type="button" data-cite={cite}>Copy citation</button>
             </div>
