@@ -67,14 +67,17 @@ const archive = posts.slice(1);
       <h2 class="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-8">
         {current.poet}, &ldquo;{current.title}&rdquo;
       </h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" data-fade-stagger>
+      <p class="text-[var(--color-text-muted)] text-[0.9375rem] mb-5">Select a card to read it full size.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6" data-fade-stagger>
         {current.cards.map((src, i) => (
-          <img
-            src={src}
-            alt={`${current.poet}, ${current.title}, card ${i + 1} of ${current.cards.length}`}
-            loading="lazy"
-            class="w-full aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
-          />
+          <button type="button" class="pow-card block w-full p-0 bg-transparent border-0 cursor-zoom-in" data-group={`w${current.week}`}>
+            <img
+              src={src}
+              alt={`${current.poet}, ${current.title}, card ${i + 1} of ${current.cards.length}`}
+              loading="lazy"
+              class="w-full aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
+            />
+          </button>
         ))}
       </div>
       <div class="text-[var(--color-text-muted)] text-[0.9375rem] space-y-1.5 max-w-3xl">
@@ -106,14 +109,16 @@ const archive = posts.slice(1);
                     aria-hidden="true"
                   >→</span>
                 </summary>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 mb-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6 mb-4">
                   {post.cards.map((src, i) => (
-                    <img
-                      src={src}
-                      alt={`${post.poet}, ${post.title}, card ${i + 1} of ${post.cards.length}`}
-                      loading="lazy"
-                      class="w-full aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
-                    />
+                    <button type="button" class="pow-card block w-full p-0 bg-transparent border-0 cursor-zoom-in" data-group={`w${post.week}`}>
+                      <img
+                        src={src}
+                        alt={`${post.poet}, ${post.title}, card ${i + 1} of ${post.cards.length}`}
+                        loading="lazy"
+                        class="w-full aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
+                      />
+                    </button>
                   ))}
                 </div>
                 <div class="text-[var(--color-text-muted)] text-[0.875rem] space-y-1 max-w-3xl">
@@ -144,4 +149,82 @@ const archive = posts.slice(1);
       </ul>
     </div>
   </section>
+  {/* LIGHTBOX: a selected card opens full size; arrows or swipe move through that poem's cards */}
+  <dialog id="pow-lightbox" class="pow-lightbox" aria-label="Poem card, full size">
+    <div class="pow-lightbox-inner">
+      <img id="pow-lightbox-img" src="" alt="" />
+      <button type="button" class="pow-lb-btn pow-lb-close" data-lb="close" aria-label="Close">&times;</button>
+      <button type="button" class="pow-lb-btn pow-lb-prev" data-lb="prev" aria-label="Previous card">&lsaquo;</button>
+      <button type="button" class="pow-lb-btn pow-lb-next" data-lb="next" aria-label="Next card">&rsaquo;</button>
+      <p id="pow-lightbox-count" class="pow-lb-count"></p>
+    </div>
+  </dialog>
+
+  <style>
+    .pow-card:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 4px; border-radius: 0.25rem; }
+    .pow-card img { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .pow-card:hover img { transform: translateY(-2px); box-shadow: 0 8px 24px rgb(0 0 0 / 0.12); }
+    .pow-lightbox { padding: 0; border: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; margin: 0; }
+    .pow-lightbox::backdrop { background: rgb(20 16 12 / 0.9); }
+    .pow-lightbox-inner { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 3.5rem 1rem; }
+    .pow-lightbox img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 0.25rem; box-shadow: 0 10px 40px rgb(0 0 0 / 0.5); }
+    .pow-lb-btn { position: absolute; color: #fff; background: rgb(0 0 0 / 0.45); border: 0; border-radius: 9999px; width: 2.75rem; height: 2.75rem; font-size: 1.75rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .pow-lb-btn:hover, .pow-lb-btn:focus-visible { background: rgb(0 0 0 / 0.7); }
+    .pow-lb-close { top: 0.75rem; right: 0.75rem; }
+    .pow-lb-prev { left: 0.75rem; top: 50%; transform: translateY(-50%); }
+    .pow-lb-next { right: 0.75rem; top: 50%; transform: translateY(-50%); }
+    .pow-lb-count { position: absolute; bottom: 1rem; left: 0; right: 0; text-align: center; color: rgb(255 255 255 / 0.8); font-size: 0.875rem; margin: 0; }
+  </style>
+
+  <script>
+    const dialog = document.getElementById("pow-lightbox") as HTMLDialogElement | null;
+    const img = document.getElementById("pow-lightbox-img") as HTMLImageElement | null;
+    const count = document.getElementById("pow-lightbox-count");
+    let group: HTMLImageElement[] = [];
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    function show(i: number) {
+      if (!img || !count || group.length === 0) return;
+      index = (i + group.length) % group.length;
+      img.src = group[index].currentSrc || group[index].src;
+      img.alt = group[index].alt;
+      count.textContent = `${index + 1} of ${group.length}`;
+    }
+
+    if (dialog && img) {
+      document.querySelectorAll<HTMLButtonElement>(".pow-card").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.group;
+          const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(`.pow-card[data-group="${key}"]`));
+          group = buttons.map((b) => b.querySelector("img")!);
+          opener = btn;
+          show(buttons.indexOf(btn));
+          dialog.showModal();
+        });
+      });
+
+      dialog.addEventListener("click", (e) => {
+        const t = e.target as HTMLElement;
+        const action = t.closest<HTMLElement>("[data-lb]")?.dataset.lb;
+        if (action === "prev") show(index - 1);
+        else if (action === "next") show(index + 1);
+        else if (action === "close" || t === dialog || t.classList.contains("pow-lightbox-inner")) dialog.close();
+      });
+
+      dialog.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") show(index - 1);
+        if (e.key === "ArrowRight") show(index + 1);
+      });
+
+      let startX = 0;
+      dialog.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+      dialog.addEventListener("touchend", (e) => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 50) show(dx < 0 ? index + 1 : index - 1);
+      });
+
+      dialog.addEventListener("close", () => opener?.focus());
+    }
+  </script>
 </BaseLayout>
