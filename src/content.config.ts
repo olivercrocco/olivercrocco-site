@@ -58,4 +58,21 @@ const notes = defineCollection({
   }),
 });
 
-export const collections = { books, notes };
+/**
+ * Poems — Ozzie's own poems. The body is the poem itself, one line per line,
+ * stanzas separated by a blank line; the page renders it verbatim (no markdown).
+ * `note` is the short dated remark that sits under the poem.
+ */
+const poems = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/poems" }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    place: z.string().optional(),
+    note: z.string().optional(),
+    draft: z.boolean().default(false),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { books, notes, poems };

@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const poems = await getCollection("poems", ({ data }) => !data.draft);
+  return poems.map((poem) => ({
+    params: { slug: poem.id },
+    props: { poem },
+  }));
+}
+
+const { poem } = Astro.props;
+
+// The body is the poem verbatim: stanzas split on blank lines, lines kept as written.
+const stanzas = (poem.body ?? "")
+  .replace(/\r\n/g, "\n")
+  .trim()
+  .split(/\n\s*\n/)
+  .map((s) => s.split("\n").map((l) => l.replace(/\s+$/, "")));
+
+const all = (await getCollection("poems", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.order - b.data.order
+);
+const idx = all.findIndex((p) => p.id === poem.id);
+const newer = idx > 0 ? all[idx - 1] : null;
+const older = idx < all.length - 1 ? all[idx + 1] : null;
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "long" });
+
+const description = poem.data.note ?? `A poem by Oliver S. Crocco, ${formatDate(poem.data.date)}.`;
+---
+
+<BaseLayout title={poem.data.title} description={description}>
+  <article>
+    <header class="border-b border-[var(--color-border)]">
+      <div class="wrap-narrow py-16">
+        <p class="font-mono text-xs text-[var(--color-text-soft)] mb-8">
+          <a href="/poems" class="no-underline text-[var(--color-text-muted)] hover:text-[var(--color-ink)]">
+            ← All poems
+          </a>
+        </p>
+        <div class="font-mono text-[0.7rem] uppercase tracking-[0.12em] text-[var(--color-text-soft)] flex items-center gap-4 mb-5">
+          {poem.data.place && (
+            <span class="text-[var(--color-gold)] font-medium">{poem.data.place}</span>
+          )}
+          <span>{formatDate(poem.data.date)}</span>
+        </div>
+        <h1 class="font-display text-3xl md:text-5xl font-semibold tracking-tight leading-[1.15]">
+          {poem.data.title}
+        </h1>
+      </div>
+    </header>
+
+    <div class="wrap-narrow py-14">
+      <div class="poem">
+        {stanzas.map((lines) => (
+          <p class="poem-stanza">
+            {lines.map((line, i) => (
+              <>
+                <span class="poem-line">{line}</span>
+                {i < lines.length - 1 && <br />}
+              </>
+            ))}
+          </p>
+        ))}
+      </div>
+
+      {poem.data.note && (
+        <aside class="poem-note">
+          <p>{poem.data.note}</p>
+        </aside>
+      )}
+    </div>
+
+    {(newer || older) && (
+      <nav class="border-t border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+        <div class="wrap-narrow py-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {newer ? (
+              <a href={`/poems/${newer.id}/`} class="group no-underline block">
+                <p class="eyebrow mb-2">← Newer</p>
+                <p class="font-display text-xl text-[var(--color-text)] group-hover:text-[var(--color-ink)] leading-snug">
+                  {newer.data.title}
+                </p>
+              </a>
+            ) : <div />}
+            {older ? (
+              <a href={`/poems/${older.id}/`} class="group no-underline block md:text-right">
+                <p class="eyebrow mb-2">Older →</p>
+                <p class="font-display text-xl text-[var(--color-text)] group-hover:text-[var(--color-ink)] leading-snug">
+                  {older.data.title}
+                </p>
+              </a>
+            ) : <div />}
+          </div>
+        </div>
+      </nav>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .poem {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    max-width: 34rem;
+  }
+  .poem-stanza {
+    margin: 0 0 1.6em 0;
+  }
+  /* Keep each line on one row where possible; wrapped lines hang in, the
+     way poems are typeset, so a wrap never reads as a new line. */
+  .poem-line {
+    display: inline-block;
+    padding-left: 2em;
+    text-indent: -2em;
+    white-space: pre-wrap;
+  }
+  .poem-note {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    max-width: 34rem;
+  }
+  .poem-note p {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+</style>
