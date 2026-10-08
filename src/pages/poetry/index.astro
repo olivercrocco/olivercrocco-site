@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import registry from "../../data/poetry-of-work.json";
+
+// Section 1: Ozzie's own poems, newest first.
+const all = await getCollection("poems", ({ data }) => !data.draft);
+const poems = all.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.order - b.data.order
+);
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "long" });
+const firstLine = (body: string | undefined) =>
+  (body ?? "").split("\n").map((l) => l.trim()).find((l) => l.length > 0) ?? "";
+
+// Section 2: The Poetry of Work. Same registry and same live-date rule as the
+// project page, so this teaser never shows a week before it has gone out.
+const now = Date.now();
+const live = registry.weeks
+  .filter((w) => Date.parse(w.goLive) <= now)
+  .sort((a, b) => b.week - a.week);
+const current = live[0];
+---
+
+<BaseLayout
+  title="Poetry"
+  description="Poems by Oliver S. Crocco, and The Poetry of Work, a weekly public-domain poem on work, craft, and vocation."
+>
+  {/* HEADER */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Poetry</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-6 max-w-3xl leading-[1.05]">
+        Poetry
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-2xl italic">
+        My own poems, short and placed and dated, and a weekly public-domain poem on work.
+      </p>
+    </div>
+  </section>
+
+  {/* SECTION 1: POEMS */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap-narrow py-16">
+      <p class="eyebrow mb-3">Poems</p>
+      <h2 class="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-2">
+        My poems
+      </h2>
+      <p class="text-[var(--color-text-muted)] text-[1.0625rem] leading-relaxed mb-8">
+        Each one with a line or two underneath about where it came from.
+      </p>
+      <ul class="list-none m-0 p-0">
+        {poems.map((poem) => (
+          <li class="py-7 border-t border-[var(--color-border)]">
+            <div class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-[var(--color-text-soft)] flex items-center gap-4 mb-2">
+              {poem.data.place && (
+                <span class="text-[var(--color-gold)] font-medium">{poem.data.place}</span>
+              )}
+              <span>{formatDate(poem.data.date)}</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-[1.75rem] font-semibold leading-[1.2] tracking-tight mb-2">
+              <a
+                href={`/poetry/${poem.id}/`}
+                class="text-[var(--color-text)] hover:text-[var(--color-ink)] no-underline"
+              >
+                {poem.data.title}
+              </a>
+            </h3>
+            <p class="font-display text-[1.0625rem] text-[var(--color-text-muted)] leading-relaxed mt-2 italic">
+              {firstLine(poem.body)}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* SECTION 2: THE POETRY OF WORK */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap-narrow py-16">
+      <p class="eyebrow mb-3">The Poetry of Work</p>
+      <h2 class="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-4">
+        A weekly public-domain poem on work
+      </h2>
+      <p class="text-[var(--color-text-muted)] text-[1.0625rem] leading-relaxed mb-8 max-w-2xl">
+        Poems from across the centuries on labor and craft, the sea and the land, vocation and rest, each paired with a public-domain photograph and posted on LinkedIn every week.
+      </p>
+      {current && (
+        <a href="/poetry-of-work" class="group no-underline grid grid-cols-[auto_1fr] gap-6 items-center mb-8">
+          <img
+            src={current.cards[0]}
+            alt={`${current.poet}, ${current.title}, this week's card`}
+            loading="lazy"
+            class="w-28 md:w-36 aspect-[4/5] object-cover rounded border border-[var(--color-border-strong)] shadow-sm"
+          />
+          <span>
+            <span class="block font-mono text-[0.7rem] uppercase tracking-[0.1em] text-[var(--color-text-soft)] mb-2">This week</span>
+            <span class="block font-display text-xl md:text-2xl text-[var(--color-text)] group-hover:text-[var(--color-ink)] leading-snug">
+              {current.poet}, &ldquo;{current.title}&rdquo;
+            </span>
+          </span>
+        </a>
+      )}
+      <p class="text-[1.0625rem]">
+        <a href="/poetry-of-work" class="text-[var(--color-ink)]">
+          Read this week's poem and the archive →
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

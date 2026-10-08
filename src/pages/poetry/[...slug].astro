@@ -37,8 +37,8 @@ const description = poem.data.note ?? `A poem by Oliver S. Crocco, ${formatDate(
     <header class="border-b border-[var(--color-border)]">
       <div class="wrap-narrow py-16">
         <p class="font-mono text-xs text-[var(--color-text-soft)] mb-8">
-          <a href="/poems" class="no-underline text-[var(--color-text-muted)] hover:text-[var(--color-ink)]">
-            ← All poems
+          <a href="/poetry" class="no-underline text-[var(--color-text-muted)] hover:text-[var(--color-ink)]">
+            ← Poetry
           </a>
         </p>
         <div class="font-mono text-[0.7rem] uppercase tracking-[0.12em] text-[var(--color-text-soft)] flex items-center gap-4 mb-5">
@@ -79,7 +79,7 @@ const description = poem.data.note ?? `A poem by Oliver S. Crocco, ${formatDate(
         <div class="wrap-narrow py-12">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             {newer ? (
-              <a href={`/poems/${newer.id}/`} class="group no-underline block">
+              <a href={`/poetry/${newer.id}/`} class="group no-underline block">
                 <p class="eyebrow mb-2">← Newer</p>
                 <p class="font-display text-xl text-[var(--color-text)] group-hover:text-[var(--color-ink)] leading-snug">
                   {newer.data.title}
@@ -87,7 +87,7 @@ const description = poem.data.note ?? `A poem by Oliver S. Crocco, ${formatDate(
               </a>
             ) : <div />}
             {older ? (
-              <a href={`/poems/${older.id}/`} class="group no-underline block md:text-right">
+              <a href={`/poetry/${older.id}/`} class="group no-underline block md:text-right">
                 <p class="eyebrow mb-2">Older →</p>
                 <p class="font-display text-xl text-[var(--color-text)] group-hover:text-[var(--color-ink)] leading-snug">
                   {older.data.title}

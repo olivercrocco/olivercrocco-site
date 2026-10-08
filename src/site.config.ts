@@ -50,9 +50,8 @@ export const NAV = [
   { label: "Books", href: "/books" },
   { label: "Publications", href: "/publications" },
   { label: "Notes", href: "/notes" },
-  { label: "Poems", href: "/poems" },
+  { label: "Poetry", href: "/poetry" },
   { label: "Tools", href: "/tools" },
-  { label: "Poetry of Work", href: "/poetry-of-work" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
