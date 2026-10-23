@@ -35,9 +35,9 @@ const firstWeek = [
   { when: "Day 1", body: "Install the app, build and install your rules file (step 3), and open Claude in your work folder. Ask it to look around and describe how the folder is organized without changing anything." },
   { when: "Day 2", body: "Draft the folder CLAUDE.md with Claude. Set up the task workbook and dictate your current tasks into it." },
   { when: "Day 3", body: "Try document work. Give it a draft you are working on and ask what a skeptical reader will say. Ask it to turn some notes into a formatted Word document." },
-  { when: "Day 4", body: "Try email. Paste a message, or let Claude read it through a connector, and ask for a reply drafted to a file. Edit it and send it yourself, then tell Claude what you changed and why." },
-  { when: "Day 5", body: "Have it tidy one messy folder, with anything redundant going to the quarantine folder. Read the report it gives you." },
-  { when: "Week 2", body: "Set up the morning brief. Turn one repeated job into a skill. Look in the memory folder to see what Claude has learned." },
+  { when: "Day 4", body: "Have it tidy one messy folder, with anything redundant going to the quarantine folder. Read the report it gives you." },
+  { when: "Day 5", body: "Connect your calendar and ask what the coming week looks like against the task list. Then ask it to prepare you for one meeting: who is coming, what you owe them, what to bring." },
+  { when: "Week 2", body: "Set up the morning brief. Turn one repeated job into a skill. Look in the memory folder to see what Claude has learned. Email can wait until you decide you want it; see the note below." },
 ];
 
 const prompts = [
@@ -97,9 +97,8 @@ const briefPrompt = "Set up a scheduled task called morning-brief that runs ever
       </h1>
       <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
         A guided setup for academics, managers, and leaders who want an AI
-        assistant that keeps the task list, drafts the correspondence, prepares
-        the documents, and files the paperwork, inside your own folders and under
-        rules you write.
+        assistant that keeps the task list, prepares the documents, and files
+        the paperwork, inside your own folders and under rules you write.
       </p>
       <div class="flex flex-wrap gap-3 mt-10">
         <a href="#steps" class="btn btn-primary">Start the walkthrough →</a>
@@ -118,10 +117,9 @@ const briefPrompt = "Set up a scheduled task called morning-brief that runs ever
           Most of what fills a working week is not the work itself. It is the
           task list, the calendar, the email that needs a reply, the form that
           needs filling, the document that needs formatting, and the folder that
-          needs tidying. I have run Claude Code as an assistant for that layer
-          every day for about six months, across research, teaching, editorial
-          work, and program administration. This page is the setup I would hand a
-          colleague who wanted to do the same.
+          needs tidying. This page is a setup for that layer, built over months
+          of my own use across research, teaching, and administration, and
+          written the way I would hand it to a colleague.
         </p>
         <p>
           Claude Code is Claude working inside a folder on your own computer. It
@@ -148,27 +146,25 @@ const briefPrompt = "Set up a scheduled task called morning-brief that runs ever
       <p class="eyebrow mb-6">What it looks like in practice</p>
       <div class="prose max-w-3xl">
         <p>
-          At 5:00 a.m. a scheduled task writes my morning brief. It reads the
-          task workbook and the week's calendar, scans the subject lines of
-          flagged email, and proposes the day's priorities. Its most useful move
-          is the cross-check between sources: a deadline that lands on a day
+          A morning brief, run on a schedule, reads the task workbook and the
+          week's calendar and proposes the day's priorities. Its most useful move
+          is the cross-check between the two: a deadline that lands on a day
           already full of meetings, or a meeting that needs preparation nobody put
           on the list.
         </p>
         <p>
           During the day the requests are short. Add the conference registration
-          to my task list, due the 14th. Draft a reply to the dean's office; I am
-          saying yes but cannot do Thursday. File everything on the Desktop. Read
+          to my task list, due the 14th. File everything on the Desktop. Turn
+          these meeting notes into a one-page document with action items. Read
           this grant draft and tell me what a reviewer will push on. Fill in the
           travel form in Chrome but do not submit it.
         </p>
         <p>
-          Email is drafted and never sent. Files are never deleted; anything
-          redundant goes to a quarantine folder that only I empty. One workbook
-          holds every task and every dated commitment. When Claude gets something
-          wrong I say so, and it writes a note so the mistake does not recur.
-          After six months that pile of notes holds about 270 small lessons, and
-          the assistant is noticeably better for them.
+          Files are never deleted; anything redundant goes to a quarantine
+          folder that only you empty. One workbook holds every task and every
+          dated commitment. When Claude gets something wrong, you say so, and it
+          writes a note so the mistake does not recur. Over months those notes
+          add up to an assistant that knows how you work.
         </p>
       </div>
     </div>
@@ -327,7 +323,7 @@ const briefPrompt = "Set up a scheduled task called morning-brief that runs ever
             </div>
             <label class="ca-check ca-wide">
               <input type="checkbox" id="f-rule-email" checked />
-              <span>Email is drafted, never sent or deleted <small>Claude writes the draft to a file; you send it from your own mail program.</small></span>
+              <span>Email, if you ever connect it, is drafted and never sent or deleted <small>A safeguard for later. Claude writes a draft to a file; you rewrite it and send it yourself.</small></span>
             </label>
             <label class="ca-check">
               <input type="checkbox" id="f-rule-files" checked />
@@ -541,11 +537,12 @@ No cliches, corporate jargon, or stock openers.</textarea>
           <div class="prose max-w-3xl">
             <p>
               Connect one thing at a time, and only after the hard rules are in
-              place. A connected mail account means Claude could send mail; the
-              rule is what stops it.
+              place. The calendar is the one to start with; it is what makes the
+              morning brief and meeting preparation work. Email is a separate
+              decision, taken up in the note after step 9.
             </p>
             <ul>
-              <li>Connectors. Gmail, Google Calendar, Microsoft 365, and similar services are connected once on claude.ai (Settings, then Connectors) and then appear in the Code tab. You can also click the plus sign beside the message box and choose Add connectors. On a Team or Enterprise plan an administrator may have to add them for you.</li>
+              <li>Connectors. Google Calendar, Microsoft 365, Google Drive, and similar services are connected once on claude.ai (Settings, then Connectors) and then appear in the Code tab. You can also click the plus sign beside the message box and choose Add connectors. On a Team or Enterprise plan an administrator may have to add them for you.</li>
               <li>Claude in Chrome. A browser extension that lets Claude read pages and fill forms in your own Chrome, signed in as you. Useful for web portals, webmail, and online forms. The desktop app has a built-in browser pane as well, but it starts with no saved logins, so use Chrome for anything that needs you signed in.</li>
               <li>Mac apps. On a Mac, Claude can read Apple Calendar and Apple Mail through AppleScript, which it writes and runs itself. macOS asks you to grant permission the first time.</li>
             </ul>
@@ -616,11 +613,11 @@ No cliches, corporate jargon, or stock openers.</textarea>
               is a folder holding a SKILL.md file whose top describes what it is
               for and when to use it. Claude uses a skill when a request matches
               that description, and you can also call one by name, for example
-              /weekly-review. My own skills include one for grading in my
-              feedback voice, one for each journal I edit for, one that checks
-              the tone of a delicate email against three etiquette books, and one
-              that answers questions from a local copy of my university's
-              policies. Each began as a job explained once in conversation.
+              /weekly-review. Three from my own folder: a grading skill that
+              writes feedback in my voice, one that scrubs AI-sounding phrasing
+              out of a draft, and one that answers questions from a local copy of
+              my university's policies. Each began as a job explained once in
+              conversation.
             </p>
           </div>
           <div class="max-w-3xl mt-4">
@@ -646,9 +643,10 @@ No cliches, corporate jargon, or stock openers.</textarea>
               Start with one scheduled task, the morning brief. In the desktop
               app, click Scheduled in the Code tab's sidebar and then New task,
               or just ask in any session. The prompt in the kit reads your task
-              workbook, your calendar, and the subject lines of recent email,
-              then cross-checks them and proposes the day's top three. Run it
-              once by hand first and adjust until the brief is useful.
+              workbook and your calendar, cross-checks them, and proposes the
+              day's top three. An email step is in the template as an option,
+              off until you choose to turn it on. Run it once by hand first and
+              adjust until the brief is useful.
             </p>
             <p>
               These tasks run on your own computer, so they run only while the
@@ -699,6 +697,44 @@ No cliches, corporate jargon, or stock openers.</textarea>
           </div>
         </article>
 
+      </div>
+    </div>
+  </section>
+
+  {/* EMAIL */}
+  <section id="email" class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-6">A note on email</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-8 max-w-2xl">
+        A decision, not a step
+      </h2>
+      <div class="prose max-w-3xl">
+        <p>
+          Many people run this setup for weeks without connecting email, and
+          lose little by it. The task list, the documents, and the filing carry
+          most of the value. So treat email as a decision rather than a step,
+          and make it the last one.
+        </p>
+        <p>
+          The lightest route needs no connection at all: paste one message into
+          the chat when you want a draft, and nothing else in your inbox is
+          touched. If you do connect an inbox, do it after the rules file is in
+          place, because a connected account means Claude could send mail, and
+          the rule is what stops it.
+        </p>
+        <p>
+          Before connecting, think about the people who write to you. A
+          student, a client, or an author whose manuscript you are handling did
+          not agree to an AI reading their message. Your employer may have a
+          policy, and some publishers restrict AI anywhere in the review
+          process. Keep student records, personnel matters, and manuscripts
+          under review out of it, and say so in your rules file.
+        </p>
+        <p>
+          Whatever route you take, the drafts are yours to rewrite. Claude is
+          strongest at checking tone, facts, and what you forgot to answer. The
+          sentences people receive should be the ones you chose to send.
+        </p>
       </div>
     </div>
   </section>

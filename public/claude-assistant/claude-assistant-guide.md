@@ -24,17 +24,17 @@ All three are ordinary text files you can open and read. When Claude does someth
 
 A typical day in Ozzie's setup runs like this.
 
-At 5:00 a.m. a scheduled task writes a morning brief. It reads the task workbook and the week's calendar, scans the subject lines of flagged email, and proposes the day's priorities. Its most useful move is the cross-check between sources. It catches a deadline that lands on a day already full of meetings, or a meeting that needs preparation nobody put on the list.
+Early each morning a scheduled task writes a brief. It reads the task workbook and the week's calendar and proposes the day's priorities. Its most useful move is the cross-check between the two. It catches a deadline that lands on a day already full of meetings, or a meeting that needs preparation nobody put on the list.
 
-During the day, requests are short and conversational. "Add the conference registration to my task list, due the 14th." "Draft a reply to the dean's office about the workshop; I'm saying yes but can't do Thursday." "File everything on the Desktop." "Read this grant draft and tell me what a reviewer will push on." "Fill in the travel form in Chrome but don't submit it."
+During the day, requests are short and conversational. "Add the conference registration to my task list, due the 14th." "Turn these meeting notes into a one-page document with action items." "File everything on the Desktop." "Read this grant draft and tell me what a reviewer will push on." "Fill in the travel form in Chrome but don't submit it."
 
-Email is drafted and never sent. Claude writes the draft to a file, and Ozzie reads it, edits it, and sends it from his own mail program.
+Email stays separate. When a reply is wanted, the message goes into the chat, Claude drafts to a file, and the reply is rewritten and sent from his own mail program. The AI never sends.
 
 Files are never deleted. When Claude tidies a folder, anything redundant goes to a quarantine folder called _to_review, with a note saying what each item duplicates. Only Ozzie empties it.
 
 Every project has a home folder, and each main area has a README that maps what is inside. One workbook holds the task list and every dated commitment. When something changes during a session, Claude updates the workbook before the session ends.
 
-Corrections stick. When Claude gets something wrong, Ozzie says so and explains why, and Claude writes a memory so the mistake does not recur. After six months the setup holds about 270 memory files, most of them small corrections and project notes.
+Corrections stick. When Claude gets something wrong, Ozzie says so and explains why, and Claude writes a memory so the mistake does not recur. After six months the setup holds a few hundred memory files, most of them small corrections and project notes.
 
 ## 3. Setting up: the first hour
 
@@ -74,11 +74,11 @@ A plain markdown file works as well if you prefer text. What matters is that the
 
 Claude Code can reach other apps in a few ways.
 
-- Connectors. Gmail, Google Calendar, Microsoft 365, and similar services are connected once on claude.ai (Settings, then Connectors), and they then appear in the Code tab automatically. You can also click the + beside the message box and choose Add connectors. On a Team or Enterprise plan, an administrator may have to add them for you.
-- Claude in Chrome. A browser extension that lets Claude read pages and fill forms in your own Chrome, signed in as you. It is useful for web portals, webmail, and online forms. The desktop app also has its own built-in browser pane, but that one starts with no saved logins, so use Chrome for anything that needs you signed in.
+- Connectors. Google Calendar, Microsoft 365, Google Drive, and similar services are connected once on claude.ai (Settings, then Connectors), and they then appear in the Code tab automatically. You can also click the + beside the message box and choose Add connectors. On a Team or Enterprise plan, an administrator may have to add them for you.
+- Claude in Chrome. A browser extension that lets Claude read pages and fill forms in your own Chrome, signed in as you. It is useful for web portals and online forms. The desktop app also has its own built-in browser pane, but that one starts with no saved logins, so use Chrome for anything that needs you signed in.
 - Mac apps. On a Mac, Claude can read Apple Calendar and Apple Mail through AppleScript, which it writes and runs itself. macOS asks you to grant permission the first time.
 
-Connect one thing at a time, and only after the hard rules are in your global CLAUDE.md. A connected mail account means Claude could send mail; the rule is what stops it.
+Connect one thing at a time, and only after the hard rules are in your global CLAUDE.md. Start with the calendar; it is what makes the morning brief and meeting preparation work. Email is a separate decision, taken up in section 6.
 
 ### Step 7: Choose a permission mode
 
@@ -117,7 +117,7 @@ Look through the memory folder once a month. Delete what is stale and fix what i
 
 When you have explained the same multi-step job to Claude three times, ask it to turn the job into a skill. "Make what we just did into a skill called weekly-review so I can run it every Friday." A skill is a folder holding a SKILL.md file. The top of the file describes what the skill is for and when to use it. Claude reads those descriptions and uses a skill when a request matches, and you can also call one by name, for example /weekly-review.
 
-Ozzie's skills include one for grading in his own feedback voice, one for each journal he edits for (screening manuscripts and synthesizing reviews), one that checks the tone of delicate emails against three etiquette books, and one that answers questions from a local copy of his university's policies. Each began as a job explained once in conversation.
+Three of Ozzie's: a grading skill that writes feedback in his own voice, one that scrubs AI-sounding phrasing out of a draft, and one that answers questions from a local copy of his university's policies. Each began as a job explained once in conversation.
 
 Templates/weekly-review/SKILL.md is a working example you can install as it is.
 
@@ -127,13 +127,13 @@ In the desktop app, click Scheduled in the Code tab's sidebar and then New task,
 
 These tasks run on your own computer, so they run only while the computer is awake and the app is open. If a run is missed because the computer was asleep, the task runs once to catch up when it wakes. For an early-morning brief, turn on the keep-awake option in the app's settings (Settings, then This computer, then System) and leave the laptop open and plugged in overnight.
 
-Start with one, the morning brief. Add others only when you find yourself asking for the same thing on a schedule. Ozzie's include a Friday review, a weekly LinkedIn draft for a journal he edits, a monthly refresh of his university policy library, and a weekly scan of family events in his city.
+Start with one, the morning brief. Add others only when you find yourself asking for the same thing on a schedule. Others worth adding later: a Friday review, a weekly draft for a newsletter or social post, a monthly refresh of a policy library.
 
 ## 5. Hard rules to copy on day one
 
 These are all in the global template. Each one exists because the mistake it prevents is costly or cannot be undone.
 
-Email is drafted and never sent. No AI sends or deletes your email unless you tell it to in the current conversation, naming the message. Approving the wording of a draft is not an instruction to send it. Claude writes the draft to a file, and you send it.
+Email is drafted and never sent. This holds whether email is connected or a message is pasted into the chat. No AI sends or deletes your email unless you tell it to in the current conversation, naming the message. Approving the wording of a draft is not an instruction to send it. Claude writes the draft to a file, and you send it. Many people never connect email at all and lose little; section 6 says where the line is.
 
 Files are never deleted or overwritten. Redundant or stale files go to a _to_review quarantine folder, and only you empty it. Presentations deserve extra care. Ozzie's rule now is that slide decks are listed for him during a tidy and never moved.
 
@@ -163,6 +163,8 @@ Use Claude to check your writing. This is where it is strongest: facts, citation
 
 Ask it to check its own work. "Open the Word document and confirm every heading has zero spacing." "Recount the rows." Claude verifies when asked and often catches its own errors that way.
 
+Treat email as a decision, not a step. Many people run this setup for weeks without connecting email, and the task list, the documents, and the filing carry most of the value. The lightest route needs no connection: paste one message into the chat when you want a draft, and nothing else in your inbox is touched. Before connecting an inbox, think about the people who write to you. A student, a client, or an author whose manuscript you are handling did not agree to an AI reading their message; your employer may have a policy, and some publishers restrict AI anywhere in the review process. Keep student records, personnel matters, and manuscripts under review out of it, and say so in your global CLAUDE.md. Whatever route you take, the drafts are yours to rewrite; the sentences people receive should be the ones you chose to send.
+
 Keep a backup running. Claude works on real files, so keep Time Machine or a cloud backup on.
 
 ## 7. Your first week
@@ -173,11 +175,11 @@ Day 2. Draft the folder CLAUDE.md with Claude. Set up the task workbook and dict
 
 Day 3. Try document work. Give it a draft you are working on and ask what a skeptical reader will say. Ask it to turn some notes into a formatted Word document.
 
-Day 4. Try email. Paste an email, or let Claude read it through a connector, and ask for a reply drafted to a file. Edit it and send it yourself, then tell Claude what you changed and why.
+Day 4. Have it tidy one messy folder, with anything redundant going to _to_review. Read the report it gives you.
 
-Day 5. Have it tidy one messy folder, with anything redundant going to _to_review. Read the report it gives you.
+Day 5. Connect your calendar and ask what the coming week looks like against the task list. Then ask it to prepare you for one meeting: who is coming, what you owe them, what to bring.
 
-Week 2. Set up the morning brief. Turn one repeated job into a skill. Look in the memory folder to see what Claude has learned.
+Week 2. Set up the morning brief. Turn one repeated job into a skill. Look in the memory folder to see what Claude has learned. Email can wait until you decide you want it; see section 6.
 
 ## 8. Prompts to try
 
@@ -209,7 +211,7 @@ Templates/memory-examples.md. What memory files and the MEMORY.md index look lik
 
 Templates/weekly-review/SKILL.md. A complete Friday review skill. Ask Claude to install it: "Copy the SKILL.md in Templates/weekly-review to ~/.claude/skills/weekly-review/SKILL.md."
 
-Templates/morning-brief.md. The prompt for a daily scheduled brief, with setup instructions at the top.
+Templates/morning-brief.md. The prompt for a daily scheduled brief, with setup instructions at the top. Email is an optional step, off until you add it.
 
 Projects-Master.xlsx. A task workbook with Task Queue, Upcoming, Projects, and README sheets. The example rows show the format; delete them once your own tasks are in.
 
