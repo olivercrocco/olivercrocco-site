@@ -55,3 +55,9 @@
   for = "/*.png"
   [headers.values]
     Cache-Control = "public, max-age=86400"
+
+# Shared by link only: keep the assistant page and its downloads out of search indexes.
+[[headers]]
+  for = "/claude-assistant/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

@@ -15,5 +15,9 @@ export default defineConfig({
     // per-script hashes — and stays correct as the site grows.
     build: { assetsInlineLimit: 0 },
   },
-  integrations: [sitemap(), mdx()],
+  integrations: [
+    // /claude-assistant is reachable by link but not listed or indexed.
+    sitemap({ filter: (page) => !page.includes('/claude-assistant') }),
+    mdx(),
+  ],
 });
