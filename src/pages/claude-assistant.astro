@@ -1,0 +1,819 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/claude-assistant.css";
+
+const updated = "October 2026";
+const version = "1.0";
+const repoUrl = "https://github.com/olivercrocco/claude-assistant-kit";
+const citeTitle = "Claude Code as your assistant: A guided setup and starter kit";
+const citeUrl = "https://olivercrocco.com/claude-assistant";
+const apaCitation = `Crocco, O. S. (2026). ${citeTitle} (Version ${version}) [Guide and templates]. GitHub. ${repoUrl}`;
+
+const features = [
+  {
+    title: "Standing instructions",
+    body: "A plain text file called CLAUDE.md holds your rules: who you are, how you like answers, and what Claude must never do. Claude reads it at the start of every session, so you state a rule once.",
+  },
+  {
+    title: "Memory",
+    body: "Claude keeps its own notes in small text files, one fact per file: a correction you gave it, the status of a project, where a form lives. They carry over between sessions, and you can read, edit, or delete any of them.",
+  },
+  {
+    title: "Skills and scheduled tasks",
+    body: "A skill is a written procedure for a job you repeat, such as a Friday review. A scheduled task runs a prompt on a timer, such as a brief every weekday morning.",
+  },
+];
+
+const modes = [
+  { name: "Manual", body: "Claude asks before it edits a file or runs a command. Start here." },
+  { name: "Accept edits", body: "Claude edits files without asking but still asks before other actions. Move to this after a week or so; it saves a great deal of clicking." },
+  { name: "Plan", body: "Claude investigates and proposes a plan, and changes nothing until you approve it. Useful for large jobs such as reorganizing a folder." },
+  { name: "Auto", body: "Claude runs most actions without asking, with an automatic safety check on each one. Worth trying once you trust your setup." },
+];
+
+const firstWeek = [
+  { when: "Day 1", body: "Install the app, build and install your rules file (step 3), and open Claude in your work folder. Ask it to look around and describe how the folder is organized without changing anything." },
+  { when: "Day 2", body: "Draft the folder CLAUDE.md with Claude. Set up the task workbook and dictate your current tasks into it." },
+  { when: "Day 3", body: "Try document work. Give it a draft you are working on and ask what a skeptical reader will say. Ask it to turn some notes into a formatted Word document." },
+  { when: "Day 4", body: "Try email. Paste a message, or let Claude read it through a connector, and ask for a reply drafted to a file. Edit it and send it yourself, then tell Claude what you changed and why." },
+  { when: "Day 5", body: "Have it tidy one messy folder, with anything redundant going to the quarantine folder. Read the report it gives you." },
+  { when: "Week 2", body: "Set up the morning brief. Turn one repeated job into a skill. Look in the memory folder to see what Claude has learned." },
+];
+
+const prompts = [
+  "What's on my plate this week? Read my task workbook and my calendar and tell me where the crunch points are.",
+  "Add these to my task list: [list]. Put the grant report at the top of NOW; it's due Friday.",
+  "Move the conference abstract to WAITING. My co-author has it.",
+  "Draft a reply to this email. I'm agreeing to the meeting but need to move it to Tuesday afternoon. Save the draft to a file and don't send anything.",
+  "File the loose files on my Desktop into the right folders. Duplicates go to _to_review with a note saying what each one duplicates. Don't delete anything.",
+  "Read this draft and tell me the three things a reviewer will push back on hardest. Don't rewrite it.",
+  "Check every citation in this manuscript against the reference list and tell me what is cited but not listed, or listed but not cited.",
+  "Turn these meeting notes into a one-page Word document with action items and who owns each.",
+  "Prepare me for my 2:00 meeting: who is coming, what we discussed last time, and what I owe them.",
+  "Fill in this registration form in Chrome with my details, but stop before submitting and tell me what you guessed.",
+  "Remember that I want every Word document in Times New Roman 12 with no space between paragraphs.",
+  "Make what we just did into a skill so I can run it again next month.",
+  "Go through my memory files and flag anything out of date.",
+];
+
+const troubles = [
+  { q: "It ignored a rule.", a: "Check where the rule lives. A rule that must always hold belongs in the global CLAUDE.md, stated plainly, with its reason. If it is there and was still ignored, say so and ask Claude why; the answer usually points to a conflict or an ambiguity in the wording." },
+  { q: "It keeps asking permission for the same thing.", a: "Choose the don't-ask-again option when the prompt offers it, or switch the folder to Accept edits." },
+  { q: "It's too wordy.", a: "Put your preference for answer length in the global CLAUDE.md. The builder above does this for you." },
+  { q: "Word documents come out with odd formatting.", a: "State your defaults (font, size, spacing, citation style) in the global CLAUDE.md, and ask Claude to check the formatting in the finished file." },
+  { q: "It made something up.", a: "Say so directly, and ask it to remember to flag uncertainty. For high-stakes material, ask it to show the source for each claim." },
+  { q: "You can't find the .claude folder.", a: "It is hidden. In Finder, press Command, Shift, and G together and type ~/.claude. On Windows it is C:\\Users\\<your name>\\.claude." },
+];
+
+const downloads = [
+  { file: "/claude-assistant/claude-assistant-guide.docx", label: "The full guide (.docx)", note: "Ten sections, about 4,000 words. Everything on this page plus more detail, in a file you can print or pass on." },
+  { file: "/claude-assistant/claude-assistant-guide.md", label: "The full guide (.md)", note: "The same guide as plain text." },
+  { file: "/claude-assistant/template-global-CLAUDE.md", label: "Global CLAUDE.md template", note: "The file the builder generates, as a fill-in-the-brackets template." },
+  { file: "/claude-assistant/template-work-folder-CLAUDE.md", label: "Work folder CLAUDE.md template", note: "A map of your files for Claude, including a filing procedure." },
+  { file: "/claude-assistant/Projects-Master.xlsx", label: "Task workbook (.xlsx)", note: "Task Queue in four bands, Upcoming with a live countdown, Projects, and the rules on a README sheet." },
+  { file: "/claude-assistant/weekly-review-SKILL.md", label: "Weekly review skill", note: "A complete Friday review. Save it as ~/.claude/skills/weekly-review/SKILL.md." },
+  { file: "/claude-assistant/template-morning-brief.md", label: "Morning brief prompt", note: "The prompt for a scheduled daily brief, with setup notes at the top." },
+  { file: "/claude-assistant/memory-examples.md", label: "Memory file examples", note: "What good memory files look like, one of each kind, so you know what to ask for." },
+  { file: "/claude-assistant/template-voice-profile.md", label: "Voice profile template", note: "Optional. A structure for describing how you write, with an interview prompt to fill it." },
+];
+
+const folderPrompt = "Look through this folder and draft a CLAUDE.md that describes how it is organized: the main areas, the naming conventions you can see, and where things like trackers and templates live. Do not move or change anything.";
+const taskPrompt = "My task list is Projects Master.xlsx in this folder. Add that to the Where things live section of my global CLAUDE.md. Then I will dictate my current tasks and you can enter them.";
+const memoryPrompt = "Go through my memory files, merge duplicates, and flag anything that looks out of date.";
+const skillPrompt = "Make what we just did into a skill called weekly-review so I can run it every Friday.";
+const briefPrompt = "Set up a scheduled task called morning-brief that runs every weekday at 6 a.m. using the prompt in the morning brief template I downloaded.";
+---
+
+<BaseLayout
+  title="Claude Code as Your Assistant"
+  description="A guided setup for academics, managers, and leaders who want Claude Code as an executive assistant and project manager: a nine-step walkthrough, a builder that writes your CLAUDE.md rules file, and a free starter kit of templates."
+>
+  {/* HERO */}
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Tools · Working with AI</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
+        Claude Code as Your Assistant
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        A guided setup for academics, managers, and leaders who want an AI
+        assistant that keeps the task list, drafts the correspondence, prepares
+        the documents, and files the paperwork, inside your own folders and under
+        rules you write.
+      </p>
+      <div class="flex flex-wrap gap-3 mt-10">
+        <a href="#steps" class="btn btn-primary">Start the walkthrough →</a>
+        <a href="#builder" class="btn btn-ghost">Build your rules file</a>
+        <a href="#kit" class="btn btn-ghost">Download the kit</a>
+      </div>
+    </div>
+  </section>
+
+  {/* WHY */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-6">Why this exists</p>
+      <div class="prose max-w-3xl">
+        <p class="drop-cap">
+          Most of what fills a working week is not the work itself. It is the
+          task list, the calendar, the email that needs a reply, the form that
+          needs filling, the document that needs formatting, and the folder that
+          needs tidying. I have run Claude Code as an assistant for that layer
+          every day for about six months, across research, teaching, editorial
+          work, and program administration. This page is the setup I would hand a
+          colleague who wanted to do the same.
+        </p>
+        <p>
+          Claude Code is Claude working inside a folder on your own computer. It
+          reads your Word files, PDFs, and spreadsheets, writes new ones, moves
+          and renames files, and, with your permission, uses your browser and
+          connected apps such as your calendar. In the ordinary chat window you
+          paste things in and copy things out. Here the work happens in your
+          files, and Claude asks before doing anything you have not allowed.
+        </p>
+        <p>
+          None of this requires programming. It requires a few plain text files
+          that tell Claude who you are, how you work, and what it must never do,
+          and a few habits that let it learn from you. The walkthrough below
+          builds those files with you. The most important one, your rules file,
+          you can generate on this page and install with a single message.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* A DAY */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-6">What it looks like in practice</p>
+      <div class="prose max-w-3xl">
+        <p>
+          At 5:00 a.m. a scheduled task writes my morning brief. It reads the
+          task workbook and the week's calendar, scans the subject lines of
+          flagged email, and proposes the day's priorities. Its most useful move
+          is the cross-check between sources: a deadline that lands on a day
+          already full of meetings, or a meeting that needs preparation nobody put
+          on the list.
+        </p>
+        <p>
+          During the day the requests are short. Add the conference registration
+          to my task list, due the 14th. Draft a reply to the dean's office; I am
+          saying yes but cannot do Thursday. File everything on the Desktop. Read
+          this grant draft and tell me what a reviewer will push on. Fill in the
+          travel form in Chrome but do not submit it.
+        </p>
+        <p>
+          Email is drafted and never sent. Files are never deleted; anything
+          redundant goes to a quarantine folder that only I empty. One workbook
+          holds every task and every dated commitment. When Claude gets something
+          wrong I say so, and it writes a note so the mistake does not recur.
+          After six months that pile of notes holds about 270 small lessons, and
+          the assistant is noticeably better for them.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* WALKTHROUGH */}
+  <section id="steps" class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">The walkthrough</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-4 max-w-2xl">
+        Nine steps, about an hour to set up
+      </h2>
+      <p class="text-[var(--color-text-muted)] leading-relaxed max-w-3xl mb-3">
+        Work through them in order. Tick each one off as you go; your progress
+        is kept in this browser.
+      </p>
+      <p class="font-mono text-xs text-[var(--color-gold)] mb-14" id="ca-progress">0 of 9 steps done</p>
+
+      <div class="space-y-16">
+
+        {/* STEP 1 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">01</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Know what you are setting up</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="1" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              Three features make Claude Code work as an assistant, and all three
+              are ordinary text files you can open and read.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 max-w-5xl">
+            {features.map((f) => (
+              <div class="border-t border-[var(--color-border)] pt-4">
+                <h4 class="font-display text-lg font-semibold mb-2 leading-tight">{f.title}</h4>
+                <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{f.body}</p>
+              </div>
+            ))}
+          </div>
+          <div class="prose max-w-3xl mt-6">
+            <p>
+              Because they are text, when Claude does something wrong you can see
+              which instruction it was following and fix it at the source.
+            </p>
+          </div>
+        </article>
+
+        {/* STEP 2 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">02</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Install it and choose a home folder</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="2" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              Claude Code comes with the paid Claude plans: Pro and Max for
+              individuals, Team and Enterprise through an organization. Install
+              the Claude desktop app from claude.ai/download, sign in, and open
+              the Code tab. Claude Code also runs in the Terminal, but the desktop
+              app is the easier start and is what this page assumes.
+            </p>
+            <p>
+              If your employer provides Claude, find out what its policy says
+              about confidential data. Many universities and companies restrict
+              student records, personnel files, patient data, and licensed
+              datasets. Settle that before you point Claude at those folders;
+              step 3 has a place to write the rule down.
+            </p>
+            <p>
+              Claude works in the folder you open it in, plus everything inside
+              it. Pick one folder that holds your work, such as Documents/Work,
+              and open Claude Code there. It helps if the folder has some shape: a
+              handful of top-level areas, one folder per project inside them, and
+              names that say what things are. If your files are a mess, tidying
+              them is a good first job for Claude, once the no-deletion rule from
+              step 3 is in place.
+            </p>
+          </div>
+        </article>
+
+        {/* STEP 3: BUILDER */}
+        <article class="ca-step" data-step-card id="builder">
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">03</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Write your rules: build your CLAUDE.md</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="3" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              This is the most important file. Fill in the form and the file
+              writes itself below; nothing you type leaves your browser. Start
+              with the hard rules and add preferences as you discover them. Keep
+              it to a page or two, since a long CLAUDE.md is followed less
+              reliably, and detail belongs in memory or in the folder file. When
+              it looks right, copy the install prompt, paste it into Claude Code,
+              and the file is in place.
+            </p>
+          </div>
+
+          <form id="ca-form" class="ca-form mt-10" autocomplete="off">
+            <div class="ca-group" style="border-top:0;padding-top:0;margin-top:0">
+              <p class="ca-group-title">About you</p>
+            </div>
+            <label class="ca-field">
+              <span class="ca-label">I am mainly</span>
+              <select id="f-audience" class="ca-select">
+                <option value="academic">an academic or researcher</option>
+                <option value="leader">a manager or leader</option>
+                <option value="both" selected>both</option>
+              </select>
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Full name</span>
+              <input id="f-name" class="ca-input" type="text" placeholder="as it appears on your documents" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">What to call you</span>
+              <input id="f-call" class="ca-input" type="text" placeholder="first name or nickname" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Role</span>
+              <input id="f-role" class="ca-input" type="text" placeholder="for example Associate Professor, or Director of Operations" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Organization</span>
+              <input id="f-org" class="ca-input" type="text" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">How you want answers</span>
+              <select id="f-style" class="ca-select">
+                <option value="short" selected>Short and direct, with a recommendation</option>
+                <option value="full">Fuller, with the reasoning and the options</option>
+              </select>
+            </label>
+            <label class="ca-field ca-wide">
+              <span class="ca-label">Your main areas of work</span>
+              <textarea id="f-areas" class="ca-textarea"></textarea>
+            </label>
+            <label class="ca-field ca-wide">
+              <span class="ca-label">People Claude will hear about often <span class="ca-hint">(optional)</span></span>
+              <textarea id="f-people" class="ca-textarea" placeholder="for example: Sam Lee is my assistant; Priya Shah is my department chair; Jordan Reyes handles our finances"></textarea>
+            </label>
+
+            <div class="ca-group">
+              <p class="ca-group-title">Hard rules</p>
+              <p class="ca-group-hint">Each one exists because the mistake it prevents is costly or cannot be undone. Keep them all unless you have a reason not to.</p>
+            </div>
+            <label class="ca-check ca-wide">
+              <input type="checkbox" id="f-rule-email" checked />
+              <span>Email is drafted, never sent or deleted <small>Claude writes the draft to a file; you send it from your own mail program.</small></span>
+            </label>
+            <label class="ca-check">
+              <input type="checkbox" id="f-rule-files" checked />
+              <span>Files are never deleted or overwritten <small>Redundant files go to a quarantine folder that only you empty.</small></span>
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Quarantine folder name</span>
+              <input id="f-quarantine" class="ca-input" type="text" value="_to_review" />
+            </label>
+            <label class="ca-check ca-wide">
+              <input type="checkbox" id="f-rule-forms" checked />
+              <span>Browser forms are filled, never submitted <small>Claude stops before the final button and tells you what it guessed.</small></span>
+            </label>
+            <label class="ca-check ca-wide">
+              <input type="checkbox" id="f-rule-money" checked />
+              <span>No passwords, payments, or account changes</span>
+            </label>
+            <label class="ca-check ca-wide">
+              <input type="checkbox" id="f-rule-confidential" checked />
+              <span>Confidential material is not opened unless you ask, naming the files</span>
+            </label>
+            <label class="ca-field ca-wide">
+              <span class="ca-label">What counts as confidential for you <span class="ca-hint">(leave blank to use the suggestion shown)</span></span>
+              <textarea id="f-confidential" class="ca-textarea"></textarea>
+            </label>
+            <label class="ca-check ca-wide">
+              <input type="checkbox" id="f-rule-sources" checked />
+              <span>Nothing is made up <small>Read the full source, flag uncertainty, check names and figures before anything goes out under your name.</small></span>
+            </label>
+
+            <div class="ca-group">
+              <p class="ca-group-title">Writing</p>
+            </div>
+            <label class="ca-field ca-wide">
+              <span class="ca-label">Style rules, one per line</span>
+              <textarea id="f-writing" class="ca-textarea">Plain, direct sentences. One idea per sentence.
+No em dashes.
+No bold or italics for emphasis.
+No cliches, corporate jargon, or stock openers.</textarea>
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Citation style</span>
+              <select id="f-citation" class="ca-select">
+                <option value="none">None needed</option>
+                <option value="APA 7">APA 7</option>
+                <option value="Chicago">Chicago</option>
+                <option value="MLA">MLA</option>
+                <option value="Harvard">Harvard</option>
+              </select>
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Spelling</span>
+              <select id="f-spelling" class="ca-select">
+                <option value="American" selected>American</option>
+                <option value="British">British</option>
+              </select>
+            </label>
+            <label class="ca-check">
+              <input type="checkbox" id="f-edit" checked />
+              <span>Edit and diagnose my prose rather than rewrite it <small>Claude is strongest as an editor and checker; prose it writes from scratch in your voice usually reads as machine-written.</small></span>
+            </label>
+            <label class="ca-check">
+              <input type="checkbox" id="f-voice" />
+              <span>I have a voice profile at ~/.claude/voice-profile.md <small>Optional; the kit has a template and an interview prompt to build one.</small></span>
+            </label>
+
+            <div class="ca-group">
+              <p class="ca-group-title">Documents</p>
+            </div>
+            <label class="ca-field">
+              <span class="ca-label">Font and size for Word documents</span>
+              <input id="f-font" class="ca-input" type="text" placeholder="for example Times New Roman 12" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Line spacing</span>
+              <select id="f-linespacing" class="ca-select">
+                <option value="single" selected>single</option>
+                <option value="1.5">1.5</option>
+                <option value="double">double</option>
+              </select>
+            </label>
+            <label class="ca-check ca-wide">
+              <input type="checkbox" id="f-spacing" checked />
+              <span>Zero space before and after every paragraph, headings included</span>
+            </label>
+
+            <div class="ca-group">
+              <p class="ca-group-title">Where things live</p>
+              <p class="ca-group-hint">Fill these in as you go through the later steps. Blanks become bracketed placeholders you can complete later.</p>
+            </div>
+            <label class="ca-field">
+              <span class="ca-label">Main work folder</span>
+              <input id="f-workfolder" class="ca-input" type="text" placeholder="for example ~/Documents/Work" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Task list file</span>
+              <input id="f-tasklist" class="ca-input" type="text" placeholder="for example ~/Documents/Work/Projects Master.xlsx" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Where project status lives</span>
+              <input id="f-status" class="ca-input" type="text" placeholder="for example the Projects sheet of the workbook" />
+            </label>
+            <label class="ca-field">
+              <span class="ca-label">Calendar</span>
+              <input id="f-calendar" class="ca-input" type="text" placeholder="for example Google Calendar through the connector" />
+            </label>
+            <label class="ca-field ca-wide">
+              <span class="ca-label">Email</span>
+              <input id="f-email" class="ca-input" type="text" placeholder="for example my work Outlook account, read in Chrome" />
+            </label>
+          </form>
+
+          <div class="mt-10">
+            <p class="eyebrow mb-3">Your CLAUDE.md</p>
+            <div class="flex flex-wrap gap-3 mb-5">
+              <button id="ca-install" type="button" class="btn btn-primary">Copy install prompt</button>
+              <button id="ca-copy" type="button" class="btn btn-ghost">Copy the file</button>
+              <button id="ca-download" type="button" class="btn btn-ghost">Download CLAUDE.md</button>
+              <button id="ca-clear" type="button" class="btn btn-ghost">Clear the form</button>
+            </div>
+            <pre id="ca-output" class="ca-output"></pre>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed max-w-3xl mt-5">
+              The install prompt tells Claude Code to save this as ~/.claude/CLAUDE.md
+              and read it back to you. Paste it into any session. If you would
+              rather do it by hand, download the file and put it in the hidden
+              .claude folder inside your home folder.
+            </p>
+          </div>
+        </article>
+
+        {/* STEP 4 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">04</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Map your files</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="4" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              The global file is about you. A folder CLAUDE.md is about the
+              files: how the folder is organized, what the naming conventions
+              mean, where the trackers live, and which folders are finished and
+              should be left alone. It is saved as CLAUDE.md at the top of your
+              work folder, and a large project with its own rules can have one in
+              its own folder too.
+            </p>
+            <p>
+              The easiest way to write it is to have Claude draft it and then
+              correct the draft against the template in the kit. Open Claude in
+              your work folder and paste this:
+            </p>
+          </div>
+          <div class="max-w-3xl mt-6">
+            <div class="ca-prompt-row" style="border-top:0;padding-top:0">
+              <p class="ca-prompt">{folderPrompt}</p>
+              <button type="button" class="btn btn-ghost ca-btn-sm" data-copy={folderPrompt}>Copy</button>
+            </div>
+            <a href="/claude-assistant/template-work-folder-CLAUDE.md" class="btn btn-ghost" download>Download the folder template</a>
+          </div>
+        </article>
+
+        {/* STEP 5 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">05</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Set up one task list</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="5" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              One list, and Claude knows where it is. The workbook in the kit has
+              a Task Queue in four bands (NOW, NEXT, WAITING, SOMEDAY), an
+              Upcoming sheet of dated commitments with a live countdown, a
+              Projects sheet, and the rules on a README sheet. Copy it into your
+              work folder, tell Claude where it is, then dictate your current
+              tasks in one long message and let Claude enter them. A plain text
+              file works as well, if you prefer text.
+            </p>
+            <p>
+              The rule that matters most: the Task Queue stays one flat ranked
+              list across every area of work. I tried a version sorted by topic
+              and abandoned it, because it made me tunnel on whichever area felt
+              urgent while other projects fell away. When something is waiting
+              on someone else, it moves to WAITING with that person's name.
+              Finished items come off the list rather than being checked off in
+              place.
+            </p>
+          </div>
+          <div class="max-w-3xl mt-6">
+            <div class="ca-prompt-row" style="border-top:0;padding-top:0">
+              <p class="ca-prompt">{taskPrompt}</p>
+              <button type="button" class="btn btn-ghost ca-btn-sm" data-copy={taskPrompt}>Copy</button>
+            </div>
+            <a href="/claude-assistant/Projects-Master.xlsx" class="btn btn-ghost" download>Download the workbook</a>
+          </div>
+        </article>
+
+        {/* STEP 6 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">06</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Connect your tools and choose a permission mode</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="6" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              Connect one thing at a time, and only after the hard rules are in
+              place. A connected mail account means Claude could send mail; the
+              rule is what stops it.
+            </p>
+            <ul>
+              <li>Connectors. Gmail, Google Calendar, Microsoft 365, and similar services are connected once on claude.ai (Settings, then Connectors) and then appear in the Code tab. You can also click the plus sign beside the message box and choose Add connectors. On a Team or Enterprise plan an administrator may have to add them for you.</li>
+              <li>Claude in Chrome. A browser extension that lets Claude read pages and fill forms in your own Chrome, signed in as you. Useful for web portals, webmail, and online forms. The desktop app has a built-in browser pane as well, but it starts with no saved logins, so use Chrome for anything that needs you signed in.</li>
+              <li>Mac apps. On a Mac, Claude can read Apple Calendar and Apple Mail through AppleScript, which it writes and runs itself. macOS asks you to grant permission the first time.</li>
+            </ul>
+            <p>
+              The permission mode decides how often Claude stops to ask you. In
+              the desktop app you change it with the selector just below the
+              message box, and the app remembers your choice for each folder.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 mt-8 max-w-4xl">
+            {modes.map((m) => (
+              <div class="border-t border-[var(--color-border)] pt-4">
+                <h4 class="font-display text-lg font-semibold mb-1 leading-tight">{m.name}</h4>
+                <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{m.body}</p>
+              </div>
+            ))}
+          </div>
+          <div class="prose max-w-3xl mt-6">
+            <p>
+              There is also a Bypass mode that skips all checks. Leave it off.
+              One limit to keep in mind: CLAUDE.md is strong guidance, and in
+              daily use these rules hold well, but it is not a lock. The
+              permission mode is the lock. For the actions that matter most, such
+              as anything touching email or the Trash, keep Claude asking before
+              it acts, and read what it proposes before you approve.
+            </p>
+          </div>
+        </article>
+
+        {/* STEP 7 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">07</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Teach it as you go</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="7" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              Memory is on by default, and each folder you open Claude in gets
+              its own set. Claude keeps an index with one line per memory and
+              reads it at the start of each session, then opens the full note
+              when that topic comes up. You can create memories directly:
+              remember that I print reading copies single-spaced; remember that
+              the board report is due 14 November and the draft is in
+              Admin/Board.
+            </p>
+            <p>
+              The most valuable memories come from corrections. If you fix
+              Claude's mistakes by hand without comment, it cannot learn from
+              them, and from its side the error never happened. Say what was
+              wrong and why, and ask it to remember. A memory with the reason
+              attached lets Claude apply the lesson to cases you did not
+              anticipate. Once a month, prune:
+            </p>
+          </div>
+          <div class="max-w-3xl mt-4 mb-8">
+            <div class="ca-prompt-row" style="border-top:0;padding-top:0">
+              <p class="ca-prompt">{memoryPrompt}</p>
+              <button type="button" class="btn btn-ghost ca-btn-sm" data-copy={memoryPrompt}>Copy</button>
+            </div>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              Skills come next. When you have explained the same multi-step job
+              to Claude three times, ask it to turn the job into a skill. A skill
+              is a folder holding a SKILL.md file whose top describes what it is
+              for and when to use it. Claude uses a skill when a request matches
+              that description, and you can also call one by name, for example
+              /weekly-review. My own skills include one for grading in my
+              feedback voice, one for each journal I edit for, one that checks
+              the tone of a delicate email against three etiquette books, and one
+              that answers questions from a local copy of my university's
+              policies. Each began as a job explained once in conversation.
+            </p>
+          </div>
+          <div class="max-w-3xl mt-4">
+            <div class="ca-prompt-row" style="border-top:0;padding-top:0">
+              <p class="ca-prompt">{skillPrompt}</p>
+              <button type="button" class="btn btn-ghost ca-btn-sm" data-copy={skillPrompt}>Copy</button>
+            </div>
+            <a href="/claude-assistant/weekly-review-SKILL.md" class="btn btn-ghost" download>Download the weekly review skill</a>
+          </div>
+        </article>
+
+        {/* STEP 8 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">08</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Make it daily</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="8" /> Done</label>
+          </div>
+          <div class="prose max-w-3xl">
+            <p>
+              Start with one scheduled task, the morning brief. In the desktop
+              app, click Scheduled in the Code tab's sidebar and then New task,
+              or just ask in any session. The prompt in the kit reads your task
+              workbook, your calendar, and the subject lines of recent email,
+              then cross-checks them and proposes the day's top three. Run it
+              once by hand first and adjust until the brief is useful.
+            </p>
+            <p>
+              These tasks run on your own computer, so they run only while the
+              computer is awake and the app is open. If a run is missed because
+              the computer was asleep, the task runs once to catch up when it
+              wakes. For an early brief, turn on the keep-awake option in the
+              app's settings and leave the laptop open and plugged in. Add other
+              tasks only when you find yourself asking for the same thing on a
+              schedule: a Friday review, a weekly draft for a newsletter, a
+              monthly check of something that drifts.
+            </p>
+          </div>
+          <div class="max-w-3xl mt-4">
+            <div class="ca-prompt-row" style="border-top:0;padding-top:0">
+              <p class="ca-prompt">{briefPrompt}</p>
+              <button type="button" class="btn btn-ghost ca-btn-sm" data-copy={briefPrompt}>Copy</button>
+            </div>
+            <a href="/claude-assistant/template-morning-brief.md" class="btn btn-ghost" download>Download the morning brief prompt</a>
+          </div>
+        </article>
+
+        {/* STEP 9 */}
+        <article class="ca-step" data-step-card>
+          <div class="ca-step-head">
+            <div>
+              <p class="text-[var(--color-gold)] font-mono text-xs mb-3">09</p>
+              <h3 class="ca-step-title font-display text-2xl font-semibold mb-4 leading-tight">Run your first week</h3>
+            </div>
+            <label class="ca-done"><input type="checkbox" data-step="9" /> Done</label>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
+            {firstWeek.map((d) => (
+              <div class="border-t border-[var(--color-border)] pt-4">
+                <p class="text-[var(--color-gold)] font-mono text-xs mb-2">{d.when}</p>
+                <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{d.body}</p>
+              </div>
+            ))}
+          </div>
+          <div class="prose max-w-3xl mt-8">
+            <p>
+              Three habits make the difference after that. Give the reason along
+              with each instruction, so Claude can apply it sensibly to cases you
+              did not foresee. Say it when you correct something, so the fix
+              carries forward. And use one session per job: start a new session
+              when you change topics, since CLAUDE.md and memory carry what
+              matters from one to the next.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  {/* PROMPTS */}
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">Prompts to try</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-6 max-w-2xl">
+        Complete requests you can paste and adapt
+      </h2>
+      <div class="max-w-4xl">
+        {prompts.map((t) => (
+          <div class="ca-prompt-row">
+            <p>{t}</p>
+            <button type="button" class="btn btn-ghost ca-btn-sm" data-copy={t}>Copy</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* TROUBLE */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">When things go wrong</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-12 max-w-2xl">
+        Six common snags
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-5xl">
+        {troubles.map((t) => (
+          <article class="border-t border-[var(--color-border-strong)] pt-5">
+            <h3 class="font-display text-lg font-semibold mb-2 leading-tight">{t.q}</h3>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{t.a}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* KIT */}
+  <section id="kit" class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
+    <div class="wrap py-20">
+      <p class="eyebrow mb-4">The starter kit</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-6 max-w-2xl">
+        Download the guide and the templates
+      </h2>
+      <p class="text-[var(--color-text-muted)] leading-relaxed max-w-3xl mb-10">
+        Everything on this page, plus the templates the steps refer to. The
+        whole kit is also on GitHub, where you can read it, adapt it, and report
+        what could be better.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-w-5xl">
+        {downloads.map((d) => (
+          <div class="border-t border-[var(--color-border)] pt-4">
+            <a href={d.file} class="font-display text-lg font-semibold leading-tight" download>{d.label} ↓</a>
+            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mt-1">{d.note}</p>
+          </div>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-3 mt-10">
+        <a href={repoUrl} class="btn btn-primary">The kit on GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  {/* PROVENANCE */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-6">Where it comes from</p>
+      <div class="prose max-w-3xl">
+        <p>
+          This page condenses a setup I built for myself over about six months
+          of daily use and first wrote up for a friend who wanted to work the
+          same way. The hard rules are the ones that cost me something to learn.
+          The habits are the ones that made the assistant better month by month.
+          The feature details were checked against the Claude Code documentation
+          in October 2026; the product changes often, so if a menu or a mode has
+          moved, the documentation is the place to look.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* LICENSE & CITATION */}
+  <section class="bg-[var(--color-paper-warm)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-4">License and citation</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-6 max-w-2xl">
+        Free to use, with credit
+      </h2>
+      <div class="prose max-w-3xl mb-8">
+        <p>
+          Released under a
+          <a href="https://creativecommons.org/licenses/by/4.0/"> Creative Commons Attribution 4.0 International (CC BY 4.0)</a>
+          license. You may use, adapt, and share it for any purpose, including in
+          your own teaching and workshops, as long as you credit the source.
+        </p>
+      </div>
+      <div class="max-w-3xl border-t border-[var(--color-border-strong)] pt-5">
+        <p class="font-mono text-xs text-[var(--color-gold)] mb-3">
+          Version {version} · Updated {updated}
+        </p>
+        <p
+          class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"
+          style="padding-left:1.5rem;text-indent:-1.5rem"
+        >
+          Crocco, O. S. (2026). <em>{citeTitle}</em> (Version {version}) [Guide and templates]. GitHub. <a href={repoUrl}>{repoUrl}</a>
+        </p>
+        <button class="btn btn-ghost" type="button" data-cite={apaCitation}>Copy citation</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../lib/claudeAssistant.js";
+  </script>
+</BaseLayout>
