@@ -42,7 +42,11 @@ Corrections stick. When Claude gets something wrong, Ozzie says so and explains 
 
 Claude Code comes with the paid Claude plans (Pro and Max for individuals, Team and Enterprise through an organization). Install the Claude desktop app from claude.ai/download, sign in, and open the Code tab. Claude Code also runs in the Terminal, but the desktop app is the easier start and is what this guide assumes.
 
-If your employer provides Claude, find out which plan it is and whether there is a policy on what data you may use with it. Many universities and companies restrict confidential records such as student records, personnel files, patient data, and licensed datasets. Settle this before you point Claude at those folders.
+Two things to settle before you point Claude at anything.
+
+Your organization's rules come first. Most universities and companies now have a policy on AI tools, usually from IT, research ethics, or HR, and it governs everything in this guide. Find it before you begin, and if there is none, ask who decides. Nothing here overrides it.
+
+Then apply one test to anything you are about to give Claude: do you have permission to share it, and would you be comfortable if it leaked? If the answer to either is no, keep it out. Claude Code works on files on your computer, but the model itself runs on Anthropic's servers, so what Claude reads leaves your machine. How long it is kept and what it may be used for depend on your plan and your settings, so read them. Be most careful with what other people have entrusted to you: student work and records, research participants' data, personnel and salary files, client records, manuscripts under review, and anything covered by a data use agreement or a confidentiality clause. Those people did not agree to an AI reading their material. The global CLAUDE.md template has a rule for exactly this; write your own list into it.
 
 ### Step 2: Choose a home folder
 
@@ -76,9 +80,19 @@ Claude Code can reach other apps in a few ways.
 
 - Connectors. Google Calendar, Microsoft 365, Google Drive, and similar services are connected once on claude.ai (Settings, then Connectors), and they then appear in the Code tab automatically. You can also click the + beside the message box and choose Add connectors. On a Team or Enterprise plan, an administrator may have to add them for you.
 - Claude in Chrome. A browser extension that lets Claude read pages and fill forms in your own Chrome, signed in as you. It is useful for web portals and online forms. The desktop app also has its own built-in browser pane, but that one starts with no saved logins, so use Chrome for anything that needs you signed in.
-- Mac apps. On a Mac, Claude can read Apple Calendar and Apple Mail through AppleScript, which it writes and runs itself. macOS asks you to grant permission the first time.
+- Mac apps. On a Mac, Claude can read Apple Calendar through AppleScript, which it writes and runs itself. macOS asks you to grant permission the first time.
 
-Connect one thing at a time, and only after the hard rules are in your global CLAUDE.md. Start with the calendar; it is what makes the morning brief and meeting preparation work. Email is a separate decision, taken up in section 6.
+To set up Claude in Chrome:
+
+1. Install the Claude in Chrome extension from the Chrome Web Store and sign in to it with the same Claude account. It works in Chrome or Edge and needs a Pro, Max, Team, or Enterprise plan.
+2. In the desktop app, Claude uses the extension whenever a task needs the browser. In the Terminal, start a session with `claude --chrome`, or type `/chrome` to check the connection and turn it on by default.
+3. Keep the Chrome window visible and watch it work. The extension stops at sign-in pages and CAPTCHAs and hands those to you. You can allow or block individual sites in the extension's settings.
+4. Hold the browser rule: fill, never submit. Ask Claude to say what it filled, what it guessed, and what it left blank, then press the final button yourself.
+5. Everything on a page Claude opens, Claude reads. Treat a page inside a signed-in portal the way you would treat a document, and keep the same things out of it.
+
+A first task to try: "Open the travel reimbursement form in Chrome and fill it in from the receipts in Admin/Expenses/October. Stop before submitting and tell me what you filled, what you guessed, and what you left blank."
+
+Connect one thing at a time, and only after the hard rules are in your global CLAUDE.md. Start with the calendar; it is what makes the morning brief and meeting preparation work. Email comes last; section 6 says where the line is.
 
 ### Step 7: Choose a permission mode
 
@@ -163,7 +177,7 @@ Use Claude to check your writing. This is where it is strongest: facts, citation
 
 Ask it to check its own work. "Open the Word document and confirm every heading has zero spacing." "Recount the rows." Claude verifies when asked and often catches its own errors that way.
 
-Treat email as a decision, not a step. Many people run this setup for weeks without connecting email, and the task list, the documents, and the filing carry most of the value. The lightest route needs no connection: paste one message into the chat when you want a draft, and nothing else in your inbox is touched. Before connecting an inbox, think about the people who write to you. A student, a client, or an author whose manuscript you are handling did not agree to an AI reading their message; your employer may have a policy, and some publishers restrict AI anywhere in the review process. Keep student records, personnel matters, and manuscripts under review out of it, and say so in your global CLAUDE.md. Whatever route you take, the drafts are yours to rewrite; the sentences people receive should be the ones you chose to send.
+Leave email for last. Many people run this setup for weeks without connecting email, and the task list, the documents, and the filing carry most of the value. The lightest route needs no connection: paste one message into the chat when you want a draft, and nothing else in your inbox is touched. Before connecting an inbox, think about the people who write to you. A student, a client, or an author whose manuscript you are handling did not agree to an AI reading their message; your employer may have a policy, and some publishers restrict AI anywhere in the review process. Keep student records, personnel matters, and manuscripts under review out of it, and say so in your global CLAUDE.md. Whatever route you take, the drafts are yours to rewrite; the sentences people receive should be the ones you chose to send.
 
 Keep a backup running. Claude works on real files, so keep Time Machine or a cloud backup on.
 

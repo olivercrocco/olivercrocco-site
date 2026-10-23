@@ -81,6 +81,7 @@ const folderPrompt = "Look through this folder and draft a CLAUDE.md that descri
 const taskPrompt = "My task list is Projects Master.xlsx in this folder. Add that to the Where things live section of my global CLAUDE.md. Then I will dictate my current tasks and you can enter them.";
 const memoryPrompt = "Go through my memory files, merge duplicates, and flag anything that looks out of date.";
 const skillPrompt = "Make what we just did into a skill called weekly-review so I can run it every Friday.";
+const chromePrompt = "Open the travel reimbursement form in Chrome and fill it in from the receipts in Admin/Expenses/October. Stop before submitting and tell me what you filled, what you guessed, and what you left blank.";
 const briefPrompt = "Set up a scheduled task called morning-brief that runs every weekday at 6 a.m. using the prompt in the morning brief template I downloaded.";
 ---
 
@@ -170,6 +171,41 @@ const briefPrompt = "Set up a scheduled task called morning-brief that runs ever
     </div>
   </section>
 
+  {/* BEFORE YOU START */}
+  <section id="before" class="border-b border-[var(--color-border)]">
+    <div class="wrap py-16">
+      <p class="eyebrow mb-6">Before you start</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-8 max-w-2xl">
+        What goes in, and what stays out
+      </h2>
+      <div class="prose max-w-3xl">
+        <p>
+          Your organization's rules come first. Most universities and companies
+          now have a policy on AI tools, usually from IT, research ethics, or
+          HR, and it governs everything on this page. Find it before you begin,
+          and if there is none, ask who decides. Nothing here overrides it.
+        </p>
+        <p>
+          Then apply one test to anything you are about to give Claude: do you
+          have permission to share it, and would you be comfortable if it
+          leaked? If the answer to either is no, keep it out. Claude Code works
+          on files on your computer, but the model itself runs on Anthropic's
+          servers, so what Claude reads leaves your machine. How long it is kept
+          and what it may be used for depend on your plan and your settings, so
+          read them.
+        </p>
+        <p>
+          Be most careful with what other people have entrusted to you: student
+          work and records, research participants' data, personnel and salary
+          files, client records, manuscripts under review, and anything covered
+          by a data use agreement or a confidentiality clause. Those people did
+          not agree to an AI reading their material. The builder in step 3 has a
+          rule for exactly this; write your own list into it.
+        </p>
+      </div>
+    </div>
+  </section>
+
   {/* WALKTHROUGH */}
   <section id="steps" class="border-b border-[var(--color-border)]">
     <div class="wrap py-20">
@@ -234,11 +270,9 @@ const briefPrompt = "Set up a scheduled task called morning-brief that runs ever
               app is the easier start and is what this page assumes.
             </p>
             <p>
-              If your employer provides Claude, find out what its policy says
-              about confidential data. Many universities and companies restrict
-              student records, personnel files, patient data, and licensed
-              datasets. Settle that before you point Claude at those folders;
-              step 3 has a place to write the rule down.
+              Before you point Claude at any folder, settle your organization's
+              policy and decide what stays out, as the section above describes.
+              Step 3 has a place to write the rule down.
             </p>
             <p>
               Claude works in the folder you open it in, plus everything inside
@@ -538,14 +572,30 @@ No cliches, corporate jargon, or stock openers.</textarea>
             <p>
               Connect one thing at a time, and only after the hard rules are in
               place. The calendar is the one to start with; it is what makes the
-              morning brief and meeting preparation work. Email is a separate
-              decision, taken up in the note after step 9.
+              morning brief and meeting preparation work. Email comes last; the
+              note after step 9 says where the line is.
             </p>
             <ul>
               <li>Connectors. Google Calendar, Microsoft 365, Google Drive, and similar services are connected once on claude.ai (Settings, then Connectors) and then appear in the Code tab. You can also click the plus sign beside the message box and choose Add connectors. On a Team or Enterprise plan an administrator may have to add them for you.</li>
-              <li>Claude in Chrome. A browser extension that lets Claude read pages and fill forms in your own Chrome, signed in as you. Useful for web portals, webmail, and online forms. The desktop app has a built-in browser pane as well, but it starts with no saved logins, so use Chrome for anything that needs you signed in.</li>
-              <li>Mac apps. On a Mac, Claude can read Apple Calendar and Apple Mail through AppleScript, which it writes and runs itself. macOS asks you to grant permission the first time.</li>
+              <li>Claude in Chrome. A browser extension that lets Claude read pages and fill forms in your own Chrome, signed in as you. Useful for web portals and online forms. The desktop app has a built-in browser pane as well, but it starts with no saved logins, so use Chrome for anything that needs you signed in. Setup is below.</li>
+              <li>Mac apps. On a Mac, Claude can read Apple Calendar through AppleScript, which it writes and runs itself. macOS asks you to grant permission the first time.</li>
             </ul>
+            <h4 class="font-display text-lg font-semibold mt-10 mb-3">Setting up Claude in Chrome</h4>
+            <ol>
+              <li>Install the Claude in Chrome extension from the Chrome Web Store and sign in to it with the same Claude account. It works in Chrome or Edge and needs a Pro, Max, Team, or Enterprise plan.</li>
+              <li>In the desktop app, Claude uses the extension whenever a task needs the browser. In the Terminal, start a session with <code>claude --chrome</code>, or type <code>/chrome</code> to check the connection and turn it on by default.</li>
+              <li>Keep the Chrome window visible and watch it work. The extension stops at sign-in pages and CAPTCHAs and hands those to you. You can allow or block individual sites in the extension's settings.</li>
+              <li>Hold the browser rule: fill, never submit. Ask Claude to say what it filled, what it guessed, and what it left blank, then press the final button yourself.</li>
+              <li>Everything on a page Claude opens, Claude reads. Treat a page inside a signed-in portal the way you would treat a document, and keep the same things out of it.</li>
+            </ol>
+          </div>
+          <div class="max-w-3xl mt-4 mb-8">
+            <div class="ca-prompt-row" style="border-top:0;padding-top:0">
+              <p class="ca-prompt">{chromePrompt}</p>
+              <button type="button" class="btn btn-ghost ca-btn-sm" data-copy={chromePrompt}>Copy</button>
+            </div>
+          </div>
+          <div class="prose max-w-3xl">
             <p>
               The permission mode decides how often Claude stops to ask you. In
               the desktop app you change it with the selector just below the
@@ -706,14 +756,14 @@ No cliches, corporate jargon, or stock openers.</textarea>
     <div class="wrap py-16">
       <p class="eyebrow mb-6">A note on email</p>
       <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-8 max-w-2xl">
-        A decision, not a step
+        Email can wait
       </h2>
       <div class="prose max-w-3xl">
         <p>
           Many people run this setup for weeks without connecting email, and
           lose little by it. The task list, the documents, and the filing carry
-          most of the value. So treat email as a decision rather than a step,
-          and make it the last one.
+          most of the value. Leave email for last, and add it only if your work
+          allows it.
         </p>
         <p>
           The lightest route needs no connection at all: paste one message into
