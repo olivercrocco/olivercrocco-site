@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { AUTHOR, SITE, RESEARCH_THEMES } from "../site.config";
 import Fleuron from "../components/Fleuron.astro";
+import StreamsBraid from "../components/StreamsBraid.astro";
 import PersonSchema from "../components/PersonSchema.astro";
 
 // Selected publications — top 5 most prominent recent.
@@ -232,7 +233,7 @@ const featuredBook = {
   {/* ============================================================ THREE STREAMS — DARK SECTION (B) ============================================================ */}
   <section class="section-dark border-y border-black/40">
     <div class="wrap py-28">
-      <div class="max-w-2xl mb-20" data-fade>
+      <div class="max-w-2xl mb-14" data-fade>
         <p class="eyebrow mb-4">What I work on</p>
         <h2 class="font-display text-4xl md:text-5xl font-semibold tracking-tight mb-6 text-white leading-[1.1]">
           Three streams that interweave
@@ -242,23 +243,20 @@ const featuredBook = {
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12" data-fade-stagger>
-        {RESEARCH_THEMES.map((theme, i) => (
+      <div data-fade>
+        <StreamsBraid id="streams-home" />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-3" data-fade-stagger>
+        {RESEARCH_THEMES.map((theme) => (
           <article class="relative">
-            <div
-              class="font-display font-semibold text-[3.25rem] md:text-[4rem] leading-none mb-5"
-              style="color: var(--color-gold-light);"
-            >
-              {String(i + 1).padStart(2, "0")}
-            </div>
-            <div class="border-t border-white/20 pt-6">
-              <h3 class="font-display text-2xl font-semibold mb-4 leading-tight text-white">
-                {theme.title}
-              </h3>
-              <p class="text-[0.9375rem] leading-relaxed">
-                {theme.summary}
-              </p>
-            </div>
+            <div class="h-[2px] mb-6" style={`background: ${theme.color};`}></div>
+            <h3 class="font-display text-2xl font-semibold mb-4 leading-tight text-white">
+              {theme.title}
+            </h3>
+            <p class="text-[0.9375rem] leading-relaxed">
+              {theme.summary}
+            </p>
           </article>
         ))}
       </div>

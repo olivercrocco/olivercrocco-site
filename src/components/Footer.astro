@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
         <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-4">
           {AUTHOR.role}
           <br />
-          {AUTHOR.institution} · {AUTHOR.visitingRole},{" "}{AUTHOR.visitingInstitution}
+          {AUTHOR.institution}
         </p>
         <a
           href={`mailto:${AUTHOR.email}`}
@@ -97,7 +97,7 @@ const year = new Date().getFullYear();
     <hr class="hairline mt-12 mb-8" />
 
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-[0.8125rem] text-[var(--color-text-soft)]">
-      <p>© {year} {AUTHOR.name} · Baton Rouge &amp; Bangkok</p>
+      <p>© {year} {AUTHOR.name} · Baton Rouge</p>
       <p>
         Site built with <a href="https://astro.build" class="text-[var(--color-text-soft)] hover:text-[var(--color-ink)]">Astro</a>.
       </p>

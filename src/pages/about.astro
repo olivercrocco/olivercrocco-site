@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { AUTHOR, SOCIAL, RESEARCH_THEMES } from "../site.config";
 import PersonSchema from "../components/PersonSchema.astro";
+import StreamsBraid from "../components/StreamsBraid.astro";
 
 const education = [
   {
@@ -95,13 +96,14 @@ const editorialRoles = [
   <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
     <div class="wrap py-20">
       <p class="eyebrow mb-4">Research</p>
-      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-12 max-w-2xl">
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-10 max-w-2xl">
         Three streams that interweave
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        {RESEARCH_THEMES.map((theme, i) => (
-          <article class="border-t border-[var(--color-border-strong)] pt-6">
-            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">0{i + 1}</p>
+      <StreamsBraid id="streams-about" tone="light" gap={40} />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-3">
+        {RESEARCH_THEMES.map((theme) => (
+          <article>
+            <div class="h-[2px] mb-6" style={`background: ${theme.colorOnLight};`}></div>
             <h3 class="font-display text-xl font-semibold mb-3 leading-tight">
               {theme.title}
             </h3>

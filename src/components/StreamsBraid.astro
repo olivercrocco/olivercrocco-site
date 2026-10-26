@@ -1,0 +1,101 @@
+---
+/**
+ * The three research streams drawn as translucent ribbons that flow through
+ * one another, in place of a numbered list. Each ribbon swells and dips
+ * closest to the text directly above its own column, and overlaps blend
+ * where the streams meet.
+ */
+import { RESEARCH_THEMES } from "../site.config";
+
+interface Props {
+  id: string;
+  /** "dark" for .section-dark (blend lightens), "light" for paper backgrounds (blend darkens). */
+  tone?: "dark" | "light";
+  /** Gap between the columns below, in px, so the dips land on column centers. */
+  gap?: number;
+}
+const { id, tone = "dark", gap = 48 } = Astro.props;
+
+const colors = RESEARCH_THEMES.map((t) => (tone === "dark" ? t.color : t.colorOnLight));
+const blend = tone === "dark" ? "screen" : "multiply";
+
+type Sample = { x: number; y: number; theta: number };
+
+// Ribbon k reaches the bottom edge (toward the text) at centers[k]. The
+// centers sit a third of a period apart, so the three curves braid.
+function sample(center: number, W: number, P: number, A: number, mid: number, step = 2): Sample[] {
+  const pts: Sample[] = [];
+  for (let x = 0; x <= W + 0.01; x += step) {
+    const theta = (2 * Math.PI * (x - center)) / P;
+    pts.push({ x, y: mid + A * Math.cos(theta), theta });
+  }
+  return pts;
+}
+
+const f = (n: number) => n.toFixed(1);
+
+// Width swells where the ribbon comes nearest the text.
+function ribbon(pts: Sample[], P: number, A: number, w0: number, w1: number): string {
+  const k = (2 * Math.PI) / P;
+  const top: string[] = [];
+  const bottom: string[] = [];
+  for (const p of pts) {
+    const w = w0 + w1 * Math.pow((1 + Math.cos(p.theta)) / 2, 3);
+    const dy = -A * k * Math.sin(p.theta);
+    const len = Math.hypot(1, dy);
+    const nx = -dy / len;
+    const ny = 1 / len;
+    top.push(`${f(p.x + (nx * w) / 2)},${f(p.y + (ny * w) / 2)}`);
+    bottom.push(`${f(p.x - (nx * w) / 2)},${f(p.y - (ny * w) / 2)}`);
+  }
+  return `M${top.join("L")}L${bottom.reverse().join("L")}Z`;
+}
+
+// Desktop geometry matches .wrap at full width: 1104px of content split into
+// three columns. On phones the columns stack, so the ribbons just spread evenly.
+function desktopCenters(W: number) {
+  const col = (W - 2 * gap) / 3;
+  return [0, 1, 2].map((i) => col / 2 + i * (col + gap));
+}
+
+function build(W: number, centers: number[], mobile: boolean) {
+  const P = (centers[1] - centers[0]) * 3;
+  const A = mobile ? 38 : 56;
+  const w0 = mobile ? 8 : 7;
+  const w1 = mobile ? 20 : 26;
+  const H = 2 * A + w0 + w1 + 8;
+  const strands = centers.map((c) => sample(c, W, P, A, H / 2));
+  return { W, H, ribbons: strands.map((s) => ribbon(s, P, A, w0, w1)) };
+}
+
+const views = [
+  { key: "d", cls: "hidden md:block", g: build(1104, desktopCenters(1104), false) },
+  { key: "m", cls: "md:hidden", g: build(600, [100, 300, 500], true) },
+];
+---
+
+{views.map(({ key, cls, g }) => (
+  <svg
+    class={`w-full h-auto ${cls}`}
+    viewBox={`0 0 ${g.W} ${g.H}`}
+    aria-hidden="true"
+    focusable="false"
+  >
+    <defs>
+      <linearGradient id={`${id}-${key}-fade`} x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#000" />
+        <stop offset="0.07" stop-color="#fff" />
+        <stop offset="0.93" stop-color="#fff" />
+        <stop offset="1" stop-color="#000" />
+      </linearGradient>
+      <mask id={`${id}-${key}-mask`}>
+        <rect width={g.W} height={g.H} fill={`url(#${id}-${key}-fade)`} />
+      </mask>
+    </defs>
+    <g mask={`url(#${id}-${key}-mask)`}>
+      {g.ribbons.map((d, i) => (
+        <path d={d} fill={colors[i]} fill-opacity="0.74" style={`mix-blend-mode: ${blend}`} />
+      ))}
+    </g>
+  </svg>
+))}
