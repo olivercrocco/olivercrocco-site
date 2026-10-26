@@ -24,12 +24,12 @@ export const AUTHOR = {
   visitingRole: "Visiting Professor",
   visitingInstitution: "Chulalongkorn University, Bangkok",
   // Longer form naming the faculty. Used in flowing prose (homepage lede, About
-  // bio) where the sentence has room; the compact form above stays in the footer
-  // and contact block.
+  // bio) where the sentence has room; the compact form above stays in the
+  // contact block.
   visitingInstitutionLong:
     "Chulalongkorn University's Faculty of Political Science in Bangkok",
-  // Year range for the current visiting appointment. Single source of truth:
-  // update this one line when the appointment or dates change.
+  // Year range of the visiting appointment, which has ended; the pages that
+  // mention it describe it in the past tense.
   visitingYears: "2025–2026",
   email: "olivercrocco@lsu.edu",
   namedropUrl: "https://namedrop.io/olivercrocco",
