@@ -18,6 +18,7 @@ export const AUTHOR = {
   nickname: "Ozzie",
   fullTitle: "Oliver S. (Ozzie) Crocco, EdD",
   role: "Associate Professor of Leadership and Human Resource Development",
+  adminRole: "Associate Director & PhD Program Coordinator",
   scholarlyArea: "Leadership, learning, & human development",
   department: "School of Leadership & Human Resource Development",
   institution: "Louisiana State University",
