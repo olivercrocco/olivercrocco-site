@@ -38,6 +38,32 @@ const editorialRoles = [
   { role: "Editorial Board", venue: "Industrial and Commercial Training", current: true },
   { role: "Board of Directors", venue: "Academy of Human Resource Development", current: false, dates: "2021–2024" },
 ];
+
+const regionalWork: { role: string; venue: string; dates?: string; url?: string }[] = [
+  {
+    role: "Plenary Speaker and Lead Facilitator, Future Leaders of ASEAN",
+    venue: "Ministry of Foreign Affairs and Cooperation, Timor-Leste",
+    dates: "2024–2026",
+  },
+  {
+    role: "Visiting Professor",
+    venue: "Faculty of Political Science, Chulalongkorn University",
+    dates: "2025–2026",
+  },
+  {
+    role: "Country Expert, Thailand",
+    venue: "Varieties of Democracy (V-Dem) Project",
+    dates: "2022–2023",
+    url: "https://v-dem.net/",
+  },
+  {
+    role: "Article",
+    venue: "The HR development ecosystem in Southeast Asia, HRM Asia",
+    dates: "2021",
+    url: "https://hrmasia.com/the-hr-development-ecosystem-in-southeast-asia/",
+  },
+  { role: "Language", venue: "Thai (intermediate)" },
+];
 ---
 
 <BaseLayout
@@ -74,21 +100,21 @@ const editorialRoles = [
           />
           <p class="eyebrow mb-3">In short</p>
           <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-2">
-            My last name is pronounced like crocodile —
-            <a href={AUTHOR.namedropUrl} class="text-[var(--color-ink)]">hear it</a>.
+            My last name is pronounced like crocodile
+            (<a href={AUTHOR.namedropUrl} class="text-[var(--color-ink)]">hear it</a>).
             People who know me call me Ozzie.
           </p>
         </aside>
 
         <div class="md:col-span-8 prose">
           <p class="drop-cap">
-            My research focuses on <a href="/publications">human resource development, leadership, and human development across Southeast Asia and ASEAN</a> — examining how nations and institutions build human capability under different cultural, political, and economic conditions, and what other regions can learn from those dynamics.
+            My research focuses on <a href="/publications">human resource development, leadership, and human development across Southeast Asia and ASEAN</a>. I examine how nations and institutions build human capability under different cultural, political, and economic conditions, and what other regions can learn from those dynamics.
           </p>
           <p>
             I'm an <a href={AUTHOR.lsuProfileUrl}>Associate Professor of Leadership and Human Resource Development</a> at Louisiana State University and was a Visiting Professor at Chulalongkorn University's Faculty of Political Science in Bangkok (2025–2026). At LSU I also serve as Associate Director of the School of Leadership & Human Resource Development and as PhD Program Coordinator. My doctorate is from George Washington University in Human and Organizational Learning; my master's from Harvard in Human Development and Psychology.
           </p>
           <p>
-            Before LSU, I taught at GW in Washington and, before that, at Payap University in Chiang Mai for four years. My interest in HRD took root during that time, through <a href="/books">fieldwork with community-based organizations on the Thai-Myanmar border and inside Myanmar</a> — work that continues to shape the questions I ask today.
+            Before LSU, I taught at GW in Washington and, before that, at Payap University in Chiang Mai for four years. My interest in HRD took root during that time, through <a href="/books">fieldwork with community-based organizations on the Thai-Myanmar border and inside Myanmar</a>. That work continues to shape the questions I ask today.
           </p>
         </div>
       </div>
@@ -115,6 +141,42 @@ const editorialRoles = [
             </p>
           </article>
         ))}
+      </div>
+    </div>
+  </section>
+
+  {/* SOUTHEAST ASIA */}
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <div class="md:col-span-4">
+          <p class="eyebrow mb-4">Southeast Asia</p>
+          <h2 class="font-display text-3xl font-semibold tracking-tight mb-4 leading-tight">
+            Work in the region
+          </h2>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+            Teaching, facilitation, and expert roles alongside the research.
+          </p>
+        </div>
+        <div class="md:col-span-8">
+          <ul class="divide-y divide-[var(--color-border)]">
+            {regionalWork.map((item) => (
+              <li class="py-4 grid grid-cols-1 md:grid-cols-12 gap-2">
+                <div class="md:col-span-5">
+                  <p class="font-display text-lg text-[var(--color-text)] font-medium leading-snug">
+                    {item.role}
+                  </p>
+                </div>
+                <div class="md:col-span-7">
+                  <p class="text-[var(--color-text-muted)] leading-snug">
+                    {item.url ? <a href={item.url}>{item.venue}</a> : item.venue}
+                    {item.dates && <span class="text-[var(--color-text-soft)] text-sm ml-2">({item.dates})</span>}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -167,7 +229,7 @@ const editorialRoles = [
             <div class="md:col-span-7">
               <p class="font-display text-xl text-[var(--color-text)] font-semibold leading-snug">
                 {ed.degree}
-                <span class="font-normal italic text-[var(--color-text-muted)]"> — {ed.field}</span>
+                <span class="font-normal italic text-[var(--color-text-muted)]">, {ed.field}</span>
               </p>
             </div>
             <p class="md:col-span-4 text-[var(--color-text-muted)] text-[0.9375rem] leading-snug md:text-right">

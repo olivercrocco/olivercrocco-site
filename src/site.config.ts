@@ -8,7 +8,7 @@ export const SITE = {
   shortName: "Ozzie Crocco",
   url: "https://olivercrocco.com",
   description:
-    "Associate Professor of Leadership and Human Resource Development at Louisiana State University. Research at the intersection of leadership, learning, and human development — across Southeast Asia, organizations, and the lives of learners.",
+    "Associate Professor of Leadership and Human Resource Development at Louisiana State University. Research at the intersection of leadership, learning, and human development across Southeast Asia, organizations, and the lives of learners.",
   positioning:
     "I research human development, global leadership, and the changing nature of work, with deep roots in Southeast Asia.",
 } as const;
@@ -64,7 +64,7 @@ export const RESEARCH_THEMES = [
   {
     title: "Building Human Capability in Southeast Asia",
     summary:
-      "Comparative work across the ASEAN 11 on how nations build human capability — through institutions, education systems, leadership, and culture. The regional context generates dynamics that single-country research and Western frameworks regularly miss.",
+      "Comparative work across the ASEAN 11 on how nations build human capability through institutions, education systems, leadership, and culture. The regional context generates dynamics that single-country research and Western frameworks regularly miss.",
     icon: "asia",
     color: "#CD8A5A",
     colorOnLight: "#B0613C",
@@ -72,7 +72,7 @@ export const RESEARCH_THEMES = [
   {
     title: "Global Leadership & Adult Learning",
     summary:
-      "Leadership development and adult learning as developmental, transformative processes — especially in complex cross-cultural settings and in service of paradox, ambiguity, and change.",
+      "Leadership development and adult learning as developmental, transformative processes, especially in complex cross-cultural settings and in service of paradox, ambiguity, and change.",
     icon: "globe",
     color: "#EDE4D8",
     colorOnLight: "#65526D",
@@ -80,7 +80,7 @@ export const RESEARCH_THEMES = [
   {
     title: "The Changing Nature of Work",
     summary:
-      "Workplace learning under digitalization, remote and hybrid work, and emerging employment arrangements — including gig economies, AI-augmented work, and what it means to develop a worker now.",
+      "Workplace learning under digitalization, remote and hybrid work, and emerging employment arrangements, including gig economies, AI-augmented work, and what it means to develop a worker now.",
     icon: "circuit",
     color: "#B39BC0",
     colorOnLight: "#8A6A99",
