@@ -106,7 +106,7 @@ function stepContact() {
 }
 function stepGoal() {
   return '<div class="card"><h2>The job you want</h2>' +
-    field("What kind of job are you looking for?", "goal.title", { placeholder: "For example: Line Cook, Warehouse Worker, Maintenance Technician" }) +
+    field("What kind of job are you looking for?", "goal.title", { placeholder: "For example: HVAC Technician, Warehouse Worker, Forklift Operator" }) +
     '<label class="field" for="posting">Job posting (optional)</label>' +
     '<div class="help">If you have a job posting, paste or type it here. On the last step, the tool will show which words from the posting already appear in your resume.</div>' +
     '<textarea id="posting" data-bind="goal.posting" placeholder="Paste the job posting here">' + h(state.goal.posting) + "</textarea>" +

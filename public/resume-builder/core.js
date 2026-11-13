@@ -728,15 +728,19 @@ function stepStatus(s) {
 var EXAMPLE_STATE = (function () {
   var s = newState();
   s.contact = { name: "Marcus Example", city: "Baton Rouge", state: "LA", phone: "(225) 555-0123", email: "marcus.example@gmail.com", link: "" };
-  s.goal.title = "Line Cook";
-  s.summary = "16 years of experience in food service and kitchen work. Dependable and on time. Works well on a team. Trusted to train and mentor others. Holds ServSafe Manager and NCCER Core. Seeking work as a Line Cook.";
-  s.skills = ["Food preparation", "Food safety and sanitation", "Commercial kitchen equipment", "Stock rotation", "Teamwork", "Training new workers", "Customer service"];
-  s.certs = [{ name: "ServSafe Manager", org: "National Restaurant Association", year: "2022" }, { name: "NCCER Core", org: "NCCER", year: "2019" }];
+  s.goal.title = "HVAC Technician";
+  s.summary = "15 years of experience in building maintenance and heating and air-conditioning repair. Dependable and on time. Committed to safety. Trusted to train and mentor others. Holds HVAC Excellence Certification, EPA Section 608 Refrigerant Certification, and NCCER Core. Seeking work as an HVAC Technician.";
+  s.skills = ["HVAC installation and repair", "Refrigerant handling", "Preventive maintenance", "Basic electrical", "Blueprint reading", "Hand and power tools", "Training new workers"];
+  s.certs = [
+    { name: "HVAC Excellence Certification", org: "HVAC Excellence", year: "2019" },
+    { name: "EPA Section 608 Refrigerant Certification", org: "U.S. Environmental Protection Agency", year: "2019" },
+    { name: "NCCER Core", org: "NCCER", year: "2017" }
+  ];
   s.work = [
-    Object.assign(newEntry(), { inside: true, type: "kitchen", title: "Cook", employer: "Louisiana Department of Public Safety and Corrections", location: "Angola, LA", start: "2009", end: "2025",
-      bullets: ["Prepared meals for about 600 people per day following set recipes and portion standards", "Followed food safety and sanitation rules for storing, handling, and cleaning", "Trained 12 new kitchen workers in procedures and safety", "Received, stored, and rotated food supplies"] }),
-    Object.assign(newEntry(), { title: "Dishwasher and Prep Cook", employer: "Family Diner", location: "Baton Rouge, LA", start: "1993", end: "1995",
-      bullets: ["Washed dishes and kept the kitchen clean during busy shifts", "Prepped vegetables and sides for the line"] })
+    Object.assign(newEntry(), { inside: true, type: "maintenance", title: "HVAC and Maintenance Technician", employer: "Louisiana Department of Public Safety and Corrections", location: "Angola, LA", start: "2010", end: "2025",
+      bullets: ["Installed, serviced, and repaired heating and air-conditioning units across 14 buildings", "Completed about 25 work orders per week", "Carried out preventive maintenance to reduce breakdowns", "Trained 8 new maintenance workers in tool safety and repair procedures"] }),
+    Object.assign(newEntry(), { title: "Warehouse Worker", employer: "Building Supply Store", location: "Baton Rouge, LA", start: "1993", end: "1995",
+      bullets: ["Received, checked, and stored incoming supplies", "Loaded customer orders safely and on time"] })
   ];
   s.volunteer = [Object.assign(newEntry(), { inside: true, type: "peer", title: "Peer Mentor", employer: "Reentry Workforce Program", start: "2015", end: "2025",
     bullets: ["Mentored about 40 peers through education and re-entry programs", "Led weekly group sessions on job readiness"] })];
