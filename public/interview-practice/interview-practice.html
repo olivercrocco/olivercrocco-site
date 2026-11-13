@@ -248,6 +248,30 @@ function fromResume(r) {
   return out;
 }
 
+/* ---------- Example to try (a made-up person) ---------- */
+function exampleWork() {
+  var s = newState();
+  s.name = "Marcus Example";
+  s.job = { title: "HVAC Technician", company: "Gulf Mechanical", person: "Ms. Davis" };
+  s.story = {
+    own: "Yes. I was convicted of a felony in 2008.",
+    resp: "I take full responsibility for what I did.",
+    time: "While I was there, I earned my HiSET. I earned certifications in HVAC repair and refrigerant handling. I worked 15 years as a maintenance and HVAC technician.",
+    now: "I learned how to show up, follow through, and work with all kinds of people.",
+    bridge: "I'm ready to bring that same work ethic to this job."
+  };
+  s.tell = {
+    present: "I'm a hard worker with 15 years of experience in building maintenance and HVAC repair.",
+    past: "Most recently, I installed and repaired heating and air-conditioning units across 14 buildings. I've also earned HVAC Excellence and EPA Section 608 certifications.",
+    future: "I'm looking for steady work as an HVAC technician, where I can keep learning, and this job fits that."
+  };
+  s.notes = { about: "Slow down. Smile at the end.", conviction: "Keep my voice steady, then stop and let them ask the next question." };
+  s.practiced = { about: true, conviction: true, strengths: true };
+  s.ask = [ASK_THEM[0], ASK_THEM[6]];
+  s.checks = { 0: true, 2: true, 3: true };
+  return s;
+}
+
 function thankYou(s) {
   var j = s.job;
   return "Thank you for meeting with me today" + (t(j.title) ? " about the " + t(j.title) + " position" : "") + ". " +
@@ -269,6 +293,24 @@ function sheetText(s) {
 
 <script id="ui">
 var state = newState();
+/* ----- Example mode ----- */
+var exampleMode = false;
+function exampleBanner() {
+  if (!exampleMode) return;
+  document.getElementById("app").insertAdjacentHTML("afterbegin",
+    '<div class="msg warn no-print" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">' +
+    "<span>You are looking at a made-up example. Use Back and Next to see every step filled in, and change anything you like.</span>" +
+    '<button class="small" data-action="endExample">Start my own</button></div>');
+}
+function startExample(target) {
+  if (dirty && !confirm("Replace what you entered with the example? Save your work first if you want to keep it.")) return;
+  state = exampleWork(); exampleMode = true; dirty = false; goTo(target);
+}
+function endExample() {
+  if (!confirm("Clear the example and start your own?")) return;
+  state = newState(); exampleMode = false; dirty = false; goTo(1);
+}
+
 var step = 0, dirty = false, qi = 0, qFilter = "all", showTips = false;
 var timer = { running: false, start: 0, elapsed: 0, handle: null };
 var STEPS = [
@@ -325,7 +367,7 @@ function stepStart() {
     "<h3>Already made a resume?</h3>" +
     '<div class="help">If you saved your work in the Resume Builder, open that file here and the tool will start your “Tell me about yourself” answer for you.</div>' +
     '<div class="actions"><button class="primary" data-action="next">Start</button>' +
-    '<button data-action="openResume">Use my resume file</button><button data-action="openFile">Open saved practice</button>' +
+    '<button data-action="openResume">Use my resume file</button><button data-action="openFile">Open saved practice</button><button data-action="tryExample">Try it with an example</button>' +
     '<input type="file" id="resumeFile" accept=".json,application/json" class="hidden"><input type="file" id="loadFile" accept=".json,application/json" class="hidden"></div>' +
     '<div id="loadMsg"></div></div>';
 }
@@ -471,6 +513,7 @@ function render() {
   document.getElementById("app").innerHTML = html;
   addSpeakButton();
   tick();
+  exampleBanner();
 }
 function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
 function goTo(n) { stopSpeaking(); resetTimer(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
@@ -514,7 +557,7 @@ document.addEventListener("change", function (ev) {
   }
   if (a === "dayCheck") { state.checks[el.getAttribute("data-i")] = el.checked; dirty = true; return; }
   if (el.id === "loadFile" && el.files && el.files[0]) {
-    readJsonFile(el, function (d) { state = mergeState(d); dirty = false; goTo(1); });
+    readJsonFile(el, function (d) { state = mergeState(d); exampleMode = false; dirty = false; goTo(1); });
   }
   if (el.id === "resumeFile" && el.files && el.files[0]) {
     readJsonFile(el, function (d) {
@@ -571,8 +614,10 @@ document.addEventListener("click", function (ev) {
       break;
     case "print": window.print(); break;
     case "save": download(JSON.stringify(state, null, 2), "Interview Practice (saved work).json"); dirty = false; break;
+    case "tryExample": startExample(5); break;
+    case "endExample": endExample(); break;
     case "clear":
-      if (confirm("Clear everything you entered on this device? Save your practice first if you want to keep it.")) { state = newState(); dirty = false; qi = 0; goTo(0); }
+      if (confirm("Clear everything you entered on this device? Save your practice first if you want to keep it.")) { state = newState(); exampleMode = false; dirty = false; qi = 0; goTo(0); }
       break;
   }
 });

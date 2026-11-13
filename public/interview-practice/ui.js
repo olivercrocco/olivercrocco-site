@@ -1,4 +1,22 @@
 var state = newState();
+/* ----- Example mode ----- */
+var exampleMode = false;
+function exampleBanner() {
+  if (!exampleMode) return;
+  document.getElementById("app").insertAdjacentHTML("afterbegin",
+    '<div class="msg warn no-print" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">' +
+    "<span>You are looking at a made-up example. Use Back and Next to see every step filled in, and change anything you like.</span>" +
+    '<button class="small" data-action="endExample">Start my own</button></div>');
+}
+function startExample(target) {
+  if (dirty && !confirm("Replace what you entered with the example? Save your work first if you want to keep it.")) return;
+  state = exampleWork(); exampleMode = true; dirty = false; goTo(target);
+}
+function endExample() {
+  if (!confirm("Clear the example and start your own?")) return;
+  state = newState(); exampleMode = false; dirty = false; goTo(1);
+}
+
 var step = 0, dirty = false, qi = 0, qFilter = "all", showTips = false;
 var timer = { running: false, start: 0, elapsed: 0, handle: null };
 var STEPS = [
@@ -55,7 +73,7 @@ function stepStart() {
     "<h3>Already made a resume?</h3>" +
     '<div class="help">If you saved your work in the Resume Builder, open that file here and the tool will start your “Tell me about yourself” answer for you.</div>' +
     '<div class="actions"><button class="primary" data-action="next">Start</button>' +
-    '<button data-action="openResume">Use my resume file</button><button data-action="openFile">Open saved practice</button>' +
+    '<button data-action="openResume">Use my resume file</button><button data-action="openFile">Open saved practice</button><button data-action="tryExample">Try it with an example</button>' +
     '<input type="file" id="resumeFile" accept=".json,application/json" class="hidden"><input type="file" id="loadFile" accept=".json,application/json" class="hidden"></div>' +
     '<div id="loadMsg"></div></div>';
 }
@@ -201,6 +219,7 @@ function render() {
   document.getElementById("app").innerHTML = html;
   addSpeakButton();
   tick();
+  exampleBanner();
 }
 function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
 function goTo(n) { stopSpeaking(); resetTimer(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
@@ -244,7 +263,7 @@ document.addEventListener("change", function (ev) {
   }
   if (a === "dayCheck") { state.checks[el.getAttribute("data-i")] = el.checked; dirty = true; return; }
   if (el.id === "loadFile" && el.files && el.files[0]) {
-    readJsonFile(el, function (d) { state = mergeState(d); dirty = false; goTo(1); });
+    readJsonFile(el, function (d) { state = mergeState(d); exampleMode = false; dirty = false; goTo(1); });
   }
   if (el.id === "resumeFile" && el.files && el.files[0]) {
     readJsonFile(el, function (d) {
@@ -301,8 +320,10 @@ document.addEventListener("click", function (ev) {
       break;
     case "print": window.print(); break;
     case "save": download(JSON.stringify(state, null, 2), "Interview Practice (saved work).json"); dirty = false; break;
+    case "tryExample": startExample(5); break;
+    case "endExample": endExample(); break;
     case "clear":
-      if (confirm("Clear everything you entered on this device? Save your practice first if you want to keep it.")) { state = newState(); dirty = false; qi = 0; goTo(0); }
+      if (confirm("Clear everything you entered on this device? Save your practice first if you want to keep it.")) { state = newState(); exampleMode = false; dirty = false; qi = 0; goTo(0); }
       break;
   }
 });

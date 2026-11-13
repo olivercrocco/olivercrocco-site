@@ -146,6 +146,30 @@ function fromResume(r) {
   return out;
 }
 
+/* ---------- Example to try (a made-up person) ---------- */
+function exampleWork() {
+  var s = newState();
+  s.name = "Marcus Example";
+  s.job = { title: "HVAC Technician", company: "Gulf Mechanical", person: "Ms. Davis" };
+  s.story = {
+    own: "Yes. I was convicted of a felony in 2008.",
+    resp: "I take full responsibility for what I did.",
+    time: "While I was there, I earned my HiSET. I earned certifications in HVAC repair and refrigerant handling. I worked 15 years as a maintenance and HVAC technician.",
+    now: "I learned how to show up, follow through, and work with all kinds of people.",
+    bridge: "I'm ready to bring that same work ethic to this job."
+  };
+  s.tell = {
+    present: "I'm a hard worker with 15 years of experience in building maintenance and HVAC repair.",
+    past: "Most recently, I installed and repaired heating and air-conditioning units across 14 buildings. I've also earned HVAC Excellence and EPA Section 608 certifications.",
+    future: "I'm looking for steady work as an HVAC technician, where I can keep learning, and this job fits that."
+  };
+  s.notes = { about: "Slow down. Smile at the end.", conviction: "Keep my voice steady, then stop and let them ask the next question." };
+  s.practiced = { about: true, conviction: true, strengths: true };
+  s.ask = [ASK_THEM[0], ASK_THEM[6]];
+  s.checks = { 0: true, 2: true, 3: true };
+  return s;
+}
+
 function thankYou(s) {
   var j = s.job;
   return "Thank you for meeting with me today" + (t(j.title) ? " about the " + t(j.title) + " position" : "") + ". " +

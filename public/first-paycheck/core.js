@@ -133,6 +133,16 @@ function budget(s) {
   return { pay: pb, groups: groups, costs: round2(costs), income: income, left: round2(income - costs),
     hoursToCover: pb.takeHomeHourly > 0 ? costs / pb.takeHomeHourly / (52 / 12) : 0 };
 }
+/* ---------- Example to try (made-up numbers) ---------- */
+function exampleWork() {
+  var s = newState();
+  s.pay = { rate: "16.50", hours: "40", ot: "", schedule: "biweekly", status: "single" };
+  var c = { supervision: "60", restitution: "50", programs: "20", housing: "650", food: "350", phone: "45", utilities: "120", personal: "40", work: "30", savings: "50" };
+  Object.keys(c).forEach(function (k) { s.costs[k] = { amt: c[k], freq: "month" }; });
+  s.costs.transport = { amt: "25", freq: "week" };
+  return s;
+}
+
 function planText(s) {
   var b = budget(s), p = b.pay, L = [];
   L.push("MY FIRST PAYCHECK PLAN (estimate, " + TAX.year + " taxes)");

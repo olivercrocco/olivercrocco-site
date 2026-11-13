@@ -748,6 +748,16 @@ var EXAMPLE_STATE = (function () {
   return s;
 })();
 
+/* ---------- Example to try (a made-up person) ---------- */
+function exampleWork() {
+  var s = mergeState(JSON.parse(JSON.stringify(EXAMPLE_STATE)));
+  s.goal.posting = "HVAC Technician. We are hiring a dependable HVAC technician to install, service, and repair heating and air-conditioning systems in commercial buildings. Requirements: EPA Section 608 certification, basic electrical and blueprint reading skills, a commitment to safety, and a valid driver's license. Preventive maintenance experience preferred.";
+  s.summaryHelp = { years: "15", field: "building maintenance and heating and air-conditioning repair", strengths: ["Dependable and on time", "Committed to safety", "Trusted to train and mentor others"] };
+  s.letter = { company: "Gulf Mechanical", contact: "", title: "HVAC Technician", source: "a reentry program", text: "" };
+  s.letter.text = draftLetter(s);
+  return s;
+}
+
 /* ---------- Checks ---------- */
 function runChecks(s) {
   var out = [];

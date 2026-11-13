@@ -1,6 +1,24 @@
 var state = newState();
 var step = 0;
 var dirty = false;
+/* ----- Example mode ----- */
+var exampleMode = false;
+function exampleBanner() {
+  if (!exampleMode) return;
+  document.getElementById("app").insertAdjacentHTML("afterbegin",
+    '<div class="msg warn no-print" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">' +
+    "<span>You are looking at a made-up example. Use Back and Next to see every step filled in, and change anything you like.</span>" +
+    '<button class="small" data-action="endExample">Start my own</button></div>');
+}
+function startExample(target) {
+  if (dirty && !confirm("Replace what you entered with the example? Save your work first if you want to keep it.")) return;
+  state = exampleWork(); exampleMode = true; dirty = false; goTo(target);
+}
+function endExample() {
+  if (!confirm("Clear the example and start your own?")) return;
+  state = newState(); exampleMode = false; dirty = false; goTo(1);
+}
+
 var stubLine = "";
 var STEPS = [
   { id: "start", title: "Start" },
@@ -41,7 +59,7 @@ function stepStart() {
     "<li>The numbers here are estimates. Your real paycheck may be a little different.</li>" +
     "<li>You do not need exact amounts. A good guess is enough to start.</li></ul>" +
     '<div class="actions"><button class="primary" data-action="next">Start</button>' +
-    '<button data-action="openFile">Open saved work</button><input type="file" id="loadFile" accept=".json,application/json" class="hidden"></div>' +
+    '<button data-action="openFile">Open saved work</button><button data-action="tryExample">Try it with an example</button><input type="file" id="loadFile" accept=".json,application/json" class="hidden"></div>' +
     '<div id="loadMsg"></div></div>';
 }
 function stepPay() {
@@ -228,6 +246,7 @@ function render() {
   else html = stepStub();
   document.getElementById("app").innerHTML = html;
   addSpeakButton();
+  exampleBanner();
 }
 function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
 function goTo(n) { stopSpeaking(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
@@ -259,7 +278,7 @@ document.addEventListener("change", function (ev) {
   if (el.id === "loadFile" && el.files && el.files[0]) {
     var fr = new FileReader();
     fr.onload = function () {
-      try { state = mergeState(JSON.parse(fr.result)); dirty = false; goTo(1); }
+      try { state = mergeState(JSON.parse(fr.result)); exampleMode = false; dirty = false; goTo(1); }
       catch (e) { document.getElementById("loadMsg").innerHTML = '<div class="msg bad">That file could not be opened. Choose a file saved by this tool.</div>'; }
     };
     fr.readAsText(el.files[0]);
@@ -285,8 +304,10 @@ document.addEventListener("click", function (ev) {
       else msg.innerHTML = '<div class="msg warn">Could not copy. Use Print instead.</div>';
       break;
     case "save": download(JSON.stringify(state, null, 2), "First Paycheck (saved work).json", "application/json"); dirty = false; break;
+    case "tryExample": startExample(4); break;
+    case "endExample": endExample(); break;
     case "clear":
-      if (confirm("Clear everything you entered on this device? Save your work first if you want to keep it.")) { state = newState(); dirty = false; goTo(0); }
+      if (confirm("Clear everything you entered on this device? Save your work first if you want to keep it.")) { state = newState(); exampleMode = false; dirty = false; goTo(0); }
       break;
   }
 });
