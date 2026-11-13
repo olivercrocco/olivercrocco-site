@@ -156,14 +156,14 @@ function fileBaseName(s, kind) {
 
 /* ---------- Letter types ---------- */
 var TYPES = {
+  reference: { label: "Asking someone for a reference letter", short: "Reference request",
+    note: "To a teacher, supervisor, chaplain, mentor, or case manager who knows your work." },
   landlord: { label: "To a landlord or housing authority", short: "Landlord letter",
     note: "For a rental application that will include a background check." },
   employer: { label: "To an employer after a background check", short: "Employer letter",
     note: "When a job offer may depend on your background check, or an employer asks you to explain it." },
   license: { label: "To a licensing board", short: "Licensing board letter",
-    note: "For a license such as barber, cosmetology, HVAC, electrical, or commercial driving." },
-  reference: { label: "Asking someone for a reference letter", short: "Reference request",
-    note: "To a teacher, supervisor, chaplain, mentor, or case manager who knows your work." }
+    note: "For a license such as barber, cosmetology, HVAC, electrical, or commercial driving." }
 };
 var GROWTH_STARTERS = [
   "While I was incarcerated, I earned my HiSET.",
