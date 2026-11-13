@@ -1,4 +1,42 @@
 var state = newState();
+/* ----- Step examples: a read-only example for the current step ----- */
+var exampleOpen = false;
+function exList(items) { return "<ul>" + items.filter(Boolean).map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul>"; }
+function exPairs(pairs) {
+  return "<dl>" + pairs.filter(function (p) { return p && p[1]; }).map(function (p) { return "<dt>" + h(p[0]) + "</dt><dd>" + h(p[1]) + "</dd>"; }).join("") + "</dl>";
+}
+function exText(x) { return '<div class="ex-text">' + h(x) + "</div>"; }
+function addExampleButton() {
+  if (exampleMode) return;
+  var html = exampleHtml(STEPS[step].id);
+  if (!html) return;
+  var h2 = document.querySelector("#app .card h2");
+  if (!h2) return;
+  var anchor = document.getElementById("speakBtn") || h2;
+  var b = document.createElement("button");
+  b.className = "small speak no-print";
+  b.setAttribute("data-action", "toggleStepExample");
+  b.setAttribute("aria-expanded", exampleOpen ? "true" : "false");
+  b.style.marginLeft = anchor.id === "speakBtn" ? "8px" : "0";
+  b.textContent = exampleOpen ? "Hide the example" : "See an example";
+  anchor.insertAdjacentElement("afterend", b);
+  if (exampleOpen) {
+    var box = document.createElement("div");
+    box.className = "example-box no-print";
+    box.innerHTML = '<p class="ex-title">Example: a made-up person\u2019s answers</p>' + html +
+      '<p class="ex-note">This is only an example to show what goes here. Your own answers stay in the boxes below.</p>';
+    b.insertAdjacentElement("afterend", box);
+  }
+}
+
+function exampleHtml(id) {
+  var E = exampleWork();
+  if (id === "story") return exPairs(STORY_PARTS.map(function (p, i) { return [(i + 1) + ". " + p.title, E.story[p.key]]; }));
+  if (id === "tell") return exPairs(TELL_PARTS.map(function (p, i) { return [(i + 1) + ". " + p.title, E.tell[p.key]]; }));
+  if (id === "ask") return exList(E.ask);
+  return "";
+}
+
 /* ----- Example mode ----- */
 var exampleMode = false;
 function exampleBanner() {
@@ -174,7 +212,7 @@ function speakCard() {
   if (speaking) { stopSpeaking(); return; }
   var card = document.querySelector("#app .card"), parts = [];
   card.querySelectorAll("h2, h3, p, li, .help, .tip, label.field, label.check span, .part .num, .qcard .q").forEach(function (el) {
-    if (el.closest("#speakBtn, .sheet")) return;
+    if (el.closest(".example-box, #speakBtn, .sheet")) return;
     var x = (el.innerText || "").replace(/\s+/g, " ").trim();
     if (x && parts.indexOf(x) === -1) parts.push(x);
   });
@@ -219,10 +257,11 @@ function render() {
   document.getElementById("app").innerHTML = html;
   addSpeakButton();
   tick();
+  addExampleButton();
   exampleBanner();
 }
 function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
-function goTo(n) { stopSpeaking(); resetTimer(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
+function goTo(n) { exampleOpen = false; stopSpeaking(); resetTimer(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
 function refreshLive(group) {
   var text = group === "story" ? storyText(state) : tellText(state);
   var pv = document.querySelector('[data-preview="' + group + '"]');
@@ -320,7 +359,8 @@ document.addEventListener("click", function (ev) {
       break;
     case "print": window.print(); break;
     case "save": download(JSON.stringify(state, null, 2), "Interview Practice (saved work).json"); dirty = false; break;
-    case "tryExample": startExample(5); break;
+    case "tryExample": startExample(1); break;
+    case "toggleStepExample": exampleOpen = !exampleOpen; rerender(); break;
     case "endExample": endExample(); break;
     case "clear":
       if (confirm("Clear everything you entered on this device? Save your practice first if you want to keep it.")) { state = newState(); exampleMode = false; dirty = false; qi = 0; goTo(0); }

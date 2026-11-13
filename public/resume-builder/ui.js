@@ -16,6 +16,55 @@ var STEPS = [
   { id: "review", title: "Review and download" },
   { id: "letter", title: "Cover letter (optional)" }
 ];
+/* ----- Step examples: a read-only example for the current step ----- */
+var exampleOpen = false;
+function exList(items) { return "<ul>" + items.filter(Boolean).map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul>"; }
+function exPairs(pairs) {
+  return "<dl>" + pairs.filter(function (p) { return p && p[1]; }).map(function (p) { return "<dt>" + h(p[0]) + "</dt><dd>" + h(p[1]) + "</dd>"; }).join("") + "</dl>";
+}
+function exText(x) { return '<div class="ex-text">' + h(x) + "</div>"; }
+function addExampleButton() {
+  if (exampleMode) return;
+  var html = exampleHtml(STEPS[step].id);
+  if (!html) return;
+  var h2 = document.querySelector("#app .card h2");
+  if (!h2) return;
+  var anchor = document.getElementById("speakBtn") || h2;
+  var b = document.createElement("button");
+  b.className = "small speak no-print";
+  b.setAttribute("data-action", "toggleStepExample");
+  b.setAttribute("aria-expanded", exampleOpen ? "true" : "false");
+  b.style.marginLeft = anchor.id === "speakBtn" ? "8px" : "0";
+  b.textContent = exampleOpen ? "Hide the example" : "See an example";
+  anchor.insertAdjacentElement("afterend", b);
+  if (exampleOpen) {
+    var box = document.createElement("div");
+    box.className = "example-box no-print";
+    box.innerHTML = '<p class="ex-title">Example: a made-up person\u2019s answers</p>' + html +
+      '<p class="ex-note">This is only an example to show what goes here. Your own answers stay in the boxes below.</p>';
+    b.insertAdjacentElement("afterend", box);
+  }
+}
+
+function exampleHtml(id) {
+  var E = exampleWork();
+  function entries(list) {
+    return list.map(function (e) {
+      return "<dt>" + h(e.title) + "</dt><dd>" + h(entryLine2(e)) + exList(cleanBullets(e.bullets)) + "</dd>";
+    }).join("");
+  }
+  if (id === "contact") return exPairs([["Full name", E.contact.name], ["City and state", E.contact.city + ", " + E.contact.state], ["Phone", E.contact.phone], ["Email", E.contact.email]]);
+  if (id === "goal") return exPairs([["Job wanted", E.goal.title], ["Job posting", E.goal.posting]]);
+  if (id === "work") return "<p>Work done while incarcerated is listed like any other job.</p><dl>" + entries(E.work) + "</dl>";
+  if (id === "skills") return exList(E.skills);
+  if (id === "certs") return exList(E.certs.map(certLine));
+  if (id === "edu") return exList(E.education.map(function (ed) { return eduLine1(ed) + ", " + eduLine2(ed); }));
+  if (id === "vol") return "<dl>" + entries(E.volunteer) + "</dl>";
+  if (id === "summary") return exPairs([["Years of experience", E.summaryHelp.years], ["Kind of work", E.summaryHelp.field], ["Strengths", E.summaryHelp.strengths.join(", ")], ["Summary", E.summary]]);
+  if (id === "letter") return exText(E.letter.text);
+  return "";
+}
+
 /* ----- Example mode ----- */
 var exampleMode = false;
 function exampleBanner() {
@@ -385,7 +434,7 @@ function speakCard() {
   if (!card) return;
   var parts = [];
   card.querySelectorAll("h2, h3, p, li, .help, .tip, label.field, .msg, summary").forEach(function (el) {
-    if (el.closest(".preview-box, .print-area, .chips, #speakBtn")) return;
+    if (el.closest(".example-box, .preview-box, .print-area, .chips, #speakBtn")) return;
     var txt = (el.innerText || "").replace(/\s+/g, " ").trim();
     if (txt && parts.indexOf(txt) === -1) parts.push(txt);
   });
@@ -429,6 +478,7 @@ function render() {
   else html = stepReview();
   document.getElementById("app").innerHTML = html;
   addSpeakButton();
+  addExampleButton();
   exampleBanner();
 }
 function rerenderKeepScroll() {
@@ -436,7 +486,7 @@ function rerenderKeepScroll() {
   render();
   window.scrollTo(0, y);
 }
-function goTo(n) {
+function goTo(n) { exampleOpen = false;
   stopSpeaking();
   step = Math.max(0, Math.min(STEPS.length - 1, n));
   render();
@@ -579,7 +629,8 @@ document.addEventListener("click", function (ev) {
     case "saveJson":
       download(JSON.stringify(state, null, 2), fileBaseName(state) + " (saved work).json", "application/json");
       dirty = false; break;
-    case "tryExample": startExample(9); break;
+    case "tryExample": startExample(1); break;
+    case "toggleStepExample": exampleOpen = !exampleOpen; rerenderKeepScroll(); break;
     case "endExample": endExample(); break;
     case "clearAll":
       if (confirm("Clear everything you entered on this device? Save your work first if you want to keep it.")) {

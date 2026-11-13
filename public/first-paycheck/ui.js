@@ -1,6 +1,47 @@
 var state = newState();
 var step = 0;
 var dirty = false;
+/* ----- Step examples: a read-only example for the current step ----- */
+var exampleOpen = false;
+function exList(items) { return "<ul>" + items.filter(Boolean).map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul>"; }
+function exPairs(pairs) {
+  return "<dl>" + pairs.filter(function (p) { return p && p[1]; }).map(function (p) { return "<dt>" + h(p[0]) + "</dt><dd>" + h(p[1]) + "</dd>"; }).join("") + "</dl>";
+}
+function exText(x) { return '<div class="ex-text">' + h(x) + "</div>"; }
+function addExampleButton() {
+  if (exampleMode) return;
+  var html = exampleHtml(STEPS[step].id);
+  if (!html) return;
+  var h2 = document.querySelector("#app .card h2");
+  if (!h2) return;
+  var anchor = document.getElementById("speakBtn") || h2;
+  var b = document.createElement("button");
+  b.className = "small speak no-print";
+  b.setAttribute("data-action", "toggleStepExample");
+  b.setAttribute("aria-expanded", exampleOpen ? "true" : "false");
+  b.style.marginLeft = anchor.id === "speakBtn" ? "8px" : "0";
+  b.textContent = exampleOpen ? "Hide the example" : "See an example";
+  anchor.insertAdjacentElement("afterend", b);
+  if (exampleOpen) {
+    var box = document.createElement("div");
+    box.className = "example-box no-print";
+    box.innerHTML = '<p class="ex-title">Example: a made-up person\u2019s answers</p>' + html +
+      '<p class="ex-note">This is only an example to show what goes here. Your own answers stay in the boxes below.</p>';
+    b.insertAdjacentElement("afterend", box);
+  }
+}
+
+function exampleHtml(id) {
+  var E = exampleWork();
+  if (id === "pay") return exPairs([["Hourly wage", "$" + E.pay.rate], ["Hours a week", E.pay.hours], ["Paid", SCHEDULES[E.pay.schedule].label], ["Files taxes as", "Single"]]);
+  if (id === "costs") {
+    var rows = [];
+    COST_GROUPS.forEach(function (g) { g.items.forEach(function (it) { var c = E.costs[it[0]]; if (num(c.amt)) rows.push(it[1] + ": $" + c.amt + " " + FREQ[c.freq].label); }); });
+    return "<p>Made-up numbers. Use your own, or a good guess.</p>" + exList(rows);
+  }
+  return "";
+}
+
 /* ----- Example mode ----- */
 var exampleMode = false;
 function exampleBanner() {
@@ -212,7 +253,7 @@ function speakCard() {
   var card = document.querySelector("#app .card");
   var parts = [];
   card.querySelectorAll("h2, h3, p, li, .help, .tip, label.field, .msg, .big > div, table.pay tr, summary").forEach(function (el) {
-    if (el.closest(".print-only, #speakBtn, .stub")) return;
+    if (el.closest(".example-box, .print-only, #speakBtn, .stub")) return;
     var t = (el.innerText || "").replace(/−/g, "minus").replace(/\s+/g, " ").trim();
     if (t && parts.indexOf(t) === -1) parts.push(t);
   });
@@ -246,10 +287,11 @@ function render() {
   else html = stepStub();
   document.getElementById("app").innerHTML = html;
   addSpeakButton();
+  addExampleButton();
   exampleBanner();
 }
 function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
-function goTo(n) { stopSpeaking(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
+function goTo(n) { exampleOpen = false; stopSpeaking(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
 function download(text, name, mime) {
   var url = URL.createObjectURL(new Blob([text], { type: mime }));
   var a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
@@ -304,7 +346,8 @@ document.addEventListener("click", function (ev) {
       else msg.innerHTML = '<div class="msg warn">Could not copy. Use Print instead.</div>';
       break;
     case "save": download(JSON.stringify(state, null, 2), "First Paycheck (saved work).json", "application/json"); dirty = false; break;
-    case "tryExample": startExample(4); break;
+    case "tryExample": startExample(1); break;
+    case "toggleStepExample": exampleOpen = !exampleOpen; rerender(); break;
     case "endExample": endExample(); break;
     case "clear":
       if (confirm("Clear everything you entered on this device? Save your work first if you want to keep it.")) { state = newState(); exampleMode = false; dirty = false; goTo(0); }

@@ -1,4 +1,53 @@
 var state = newState();
+/* ----- Step examples: a read-only example for the current step ----- */
+var exampleOpen = false;
+function exList(items) { return "<ul>" + items.filter(Boolean).map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul>"; }
+function exPairs(pairs) {
+  return "<dl>" + pairs.filter(function (p) { return p && p[1]; }).map(function (p) { return "<dt>" + h(p[0]) + "</dt><dd>" + h(p[1]) + "</dd>"; }).join("") + "</dl>";
+}
+function exText(x) { return '<div class="ex-text">' + h(x) + "</div>"; }
+function addExampleButton() {
+  if (exampleMode) return;
+  var html = exampleHtml(STEPS[step].id);
+  if (!html) return;
+  var h2 = document.querySelector("#app .card h2");
+  if (!h2) return;
+  var anchor = document.getElementById("speakBtn") || h2;
+  var b = document.createElement("button");
+  b.className = "small speak no-print";
+  b.setAttribute("data-action", "toggleStepExample");
+  b.setAttribute("aria-expanded", exampleOpen ? "true" : "false");
+  b.style.marginLeft = anchor.id === "speakBtn" ? "8px" : "0";
+  b.textContent = exampleOpen ? "Hide the example" : "See an example";
+  anchor.insertAdjacentElement("afterend", b);
+  if (exampleOpen) {
+    var box = document.createElement("div");
+    box.className = "example-box no-print";
+    box.innerHTML = '<p class="ex-title">Example: a made-up person\u2019s answers</p>' + html +
+      '<p class="ex-note">This is only an example to show what goes here. Your own answers stay in the boxes below.</p>';
+    b.insertAdjacentElement("afterend", box);
+  }
+}
+
+function exampleHtml(id) {
+  var E = exampleWork(), type = state.type || "employer";
+  if (id === "me") return exPairs([["Full name", E.me.name], ["City and state", E.me.cityState], ["Phone", E.me.phone], ["Email", E.me.email]]);
+  if (id === "growth") {
+    var r = E.record;
+    return exPairs([["How to describe it", r.what], ["Year", r.year], ["Came home", r.home], ["What you did with the time", r.growth],
+      ["Job", r.jobTitle + " at " + r.jobPlace + ", since " + r.jobSince], ["Monthly income", "$" + r.income], ["Support", r.support]]);
+  }
+  if (id === "details") {
+    var d = E[type];
+    var labels = { to: "Who to address", property: "Property", rent: "Monthly rent", offer: "What you can provide", company: "Company", position: "Position",
+      related: "How the job relates to your record", board: "Board", license: "License", training: "Training", exam: "Exam", context: "How they know you",
+      purpose: "What you are applying for", mention: "What their letter could mention", recipient: "Addressed to", deadline: "Needed by" };
+    return exPairs(Object.keys(d).map(function (k) { return [labels[k] || k, d[k]]; }));
+  }
+  if (id === "letter") return exText(E.letters[type]);
+  return "";
+}
+
 /* ----- Example mode ----- */
 var exampleMode = false;
 function exampleBanner() {
@@ -159,7 +208,7 @@ function speakCard() {
   if (speaking) { stopSpeaking(); return; }
   var card = document.querySelector("#app .card"), parts = [];
   card.querySelectorAll("h2, h3, p, li, .help, .tip, label.field, .type b, .type .sm, label.check span, .msg").forEach(function (el) {
-    if (el.closest("#speakBtn, .letter-print")) return;
+    if (el.closest(".example-box, #speakBtn, .letter-print")) return;
     var x = (el.innerText || "").replace(/\s+/g, " ").trim();
     if (x && parts.indexOf(x) === -1) parts.push(x);
   });
@@ -186,10 +235,11 @@ function render() {
   else html = stepLetter();
   document.getElementById("app").innerHTML = html;
   addSpeakButton();
+  addExampleButton();
   exampleBanner();
 }
 function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
-function goTo(n) { stopSpeaking(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
+function goTo(n) { exampleOpen = false; stopSpeaking(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
 function download(data, name, mime) {
   var url = URL.createObjectURL(new Blob([data], { type: mime }));
   var a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
@@ -264,7 +314,8 @@ document.addEventListener("click", function (ev) {
       break;
     case "another": goTo(0); break;
     case "save": download(JSON.stringify(state, null, 2), "Letters of Explanation (saved work).json", "application/json"); dirty = false; break;
-    case "tryExample": startExample(4); break;
+    case "tryExample": startExample(1); break;
+    case "toggleStepExample": exampleOpen = !exampleOpen; rerender(); break;
     case "endExample": endExample(); break;
     case "clear":
       if (confirm("Clear everything you entered on this device? Save your letters first if you want to keep them.")) { state = newState(); exampleMode = false; dirty = false; goTo(0); }
