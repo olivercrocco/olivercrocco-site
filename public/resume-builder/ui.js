@@ -16,57 +16,56 @@ var STEPS = [
   { id: "review", title: "Review and download" },
   { id: "letter", title: "Cover letter (optional)" }
 ];
-/* ----- Step examples: a read-only example for the current step ----- */
+/* ----- Step examples: fill this step's boxes with a made-up person's answers (undoable) ----- */
 var exampleOpen = false;
-function exList(items) { return "<ul>" + items.filter(Boolean).map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul>"; }
-function exPairs(pairs) {
-  return "<dl>" + pairs.filter(function (p) { return p && p[1]; }).map(function (p) { return "<dt>" + h(p[0]) + "</dt><dd>" + h(p[1]) + "</dd>"; }).join("") + "</dl>";
+var filledSteps = {};
+function getP(o, p) { return p.split(".").reduce(function (x, k) { return x == null ? undefined : x[k]; }, o); }
+function setP(o, p, v) { var k = p.split("."), x = o; for (var i = 0; i < k.length - 1; i++) x = x[k[i]]; x[k[k.length - 1]] = v; }
+function cloneV(v) { return v === undefined ? v : JSON.parse(JSON.stringify(v)); }
+function fillStepExample() {
+  var id = STEPS[step].id, keys = stepKeys(id);
+  if (!keys) return;
+  if (filledSteps[id]) {
+    var saved = filledSteps[id];
+    keys.forEach(function (p, i) { setP(state, p, cloneV(saved[i])); });
+    delete filledSteps[id];
+    dirty = true; rerenderKeepScroll(); return;
+  }
+  var blank = newState(), E = exampleWork();
+  var own = keys.some(function (p) { return JSON.stringify(getP(state, p)) !== JSON.stringify(getP(blank, p)); });
+  if (own && !confirm("Fill this step with the example? Your own answers on this step will be replaced for now. You can bring them back with \u201CRemove the example.\u201D")) return;
+  filledSteps[id] = keys.map(function (p) { return cloneV(getP(state, p)); });
+  keys.forEach(function (p) { setP(state, p, cloneV(getP(E, p))); });
+  dirty = true; rerenderKeepScroll();
 }
-function exText(x) { return '<div class="ex-text">' + h(x) + "</div>"; }
 function addExampleButton() {
   if (exampleMode) return;
-  var html = exampleHtml(STEPS[step].id);
-  if (!html) return;
+  var id = STEPS[step].id;
+  if (!stepKeys(id)) return;
   var h2 = document.querySelector("#app .card h2");
   if (!h2) return;
   var anchor = document.getElementById("speakBtn") || h2;
   var b = document.createElement("button");
   b.className = "small speak no-print";
   b.setAttribute("data-action", "toggleStepExample");
-  b.setAttribute("aria-expanded", exampleOpen ? "true" : "false");
   b.style.marginLeft = anchor.id === "speakBtn" ? "8px" : "0";
-  b.textContent = exampleOpen ? "Hide the example" : "See an example";
+  b.textContent = filledSteps[id] ? "Remove the example" : "See an example";
   anchor.insertAdjacentElement("afterend", b);
-  if (exampleOpen) {
-    var box = document.createElement("div");
-    box.className = "example-box no-print";
-    box.innerHTML = '<p class="ex-title">Example: a made-up person\u2019s answers</p>' + html +
-      '<p class="ex-note">This is only an example to show what goes here. Your own answers stay in the boxes below.</p>';
-    b.insertAdjacentElement("afterend", box);
+  if (filledSteps[id]) {
+    var note = document.createElement("div");
+    note.className = "msg warn no-print";
+    note.textContent = "Example answers from a made-up person are filled in below. Change them to your own, or tap \u201CRemove the example\u201D to bring back what you had.";
+    b.insertAdjacentElement("afterend", note);
   }
 }
 
-function exampleHtml(id) {
-  var E = exampleWork();
-  function entries(list) {
-    return list.map(function (e) {
-      return "<dt>" + h(e.title) + "</dt><dd>" + h(entryLine2(e)) + exList(cleanBullets(e.bullets)) + "</dd>";
-    }).join("");
-  }
-  if (id === "contact") return exPairs([["Full name", E.contact.name], ["City and state", E.contact.city + ", " + E.contact.state], ["Phone", E.contact.phone], ["Email", E.contact.email]]);
-  if (id === "goal") return exPairs([["Job wanted", E.goal.title], ["Job posting", E.goal.posting]]);
-  if (id === "work") return "<p>Work done while incarcerated is listed like any other job.</p><dl>" + entries(E.work) + "</dl>";
-  if (id === "skills") return exList(E.skills);
-  if (id === "certs") return exList(E.certs.map(certLine));
-  if (id === "edu") return exList(E.education.map(function (ed) { return eduLine1(ed) + ", " + eduLine2(ed); }));
-  if (id === "vol") return "<dl>" + entries(E.volunteer) + "</dl>";
-  if (id === "summary") return exPairs([["Years of experience", E.summaryHelp.years], ["Kind of work", E.summaryHelp.field], ["Strengths", E.summaryHelp.strengths.join(", ")], ["Summary", E.summary]]);
-  if (id === "letter") return exText(E.letter.text);
-  return "";
+function stepKeys(id) {
+  return ({ contact: ["contact"], goal: ["goal"], work: ["work"], skills: ["skills"], certs: ["certs"], edu: ["education"],
+    vol: ["volunteer"], summary: ["summaryHelp", "summary"], letter: ["letter"] })[id] || null;
 }
 
 /* ----- Example mode ----- */
-var exampleMode = false;
+var exampleMode = false; filledSteps = {};
 function exampleBanner() {
   if (!exampleMode) return;
   document.getElementById("app").insertAdjacentHTML("afterbegin",
@@ -76,11 +75,11 @@ function exampleBanner() {
 }
 function startExample(target) {
   if (dirty && !confirm("Replace what you entered with the example? Save your work first if you want to keep it.")) return;
-  state = exampleWork(); exampleMode = true; dirty = false; goTo(target);
+  state = exampleWork(); exampleMode = true; filledSteps = {}; dirty = false; goTo(target);
 }
 function endExample() {
   if (!confirm("Clear the example and start your own?")) return;
-  state = newState(); exampleMode = false; dirty = false; goTo(1);
+  state = newState(); exampleMode = false; filledSteps = {}; dirty = false; goTo(1);
 }
 
 var STATUS_MARK = { done: "✓ ", todo: "", optional: "" };
@@ -533,7 +532,7 @@ document.addEventListener("change", function (ev) {
     var reader = new FileReader();
     reader.onload = function () {
       try {
-        state = mergeState(JSON.parse(reader.result)); exampleMode = false;
+        state = mergeState(JSON.parse(reader.result)); exampleMode = false; filledSteps = {};
         dirty = false;
         goTo(1);
       } catch (e) {
@@ -630,11 +629,11 @@ document.addEventListener("click", function (ev) {
       download(JSON.stringify(state, null, 2), fileBaseName(state) + " (saved work).json", "application/json");
       dirty = false; break;
     case "tryExample": startExample(1); break;
-    case "toggleStepExample": exampleOpen = !exampleOpen; rerenderKeepScroll(); break;
+    case "toggleStepExample": fillStepExample(); break;
     case "endExample": endExample(); break;
     case "clearAll":
       if (confirm("Clear everything you entered on this device? Save your work first if you want to keep it.")) {
-        state = newState(); exampleMode = false; dirty = false; goTo(0);
+        state = newState(); exampleMode = false; filledSteps = {}; dirty = false; goTo(0);
       }
       break;
   }
