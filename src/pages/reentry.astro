@@ -44,6 +44,20 @@ const tools = [
     ],
     repo: "https://github.com/olivercrocco/first-paycheck",
   },
+  {
+    step: "When you need it",
+    name: "Letters of Explanation",
+    href: "/letters-of-explanation/",
+    action: "Write a letter",
+    lede: "Write a letter about your record for a landlord, an employer, or a licensing board, or ask someone for a reference.",
+    points: [
+      "Four letters: landlord, employer after a background check, licensing board, and a reference request",
+      "Keeps the record part short and spends most of the letter on what you have done since",
+      "Lists the documents to send with each letter",
+      "Download a Word file, print it, or copy it",
+    ],
+    repo: "https://github.com/olivercrocco/letters-of-explanation",
+  },
 ];
 
 const goodToKnow = [
@@ -56,7 +70,7 @@ const goodToKnow = [
 
 <BaseLayout
   title="Reentry Toolkit"
-  description="Free, plain-language tools for formerly incarcerated individuals and the programs that support them: a resume builder, interview practice, and a first paycheck planner. Each runs in the browser, works offline, and stores nothing."
+  description="Free, plain-language tools for formerly incarcerated individuals and the programs that support them: a resume builder, interview practice, a first paycheck planner, and letters of explanation. Each runs in the browser, works offline, and stores nothing."
 >
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">
@@ -67,7 +81,7 @@ const goodToKnow = [
       </h1>
       <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
         Plain-language tools for formerly incarcerated individuals and the programs that
-        support them. Use them in this order, or start with the one you need.
+        support them. Use the first three in order, or start with the one you need.
       </p>
     </div>
   </section>
@@ -83,7 +97,7 @@ const goodToKnow = [
       <div class="wrap py-16 md:py-20">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
           <div class="md:col-span-5">
-            <p class="eyebrow mb-4">Step {tool.step}</p>
+            <p class="eyebrow mb-4">{/^\d+$/.test(tool.step) ? `Step ${tool.step}` : tool.step}</p>
             <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-4 leading-tight">
               {tool.name}
             </h2>
@@ -139,7 +153,7 @@ const goodToKnow = [
             free for any program to use, share, and adapt.
           </p>
           <div class="flex flex-wrap gap-3">
-            <a href="/reentry/reentry-toolkit.zip" class="btn btn-primary" download>Download all three →</a>
+            <a href="/reentry/reentry-toolkit.zip" class="btn btn-primary" download>Download all four →</a>
             <a href="/contact" class="btn btn-ghost">Get in touch →</a>
           </div>
         </div>
@@ -155,8 +169,8 @@ const goodToKnow = [
             <h3 class="font-display text-xl font-semibold mb-2 leading-tight">In class</h3>
             <p>
               Interview Practice works well in pairs: one person reads the question card, the
-              other answers while the timer runs. The resume, the interview sheet, and the
-              budget plan all print, so participants leave with paper copies.
+              other answers while the timer runs. The resume, the interview sheet, the budget
+              plan, and the letters all print, so participants leave with paper copies.
             </p>
           </div>
           <div>
@@ -174,7 +188,8 @@ const goodToKnow = [
               explains which lists to change:
               <a class="underline" href={tools[0].repo}>resume builder</a>,
               <a class="underline" href={tools[1].repo}>interview practice</a>,
-              <a class="underline" href={tools[2].repo}>first paycheck</a>.
+              <a class="underline" href={tools[2].repo}>first paycheck</a>,
+              <a class="underline" href={tools[3].repo}>letters of explanation</a>.
             </p>
           </div>
         </div>

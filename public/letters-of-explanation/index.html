@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Letters of Explanation</title>
+<meta name="description" content="A free tool for formerly incarcerated individuals to write letters of explanation to a landlord, an employer after a background check, or a licensing board, and to ask for a reference letter.">
+<!-- Brand fonts load when online; without internet the page falls back to system fonts and still works. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d2b45; --blue: #1d437e; --mid: #0075a6; --teal: #28b6c3; --teal-light: #abe2e8; --teal-wash: #e9f7f9;
+  --bg: #f4f7f9; --card: #ffffff; --ink: #2b2b2b; --muted: #545454; --line: #d3dde4;
+  --warn-bg: #fff4d6; --warn-line: #d9a400; --bad-bg: #fde4e1; --bad-line: #c0392b; --good-bg: #e3f3e6; --good-line: #2e7d32;
+  --head-font: "Montserrat", "Avenir Next", "Segoe UI", Arial, sans-serif;
+  --body-font: "Raleway", "Avenir Next", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { font-size: 18px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body-font); font-weight: 500; line-height: 1.55; }
+header.top { background: linear-gradient(115deg, var(--navy) 0%, var(--navy) 45%, var(--blue) 80%, #1a6f8c 100%); color: #fff; padding: 22px 16px 20px; border-bottom: 4px solid var(--teal); }
+header.top .inner { max-width: 780px; margin: 0 auto; }
+header.top .eyebrow { margin: 0 0 4px; font-family: var(--head-font); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--teal-light); }
+header.top h1 { margin: 0; font-family: var(--head-font); font-weight: 900; font-size: 2rem; line-height: 1.05; text-transform: uppercase; }
+header.top h1 span { color: var(--teal); }
+header.top p.sub { margin: 8px 0 0; font-size: 0.92rem; color: #e6eef4; }
+main { max-width: 780px; margin: 0 auto; padding: 16px; }
+.progress { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.progress .label { font-family: var(--head-font); font-weight: 700; color: var(--navy); }
+.bar { flex: 1 1 200px; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.bar > div { height: 100%; background: linear-gradient(90deg, var(--mid), var(--teal)); }
+select.jump { font-size: 0.9rem; padding: 6px; }
+.card { background: var(--card); border: 1px solid var(--line); border-top: 4px solid var(--blue); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+h2 { margin: 0 0 8px; font-family: var(--head-font); font-weight: 800; font-size: 1.45rem; line-height: 1.2; color: var(--blue); }
+h3 { margin: 20px 0 6px; font-family: var(--head-font); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
+.help { color: var(--muted); font-size: 0.92rem; margin: 4px 0 12px; }
+.tip { background: var(--teal-wash); border-left: 5px solid var(--teal); border-radius: 6px; padding: 10px 14px; font-size: 0.92rem; margin: 10px 0; color: var(--navy); }
+label.field { display: block; margin: 14px 0 4px; font-weight: 700; color: var(--navy); }
+input[type=text], select, textarea { width: 100%; font-size: 1rem; padding: 10px; border: 1px solid #8fa3b3; border-radius: 6px; background: #fff; color: var(--ink); font-family: inherit; }
+textarea { min-height: 100px; line-height: 1.45; }
+textarea.letter { min-height: 420px; font-family: "Times New Roman", Times, serif; font-size: 1rem; line-height: 1.4; }
+input:focus, select:focus, textarea:focus, button:focus-visible { outline: 3px solid var(--teal); outline-offset: 1px; border-color: var(--mid); }
+.row { display: flex; gap: 12px; flex-wrap: wrap; }
+.row > div { flex: 1 1 200px; }
+button { font-size: 0.95rem; font-family: var(--head-font); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 11px 22px; border-radius: 30px; border: 2px solid var(--mid); background: #fff; color: var(--blue); cursor: pointer; }
+button:hover:not(:disabled) { background: var(--teal-wash); }
+button.primary { background: var(--navy); border-color: var(--teal); color: var(--teal); }
+button.primary:hover:not(:disabled) { background: var(--blue); color: #fff; }
+button.small { font-size: 0.78rem; padding: 6px 14px; }
+button.danger { border-color: var(--bad-line); color: var(--bad-line); }
+.quick { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 8px; }
+.quick button { text-transform: none; letter-spacing: 0; font-family: var(--body-font); font-weight: 700; font-size: 0.88rem; text-align: left; }
+.nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.speak { margin: 2px 0 10px; }
+.types { display: flex; flex-direction: column; gap: 10px; margin: 10px 0; }
+.type { display: flex; gap: 12px; align-items: flex-start; border: 2px solid var(--line); border-radius: 10px; padding: 12px 14px; background: #fafcfd; cursor: pointer; }
+.type.on { border-color: var(--teal); background: var(--teal-wash); }
+.type input { width: 20px; height: 20px; margin-top: 4px; flex: none; }
+.type b { display: block; font-family: var(--head-font); color: var(--navy); }
+.type span.sm { display: block; color: var(--muted); font-size: 0.9rem; }
+.check { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0; }
+.check input { width: 22px; height: 22px; margin-top: 2px; flex: none; }
+.msg { border-left: 5px solid; border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: 0.96rem; }
+.msg.bad { background: var(--bad-bg); border-color: var(--bad-line); }
+.msg.warn { background: var(--warn-bg); border-color: var(--warn-line); }
+.msg.good { background: var(--good-bg); border-color: var(--good-line); }
+ul.tight { margin: 6px 0; padding-left: 22px; }
+ul.tight li { margin: 4px 0; }
+.letter-print { display: none; white-space: pre-wrap; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.25; color: #000; }
+.hidden { display: none; }
+footer { color: var(--muted); font-size: 0.8rem; text-align: center; padding: 8px 16px 24px; }
+@media (max-width: 560px) { html { font-size: 17px; } .card { padding: 14px; } }
+@media print {
+  body { background: #fff; }
+  header.top, .progress, footer, .no-print { display: none !important; }
+  .card { border: none; padding: 0; }
+  .card > :not(.letter-print) { display: none !important; }
+  .letter-print { display: block !important; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="inner">
+    <p class="eyebrow">Employment Skills Course</p>
+    <h1>Letters of <span>Explanation</span></h1>
+    <p class="sub">Write a letter about your record for a landlord, employer, or licensing board. Nothing you type leaves this device.</p>
+    <p class="sub"><a href="/reentry/" style="color:#abe2e8;font-weight:700">← All reentry tools</a></p>
+  </div>
+</header>
+<main>
+  <div class="progress no-print" id="progress"></div>
+  <div id="app"></div>
+</main>
+<footer class="no-print">Built for formerly incarcerated individuals and the programs that support them. Version 1, November 2026.<br><a href="letters-of-explanation.html" download>Download this tool</a> to use it without the internet, for example from a USB drive. <a href="https://github.com/olivercrocco/letters-of-explanation">Source on GitHub</a>.</footer>
+
+<script src="core.js"></script>
+
+<script src="ui.js"></script>
+</body>
+</html>
