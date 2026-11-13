@@ -4,6 +4,13 @@ import { NAV, AUTHOR } from "../site.config";
 const { pathname } = Astro.url;
 const isActive = (href: string) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+// "Tools" opens a small menu with the two groups of tools.
+const TOOL_LINKS = [
+  { label: "Research tools", href: "/tools", note: "Reviewer finder, citation and claim checks, reliability calculator" },
+  { label: "Reentry Toolkit", href: "/reentry", note: "Resume, interview practice, and first paycheck tools" },
+];
+const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
 ---
 
 <header class="border-b border-[var(--color-border)] bg-[var(--color-paper)]/85 backdrop-blur-sm sticky top-0 z-40">
@@ -17,17 +24,46 @@ const isActive = (href: string) =>
 
     <nav class="hidden md:flex items-center gap-8">
       {NAV.map((item) => (
-        <a
-          href={item.href}
-          class:list={[
-            "text-[0.9375rem] no-underline tracking-tight transition-colors",
-            isActive(item.href)
-              ? "text-[var(--color-ink)] font-medium"
-              : "text-[var(--color-text-muted)] hover:text-[var(--color-ink)]",
-          ]}
-        >
-          {item.label}
-        </a>
+        item.label === "Tools" ? (
+          <div class="relative" id="tools-menu">
+            <button
+              id="tools-menu-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="tools-menu-panel"
+              class:list={[
+                "text-[0.9375rem] tracking-tight transition-colors inline-flex items-center gap-1",
+                toolsActive
+                  ? "text-[var(--color-ink)] font-medium"
+                  : "text-[var(--color-text-muted)] hover:text-[var(--color-ink)]",
+              ]}
+            >
+              Tools <span aria-hidden="true" class="text-[0.7rem]">▾</span>
+            </button>
+            <div id="tools-menu-panel" class="hidden absolute right-0 top-full pt-4 w-80">
+              <div class="rounded border border-[var(--color-border-strong)] bg-[var(--color-paper)] shadow-lg p-2">
+                {TOOL_LINKS.map((t) => (
+                  <a href={t.href} class="block no-underline rounded px-3 py-3 hover:bg-[var(--color-paper-warm)]">
+                    <span class:list={["block text-[0.9375rem]", isActive(t.href) ? "font-medium text-[var(--color-ink)]" : "text-[var(--color-ink)]"]}>{t.label}</span>
+                    <span class="block text-[0.8125rem] text-[var(--color-text-muted)] leading-snug">{t.note}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class:list={[
+              "text-[0.9375rem] no-underline tracking-tight transition-colors",
+              isActive(item.href)
+                ? "text-[var(--color-ink)] font-medium"
+                : "text-[var(--color-text-muted)] hover:text-[var(--color-ink)]",
+            ]}
+          >
+            {item.label}
+          </a>
+        )
       ))}
     </nav>
 
@@ -47,17 +83,36 @@ const isActive = (href: string) =>
   <nav id="mobile-menu" class="hidden md:hidden border-t border-[var(--color-border)]">
     <div class="wrap py-4 flex flex-col gap-1">
       {NAV.map((item) => (
-        <a
-          href={item.href}
-          class:list={[
-            "py-2 no-underline",
-            isActive(item.href)
-              ? "text-[var(--color-ink)] font-medium"
-              : "text-[var(--color-text-muted)]",
-          ]}
-        >
-          {item.label}
-        </a>
+        item.label === "Tools" ? (
+          <div class="py-2">
+            <span class:list={[toolsActive ? "text-[var(--color-ink)] font-medium" : "text-[var(--color-text-muted)]"]}>Tools</span>
+            <div class="flex flex-col pl-4 mt-1 border-l border-[var(--color-border-strong)]">
+              {TOOL_LINKS.map((t) => (
+                <a
+                  href={t.href}
+                  class:list={[
+                    "py-1.5 no-underline",
+                    isActive(t.href) ? "text-[var(--color-ink)] font-medium" : "text-[var(--color-text-muted)]",
+                  ]}
+                >
+                  {t.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class:list={[
+              "py-2 no-underline",
+              isActive(item.href)
+                ? "text-[var(--color-ink)] font-medium"
+                : "text-[var(--color-text-muted)]",
+            ]}
+          >
+            {item.label}
+          </a>
+        )
       ))}
     </div>
   </nav>
@@ -68,5 +123,38 @@ const isActive = (href: string) =>
   const menu = document.getElementById("mobile-menu");
   toggle?.addEventListener("click", () => {
     menu?.classList.toggle("hidden");
+  });
+
+  // Tools dropdown: opens on hover, click or tap, and keyboard; closes on Escape,
+  // a click elsewhere, or moving the mouse or focus away.
+  const wrap = document.getElementById("tools-menu");
+  const button = document.getElementById("tools-menu-toggle");
+  const panel = document.getElementById("tools-menu-panel");
+  const setOpen = (open: boolean) => {
+    panel?.classList.toggle("hidden", !open);
+    button?.setAttribute("aria-expanded", open ? "true" : "false");
+  };
+  const isOpen = () => button?.getAttribute("aria-expanded") === "true";
+  // A tap on a touch screen fires mouseenter just before click; this keeps that tap
+  // (or a click right after hovering) from closing the menu it just opened.
+  let openedByHover = false;
+  button?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (openedByHover) { openedByHover = false; setOpen(true); return; }
+    setOpen(!isOpen());
+  });
+  wrap?.addEventListener("mouseenter", () => { if (!isOpen()) openedByHover = true; setOpen(true); });
+  wrap?.addEventListener("mouseleave", () => { openedByHover = false; setOpen(false); });
+  wrap?.addEventListener("focusout", (e) => {
+    if (!wrap.contains(e.relatedTarget as Node | null)) setOpen(false);
+  });
+  document.addEventListener("click", (e) => {
+    if (wrap && !wrap.contains(e.target as Node)) setOpen(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen()) {
+      setOpen(false);
+      button?.focus();
+    }
   });
 </script>
