@@ -727,7 +727,7 @@ function stepStatus(s) {
 /* ---------- Example resume (a made-up person) ---------- */
 var EXAMPLE_STATE = (function () {
   var s = newState();
-  s.contact = { name: "Marcus Example", city: "Baton Rouge", state: "LA", phone: "(225) 555-0123", email: "marcus.example@gmail.com", link: "" };
+  s.contact = { name: "Andrew Example", city: "Baton Rouge", state: "LA", phone: "(225) 555-0123", email: "andrew.example@gmail.com", link: "" };
   s.goal.title = "HVAC Technician";
   s.summary = "15 years of experience in building maintenance and heating and air-conditioning repair. Dependable and on time. Committed to safety. Trusted to train and mentor others. Holds HVAC Excellence Certification, EPA Section 608 Refrigerant Certification, and NCCER Core. Seeking work as an HVAC Technician.";
   s.skills = ["HVAC installation and repair", "Refrigerant handling", "Preventive maintenance", "Basic electrical", "Blueprint reading", "Hand and power tools", "Training new workers"];

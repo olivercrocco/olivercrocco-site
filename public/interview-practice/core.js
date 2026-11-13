@@ -149,7 +149,7 @@ function fromResume(r) {
 /* ---------- Example to try (a made-up person) ---------- */
 function exampleWork() {
   var s = newState();
-  s.name = "Marcus Example";
+  s.name = "Andrew Example";
   s.job = { title: "HVAC Technician", company: "Gulf Mechanical", person: "Ms. Davis" };
   s.story = {
     own: "Yes. I was convicted of a felony in 2008.",
