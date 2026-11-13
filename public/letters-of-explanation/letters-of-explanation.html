@@ -406,14 +406,14 @@ function draft(s, type) {
 function exampleWork() {
   var s = newState();
   s.type = "employer";
-  s.me = { name: "Andrew Example", street: "", cityState: "Baton Rouge, LA", phone: "(225) 555-0123", email: "andrew.example@gmail.com" };
+  s.me = { name: "Andrew Example", street: "1234 Example Street, Apt. 2", cityState: "Baton Rouge, LA", phone: "(225) 555-0123", email: "andrew.example@gmail.com" };
   s.record = { what: "a felony conviction", year: "2008", home: "December 2025",
     growth: "While I was incarcerated, I earned my HiSET. I earned HVAC Excellence and EPA Section 608 certifications. I worked 15 years as a maintenance and HVAC technician.",
     jobTitle: "Maintenance Helper", jobPlace: "Capital Area Property Services", jobSince: "January 2026", income: "2100",
     support: "my case manager at a reentry program and my family", supervision: true };
-  s.landlord = { to: "", property: "Oak Street Apartments, Unit 4B", rent: "750", offer: "pay stubs, two references, and a letter from my case manager" };
-  s.employer = { to: "", company: "Gulf Mechanical", position: "HVAC Technician", related: "The conviction is more than 15 years old and is not related to the duties of this job." };
-  s.license = { to: "", board: "", license: "HVAC license", training: "I completed the HVAC program and earned HVAC Excellence and EPA Section 608 certifications.", exam: "" };
+  s.landlord = { to: "Ms. Johnson", property: "Oak Street Apartments, Unit 4B", rent: "750", offer: "pay stubs, two references, and a letter from my case manager" };
+  s.employer = { to: "Mr. Davis", company: "Gulf Mechanical", position: "HVAC Technician", related: "The conviction is more than 15 years old and is not related to the duties of this job." };
+  s.license = { to: "Members of the Board", board: "State Licensing Board for HVAC Work", license: "HVAC license", training: "I completed the HVAC program and earned HVAC Excellence and EPA Section 608 certifications.", exam: "I passed the EPA Section 608 exam in 2019." };
   s.reference = { to: "Mr. Thomas", context: "the HVAC program, where you were my instructor", purpose: "a job as an HVAC technician at Gulf Mechanical", mention: "my work habits and my reliability", recipient: "the hiring manager at Gulf Mechanical", deadline: "December 1" };
   ["landlord", "employer", "license", "reference"].forEach(function (k) { s.letters[k] = draft(s, k); });
   return s;
