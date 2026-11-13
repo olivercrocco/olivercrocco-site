@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume Builder</title>
+<meta name="description" content="A free resume builder for people coming home from prison. Works in the browser, saves nothing, and makes a Word file that hiring software can read.">
+<!-- Brand fonts load when online; without internet the page falls back to system fonts and still works. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Palette taken from the partner organization's website, November 2026. */
+  --navy: #0d2b45;
+  --blue: #1d437e;
+  --mid: #0075a6;
+  --teal: #28b6c3;
+  --teal-light: #abe2e8;
+  --teal-wash: #e9f7f9;
+  --bg: #f4f7f9;
+  --card: #ffffff;
+  --ink: #2b2b2b;
+  --muted: #545454;
+  --line: #d3dde4;
+  --accent: #1d437e;
+  --accent-ink: #ffffff;
+  --soft: #e9f7f9;
+  --head-font: "Montserrat", "Avenir Next", "Segoe UI", Arial, sans-serif;
+  --body-font: "Raleway", "Avenir Next", "Segoe UI", Arial, sans-serif;
+  --warn-bg: #fff4d6;
+  --warn-line: #d9a400;
+  --bad-bg: #fde4e1;
+  --bad-line: #c0392b;
+  --good-bg: #e3f3e6;
+  --good-line: #2e7d32;
+}
+* { box-sizing: border-box; }
+html { font-size: 18px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body-font);
+  font-weight: 500;
+  line-height: 1.55;
+}
+header.top {
+  background: linear-gradient(115deg, var(--navy) 0%, var(--navy) 45%, var(--blue) 80%, #1a6f8c 100%);
+  color: #fff;
+  padding: 22px 16px 20px;
+  border-bottom: 4px solid var(--teal);
+}
+header.top .inner { max-width: 780px; margin: 0 auto; }
+header.top .eyebrow {
+  margin: 0 0 4px;
+  font-family: var(--head-font);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--teal-light);
+}
+header.top h1 {
+  margin: 0;
+  font-family: var(--head-font);
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+header.top h1 span { color: var(--teal); }
+header.top p.sub { margin: 8px 0 0; font-size: 0.92rem; color: #e6eef4; }
+main { max-width: 780px; margin: 0 auto; padding: 16px; }
+.progress { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.progress .label { font-family: var(--head-font); font-weight: 700; color: var(--navy); }
+.bar { flex: 1 1 200px; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.bar > div { height: 100%; background: linear-gradient(90deg, var(--mid), var(--teal)); }
+select.jump { font-size: 0.9rem; padding: 6px; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--blue);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+h2 {
+  margin: 0 0 8px;
+  font-family: var(--head-font);
+  font-weight: 800;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  color: var(--blue);
+}
+h3 {
+  margin: 20px 0 6px;
+  font-family: var(--head-font);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.help { color: var(--muted); font-size: 0.92rem; margin: 4px 0 12px; }
+.tip {
+  background: var(--teal-wash);
+  border-left: 5px solid var(--teal);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  margin: 10px 0;
+  color: var(--navy);
+}
+label.field { display: block; margin: 14px 0 4px; font-weight: 700; color: var(--navy); }
+input[type=text], input[type=tel], input[type=email], select, textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 10px;
+  border: 1px solid #8fa3b3;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  font-family: inherit;
+}
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 1px;
+  border-color: var(--mid);
+}
+textarea { min-height: 110px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; }
+.row > div { flex: 1 1 160px; }
+button {
+  font-size: 0.95rem;
+  font-family: var(--head-font);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  border-radius: 30px;
+  border: 2px solid var(--mid);
+  background: #fff;
+  color: var(--blue);
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: var(--teal-wash); }
+button.primary { background: var(--navy); border-color: var(--teal); color: var(--teal); }
+button.primary:hover:not(:disabled) { background: var(--blue); color: #fff; }
+button.small { font-size: 0.78rem; padding: 6px 14px; }
+button.danger { border-color: var(--bad-line); color: var(--bad-line); }
+button:disabled { opacity: 0.5; cursor: default; }
+.nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.entry { border: 1px solid var(--line); border-left: 5px solid var(--teal); border-radius: 8px; padding: 14px; margin: 14px 0; background: #fafcfd; }
+.entry-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.entry-head strong { font-family: var(--head-font); font-weight: 700; font-size: 1.05rem; color: var(--navy); }
+.bullet-row { display: flex; gap: 8px; margin: 6px 0; align-items: center; }
+.bullet-row input, .bullet-row textarea { flex: 1; }
+textarea.line { min-height: 0; resize: vertical; }
+.suggest { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; font-size: 0.95rem; }
+.suggest span { flex: 1; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 10px; }
+.chip {
+  border-radius: 18px;
+  padding: 6px 14px;
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: 0;
+  text-transform: none;
+  border-width: 1.5px;
+}
+.chip[aria-pressed=true] { background: var(--blue); border-color: var(--blue); color: #fff; }
+.chip[aria-pressed=true]::before { content: "\2713  "; color: var(--teal-light); }
+details.group { border: 1px solid var(--line); border-radius: 8px; margin: 8px 0; background: #fafcfd; }
+details.group > summary {
+  cursor: pointer;
+  padding: 12px 14px;
+  font-family: var(--head-font);
+  font-weight: 700;
+  color: var(--navy);
+  list-style-position: inside;
+}
+details.group[open] > summary { border-bottom: 1px solid var(--line); }
+details.group > .chips, details.group > .quick, details.group > .help { padding: 0 14px; }
+details.group > .chips, details.group > .quick { padding-bottom: 12px; }
+details.group > .help { margin-top: 10px; }
+details.group .count {
+  margin-left: 6px;
+  font-family: var(--body-font);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--mid);
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+.check { display: flex; gap: 10px; align-items: center; margin: 10px 0; font-weight: 600; }
+.check input { width: 22px; height: 22px; }
+.quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.quick button { text-transform: none; letter-spacing: 0; font-family: var(--body-font); font-weight: 700; font-size: 0.88rem; }
+.msg { border-left: 5px solid; border-radius: 6px; padding: 8px 12px; margin: 6px 0; font-size: 0.95rem; }
+.msg.bad { background: var(--bad-bg); border-color: var(--bad-line); }
+.msg.warn { background: var(--warn-bg); border-color: var(--warn-line); }
+.msg.good { background: var(--good-bg); border-color: var(--good-line); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.preview-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 32px 36px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
+  line-height: 1.2;
+  color: #000;
+  overflow-wrap: anywhere;
+}
+.preview-box p { margin: 0; }
+.preview-box .name { text-align: center; font-weight: bold; font-size: 16pt; }
+.preview-box .contact { text-align: center; }
+.preview-box .sec { font-weight: bold; border-bottom: 1px solid #000; margin-top: 12pt; }
+.preview-box .b { font-weight: bold; }
+.preview-box ul { margin: 0; padding-left: 18pt; }
+.preview-box .gap { height: 8pt; }
+.kw { display: inline-block; border-radius: 14px; padding: 3px 10px; margin: 3px; font-size: 0.88rem; border: 1px solid; }
+.kw.yes { background: var(--good-bg); border-color: var(--good-line); }
+.kw.no { background: var(--warn-bg); border-color: var(--warn-line); }
+.hidden { display: none; }
+.speak { margin: 2px 0 10px; }
+.example { margin-top: 14px; }
+.example .preview-box { max-height: 520px; overflow-y: auto; }
+textarea.letter { min-height: 360px; font-family: "Times New Roman", Times, serif; font-size: 1rem; line-height: 1.4; }
+.letter-print { display: none; white-space: pre-wrap; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.2; color: #000; }
+ul.steplist { list-style: none; padding: 0; margin: 6px 0 10px; }
+ul.steplist li { display: flex; align-items: center; gap: 10px; padding: 4px 0; border-bottom: 1px solid var(--line); }
+ul.steplist .ok, ul.steplist .opt, ul.steplist .todo {
+  display: inline-block; min-width: 108px; font-size: 0.8rem; font-weight: 700; border-radius: 10px; padding: 2px 8px; text-align: center;
+}
+ul.steplist .ok { background: var(--good-bg); color: var(--good-line); }
+ul.steplist .opt { background: var(--teal-wash); color: var(--mid); }
+ul.steplist .todo { background: var(--warn-bg); color: #7a5a00; }
+button.linkish {
+  border: none; background: none; padding: 4px 0; color: var(--blue); text-decoration: underline;
+  text-transform: none; letter-spacing: 0; font-family: var(--body-font); font-weight: 600; font-size: 0.95rem; border-radius: 0;
+}
+button.linkish:hover:not(:disabled) { background: none; color: var(--mid); }
+footer { color: var(--muted); font-size: 0.8rem; text-align: center; padding: 8px 16px 24px; }
+@media (max-width: 520px) {
+  html { font-size: 17px; }
+  .card { padding: 14px; }
+  .preview-box { padding: 18px 14px; }
+}
+@media print {
+  body { background: #fff; }
+  header.top, .progress, footer, .no-print, .card > :not(.print-area) { display: none !important; }
+  main { padding: 0; max-width: none; }
+  .card { border: none; padding: 0; margin: 0; }
+  .print-area { display: block !important; }
+  .preview-box { border: none; padding: 0; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="inner">
+    <p class="eyebrow">Employment Skills Course</p>
+    <h1>Build Your <span>Resume</span></h1>
+    <p class="sub">Works without the internet. Nothing you type leaves this device.</p>
+  </div>
+</header>
+<main>
+  <div class="progress no-print" id="progress"></div>
+  <div id="app"></div>
+</main>
+<footer class="no-print">Built for the pre-release employment skills course. Version 1, November 2026.<br><a href="resume-builder.html" download>Download this tool</a> to use it without the internet, for example from a USB drive. <a href="https://github.com/olivercrocco/reentry-resume-builder">Source on GitHub</a>.</footer>
+
+<script src="core.js"></script>
+
+<script src="ui.js"></script>
+</body>
+</html>
