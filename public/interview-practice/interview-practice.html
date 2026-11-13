@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interview Practice</title>
+<!-- Brand fonts load when online; without internet the page falls back to system fonts and still works. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d2b45; --blue: #1d437e; --mid: #0075a6; --teal: #28b6c3; --teal-light: #abe2e8; --teal-wash: #e9f7f9;
+  --bg: #f4f7f9; --card: #ffffff; --ink: #2b2b2b; --muted: #545454; --line: #d3dde4;
+  --warn-bg: #fff4d6; --warn-line: #d9a400; --bad-bg: #fde4e1; --bad-line: #c0392b; --good-bg: #e3f3e6; --good-line: #2e7d32;
+  --head-font: "Montserrat", "Avenir Next", "Segoe UI", Arial, sans-serif;
+  --body-font: "Raleway", "Avenir Next", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { font-size: 18px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body-font); font-weight: 500; line-height: 1.55; }
+header.top { background: linear-gradient(115deg, var(--navy) 0%, var(--navy) 45%, var(--blue) 80%, #1a6f8c 100%); color: #fff; padding: 22px 16px 20px; border-bottom: 4px solid var(--teal); }
+header.top .inner { max-width: 780px; margin: 0 auto; }
+header.top .eyebrow { margin: 0 0 4px; font-family: var(--head-font); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--teal-light); }
+header.top h1 { margin: 0; font-family: var(--head-font); font-weight: 900; font-size: 2rem; line-height: 1.05; text-transform: uppercase; }
+header.top h1 span { color: var(--teal); }
+header.top p.sub { margin: 8px 0 0; font-size: 0.92rem; color: #e6eef4; }
+main { max-width: 780px; margin: 0 auto; padding: 16px; }
+.progress { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.progress .label { font-family: var(--head-font); font-weight: 700; color: var(--navy); }
+.bar { flex: 1 1 200px; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.bar > div { height: 100%; background: linear-gradient(90deg, var(--mid), var(--teal)); }
+select.jump { font-size: 0.9rem; padding: 6px; }
+.card { background: var(--card); border: 1px solid var(--line); border-top: 4px solid var(--blue); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+h2 { margin: 0 0 8px; font-family: var(--head-font); font-weight: 800; font-size: 1.45rem; line-height: 1.2; color: var(--blue); }
+h3 { margin: 20px 0 6px; font-family: var(--head-font); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
+.help { color: var(--muted); font-size: 0.92rem; margin: 4px 0 12px; }
+.tip { background: var(--teal-wash); border-left: 5px solid var(--teal); border-radius: 6px; padding: 10px 14px; font-size: 0.92rem; margin: 10px 0; color: var(--navy); }
+label.field { display: block; margin: 14px 0 4px; font-weight: 700; color: var(--navy); }
+input[type=text], select, textarea { width: 100%; font-size: 1rem; padding: 10px; border: 1px solid #8fa3b3; border-radius: 6px; background: #fff; color: var(--ink); font-family: inherit; }
+textarea { min-height: 90px; line-height: 1.45; }
+textarea.answer { min-height: 170px; }
+input:focus, select:focus, textarea:focus, button:focus-visible { outline: 3px solid var(--teal); outline-offset: 1px; border-color: var(--mid); }
+button { font-size: 0.95rem; font-family: var(--head-font); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 11px 22px; border-radius: 30px; border: 2px solid var(--mid); background: #fff; color: var(--blue); cursor: pointer; }
+button:hover:not(:disabled) { background: var(--teal-wash); }
+button.primary { background: var(--navy); border-color: var(--teal); color: var(--teal); }
+button.primary:hover:not(:disabled) { background: var(--blue); color: #fff; }
+button.small { font-size: 0.78rem; padding: 6px 14px; }
+button.danger { border-color: var(--bad-line); color: var(--bad-line); }
+button:disabled { opacity: 0.5; cursor: default; }
+.quick { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 8px; }
+.quick button { text-transform: none; letter-spacing: 0; font-family: var(--body-font); font-weight: 700; font-size: 0.88rem; text-align: left; }
+.nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.speak { margin: 2px 0 10px; }
+.part { border: 1px solid var(--line); border-left: 5px solid var(--teal); border-radius: 8px; padding: 12px 14px; margin: 14px 0; background: #fafcfd; }
+.part .num { font-family: var(--head-font); font-weight: 800; color: var(--navy); }
+.meter { font-size: 0.9rem; color: var(--muted); margin: 6px 0; }
+.meter b { color: var(--navy); }
+.msg { border-left: 5px solid; border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: 0.96rem; }
+.msg.bad { background: var(--bad-bg); border-color: var(--bad-line); }
+.msg.warn { background: var(--warn-bg); border-color: var(--warn-line); }
+.msg.good { background: var(--good-bg); border-color: var(--good-line); }
+.qcard { border: 2px solid var(--navy); border-radius: 12px; padding: 18px; margin: 10px 0; background: #fff; }
+.qcard .grp { font-family: var(--head-font); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mid); font-weight: 700; }
+.qcard .q { font-family: var(--head-font); font-weight: 800; font-size: 1.35rem; color: var(--navy); line-height: 1.25; margin: 6px 0 10px; }
+.timer { font-family: var(--head-font); font-weight: 800; font-size: 2.4rem; color: var(--navy); font-variant-numeric: tabular-nums; }
+.timer.over { color: #b07400; }
+.timer-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 8px 0; }
+.count { font-size: 0.9rem; color: var(--muted); }
+.check { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0; }
+.check input { width: 22px; height: 22px; margin-top: 2px; flex: none; }
+ul.tight, ol.tight { margin: 6px 0; padding-left: 22px; }
+ul.tight li, ol.tight li { margin: 4px 0; }
+.sheet { white-space: pre-wrap; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.35; color: #000; background: #fff; border: 1px solid var(--line); padding: 20px; }
+.hidden { display: none; }
+footer { color: var(--muted); font-size: 0.8rem; text-align: center; padding: 8px 16px 24px; }
+@media (max-width: 560px) { html { font-size: 17px; } .card { padding: 14px; } .qcard .q { font-size: 1.2rem; } }
+@media print {
+  body { background: #fff; }
+  header.top, .progress, footer, .no-print { display: none !important; }
+  .card { border: none; padding: 0; }
+  .card > :not(.print-area) { display: none !important; }
+  .sheet { border: none; padding: 0; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="inner">
+    <p class="eyebrow">Employment Skills Course</p>
+    <h1>Interview <span>Practice</span></h1>
+    <p class="sub">Get your answers ready and practice out loud. Nothing you type leaves this device.</p>
+  </div>
+</header>
+<main>
+  <div class="progress no-print" id="progress"></div>
+  <div id="app"></div>
+</main>
+<footer class="no-print">Built for formerly incarcerated individuals and the programs that support them. Version 1, November 2026.</footer>
+
+<script id="core">
+/* ---------- Content ---------- */
+var STORY_PARTS = [
+  { key: "own", title: "Say it plainly", help: "Answer the question honestly and briefly. You do not need to go into the details of the case unless they ask.",
+    starters: ["Yes. I was convicted of a felony in ___.", "Yes, I have a conviction from ___, and I'm glad to talk about it.", "Yes. I served ___ years for a mistake I made when I was ___."] },
+  { key: "resp", title: "Take responsibility", help: "One or two sentences. Do not blame other people or explain the case.",
+    starters: ["I take full responsibility for what I did.", "I made a serious mistake, and I own it.", "I'm not proud of who I was then, and I've worked hard to change."] },
+  { key: "time", title: "What you did with the time", help: "This is the most important part. Tap everything that is true for you, then fill in the blanks.",
+    starters: ["While I was there, I earned my HiSET.", "I earned certifications in ___.", "I worked ___ years as a ___.", "I took college classes in ___.", "I mentored other people going through ___.", "I completed programs on ___.", "I kept a good conduct record and was trusted with ___."] },
+  { key: "now", title: "Who you are now", help: "Say what changed and what you bring to work today.",
+    starters: ["I learned how to show up, follow through, and work with all kinds of people.", "Today I'm focused on working hard and supporting my family.", "I have a strong support system, and I'm ready to work."] },
+  { key: "bridge", title: "Bring it back to the job", help: "End by turning the conversation back to the job you want.",
+    starters: ["I'm ready to bring that same work ethic to this job.", "I believe I'd be an asset to your team as a ___.", "That's why I'm excited about this position."] }
+];
+var TELL_PARTS = [
+  { key: "present", title: "Who you are as a worker", starters: ["I'm a hard worker with ___ years of experience in ___.", "I'm a ___ who takes pride in doing the job right."] },
+  { key: "past", title: "What you have done", starters: ["Most recently, I worked as a ___, where I ___.", "I've also earned certifications in ___."] },
+  { key: "future", title: "Why this job", starters: ["I'm looking for steady work where I can keep learning, and this job fits that.", "I'm excited about this position because ___."] }
+];
+var QUESTIONS = [
+  { id: "about", g: "Common questions", q: "Tell me about yourself.", secs: 60,
+    why: "They want a short picture of you as a worker, not your life story.",
+    tips: ["Use your answer from the “Tell me about yourself” step.", "Keep it to about a minute.", "End with why you want this job."] },
+  { id: "why", g: "Common questions", q: "Why do you want to work here?", secs: 60,
+    why: "They want to know you chose this job on purpose.",
+    tips: ["Say one specific thing about the job or the company.", "It is fine to say you want steady work where you can grow.", "If you can, learn a little about the company before the interview."] },
+  { id: "strengths", g: "Common questions", q: "What are your strengths?", secs: 60,
+    why: "They want to hear what you do well and some proof of it.",
+    tips: ["Pick two strengths that fit this job.", "Give a quick example from a job for each one.", "For example: “I'm dependable. In my last job I was never late in five years.”"] },
+  { id: "improve", g: "Common questions", q: "What is something you are working to improve?", secs: 60,
+    why: "They want to see that you are honest and keep learning.",
+    tips: ["Pick something real that will not stop you from doing this job.", "Say what you are doing about it.", "For example, computers: “I'm practicing every week and getting faster.”"] },
+  { id: "hire", g: "Common questions", q: "Why should we hire you?", secs: 60,
+    why: "They want you to connect your skills to what they need.",
+    tips: ["Name two or three things from the job posting that you can do.", "Add one thing about your attitude, like showing up every day.", "Say it with confidence. It is not bragging if it is true."] },
+  { id: "avail", g: "Common questions", q: "What is your availability? Do you have reliable transportation?", secs: 45,
+    why: "They need to know you can be there when they need you.",
+    tips: ["Be honest about the days and hours you can work.", "If you have regular appointments, you can say you have a few scheduled appointments and will plan them around your shifts.", "Know how you will get to work before the interview."] },
+  { id: "future", g: "Common questions", q: "Where do you see yourself in a year?", secs: 45,
+    why: "They want to know if you plan to stay and grow.",
+    tips: ["Say you want to be good at this job and take on more.", "If the company promotes from within, say you would like to move up."] },
+  { id: "pay", g: "Common questions", q: "What pay are you looking for?", secs: 30,
+    why: "They want to know if their pay fits what you expect.",
+    tips: ["Look up what this kind of job usually pays before you go.", "Give a range, and say you are flexible.", "For example: “Jobs like this usually pay about $14 to $16 an hour, and I'm flexible.”"] },
+  { id: "conviction", g: "About your background", q: "Have you ever been convicted of a crime? Can you tell me about it?", secs: 60,
+    why: "They want to see how you talk about it: honest, brief, and focused on now.",
+    tips: ["Use your answer from the “Your story” step.", "Stay calm. A steady answer matters more than the conviction itself to many employers.", "Answer honestly. Do not go into the details of the case unless they ask."] },
+  { id: "gap", g: "About your background", q: "Can you explain this gap in your work history?", secs: 45,
+    why: "They noticed years with no outside job and want to understand them.",
+    tips: ["Be brief and honest about where you were.", "Talk about the work, training, and certificates from that time.", "Bring it back to why you are ready now."] },
+  { id: "inside", g: "About your background", q: "What did you do while you were incarcerated?", secs: 60,
+    why: "This is a chance to show your work and training.",
+    tips: ["Talk about jobs, certificates, classes, and mentoring.", "Use numbers if you can: how many years, how many people.", "Connect it to this job."] },
+  { id: "chance", g: "About your background", q: "Why should we take a chance on you?", secs: 60,
+    why: "They may be worried. They want a reason to trust you.",
+    tips: ["Do not get defensive. It is a fair question.", "Point to proof: work history, certificates, people who will vouch for you.", "Say what you will do in the first months to earn their trust."] },
+  { id: "younger", g: "About your background", q: "How would you feel working for a supervisor younger than you?", secs: 45,
+    why: "They want to know you can take direction from anyone.",
+    tips: ["Say age does not matter to you. Experience and respect do.", "Mention a time you learned from someone younger, if you can."] },
+  { id: "conflict", g: "Work situations", q: "Tell me about a time you had a conflict with a coworker.", secs: 90,
+    why: "They want to see that you can stay calm and work things out.",
+    tips: ["Use three parts: what happened, what you did, how it turned out.", "Pick a story where you stayed calm and solved it.", "Do not put the other person down."] },
+  { id: "mistake", g: "Work situations", q: "Tell me about a time you made a mistake at work.", secs: 90,
+    why: "They want to see that you own mistakes and fix them.",
+    tips: ["Pick a small work mistake, not your case.", "Say what you did to fix it and what you learned.", "What happened, what you did, how it turned out."] },
+  { id: "learn", g: "Work situations", q: "Tell me about a time you had to learn something new quickly.", secs: 90,
+    why: "Every new job means learning. They want to know you can.",
+    tips: ["A training program or a new job inside works well here.", "Say how you learned it: asking questions, practicing, taking notes."] },
+  { id: "customer", g: "Work situations", q: "How would you handle a customer who is upset?", secs: 60,
+    why: "They want to know you will stay calm and polite.",
+    tips: ["Listen first, then say you understand.", "Fix what you can, and get a supervisor if you cannot.", "Keep your voice calm, even if they are not."] },
+  { id: "feedback", g: "Work situations", q: "Tell me about a time a supervisor corrected you.", secs: 90,
+    why: "They want to know you can take correction without arguing.",
+    tips: ["Show that you listened, said okay, and did it the new way.", "If you disagreed, say you asked a question calmly, later.", "End with what you learned."] },
+  { id: "ask", g: "End of the interview", q: "Do you have any questions for us?", secs: 45,
+    why: "Asking a question shows you are interested.",
+    tips: ["Always ask one or two. Pick them on the “Questions to ask them” step.", "Pay and benefits are fair to ask about, often near the end."] }
+];
+var ASK_THEM = [
+  "What does a normal day look like in this job?",
+  "What would make someone successful here in the first few months?",
+  "Is there training when I start?",
+  "What are the hours and schedule for this position?",
+  "Are there chances to move up for people who do well?",
+  "What do you like about working here?",
+  "What are the next steps after this interview?"
+];
+var DAY_CHECKS = [
+  "I know the address, how I will get there, and how long it takes.",
+  "I will arrive 10 to 15 minutes early.",
+  "My clothes are clean and fit the job.",
+  "I have copies of my resume, my ID, and a pen.",
+  "I have the name of the person I am meeting.",
+  "I practiced my story and “Tell me about yourself” out loud.",
+  "My phone will be on silent before I walk in.",
+  "I picked one or two questions to ask them."
+];
+
+/* ---------- State ---------- */
+function newState() {
+  var s = { version: 1, story: {}, tell: {}, notes: {}, practiced: {}, ask: [], askOwn: "", checks: {}, job: { title: "", company: "", person: "" }, name: "" };
+  STORY_PARTS.forEach(function (p) { s.story[p.key] = ""; });
+  TELL_PARTS.forEach(function (p) { s.tell[p.key] = ""; });
+  return s;
+}
+function mergeState(x) {
+  var s = newState();
+  if (!x || typeof x !== "object") return s;
+  ["story", "tell", "notes", "practiced", "checks", "job"].forEach(function (k) {
+    if (x[k] && typeof x[k] === "object") Object.keys(x[k]).forEach(function (f) { s[k][f] = x[k][f]; });
+  });
+  if (Array.isArray(x.ask)) s.ask = x.ask.filter(function (a) { return typeof a === "string"; });
+  if (typeof x.askOwn === "string") s.askOwn = x.askOwn;
+  if (typeof x.name === "string") s.name = x.name;
+  return s;
+}
+function t(v) { return (v === undefined || v === null) ? "" : String(v).trim(); }
+function joinParts(obj, parts) { return parts.map(function (p) { return t(obj[p.key]).replace(/\s*\n\s*/g, " "); }).filter(Boolean).join(" "); }
+function storyText(s) { return joinParts(s.story, STORY_PARTS); }
+function tellText(s) { return joinParts(s.tell, TELL_PARTS); }
+function words(x) { var m = t(x).match(/\S+/g); return m ? m.length : 0; }
+/* About 130 spoken words a minute for a calm pace. */
+function seconds(x) { return Math.round(words(x) / 130 * 60); }
+function hasBlank(x) { return /_{2,}/.test(x || ""); }
+function addStarter(current, starter) {
+  var c = t(current);
+  if (c.indexOf(starter) !== -1) return c;
+  return c ? c + " " + starter : starter;
+}
+
+/* Fills "Tell me about yourself" from a file saved by the resume builder. */
+function fromResume(r) {
+  var out = { name: "", job: "", tell: {} };
+  if (!r || typeof r !== "object" || !r.contact) return null;
+  out.name = t(r.contact.name);
+  out.job = r.goal ? t(r.goal.title) : "";
+  var h = r.summaryHelp || {};
+  if (t(h.years) && t(h.field)) out.tell.present = "I'm a hard worker with " + t(h.years) + " years of experience in " + t(h.field) + ".";
+  var work = Array.isArray(r.work) ? r.work.filter(function (e) { return e && t(e.title); }) : [];
+  if (work.length) {
+    var e = work[0], b = (e.bullets || []).map(t).filter(function (x) { return x && !hasBlank(x); })[0];
+    out.tell.past = "Most recently, I worked as " + (/^[aeiou]/i.test(t(e.title)) ? "an " : "a ") + t(e.title) + (b ? ", where I " + b.charAt(0).toLowerCase() + b.slice(1).replace(/\.$/, "") : "") + ".";
+  }
+  var certs = Array.isArray(r.certs) ? r.certs.map(function (c) { return c && t(c.name); }).filter(Boolean).slice(0, 3) : [];
+  if (certs.length) out.tell.past = (out.tell.past ? out.tell.past + " " : "") + "I've also earned " + (certs.length === 1 ? certs[0] : certs.length === 2 ? certs[0] + " and " + certs[1] : certs.slice(0, -1).join(", ") + ", and " + certs[certs.length - 1]) + ".";
+  if (out.job) out.tell.future = "I'm looking for steady work as " + (/^[aeiou]/i.test(out.job) ? "an " : "a ") + out.job + ", where I can keep learning, and this job fits that.";
+  return out;
+}
+
+function thankYou(s) {
+  var j = s.job;
+  return "Thank you for meeting with me today" + (t(j.title) ? " about the " + t(j.title) + " position" : "") + ". " +
+    "I enjoyed learning more about " + (t(j.company) || "the job") + ", and I'm excited about the chance to join your team. " +
+    "Please let me know if you need anything else from me.\n\n" + (t(s.name) || "Your name");
+}
+function sheetText(s) {
+  var L = ["MY INTERVIEW SHEET" + (t(s.job.title) ? ": " + t(s.job.title) : "") + (t(s.job.company) ? " at " + t(s.job.company) : ""), ""];
+  if (t(s.job.person)) L.push("Meeting with: " + t(s.job.person), "");
+  L.push("WHEN I WALK IN", "“Hi, I'm " + (t(s.name) || "___") + ". I'm here for " + (t(s.job.title) ? "the " + t(s.job.title) + " interview" : "an interview") + (t(s.job.person) ? " with " + t(s.job.person) : "") + ".”", "Stand, smile, look them in the eye, and shake hands if they offer.", "");
+  if (tellText(s)) L.push("TELL ME ABOUT YOURSELF", tellText(s), "");
+  if (storyText(s)) L.push("MY STORY", storyText(s), "");
+  var qs = s.ask.concat(t(s.askOwn) ? [t(s.askOwn)] : []);
+  if (qs.length) { L.push("QUESTIONS I WILL ASK"); qs.forEach(function (q) { L.push("- " + q); }); L.push(""); }
+  L.push("AFTER: THANK-YOU MESSAGE", thankYou(s));
+  return L.join("\n");
+}
+</script>
+
+<script id="ui">
+var state = newState();
+var step = 0, dirty = false, qi = 0, qFilter = "all", showTips = false;
+var timer = { running: false, start: 0, elapsed: 0, handle: null };
+var STEPS = [
+  { id: "start", title: "Start" },
+  { id: "story", title: "Your story" },
+  { id: "tell", title: "Tell me about yourself" },
+  { id: "practice", title: "Practice questions" },
+  { id: "ask", title: "Questions to ask them" },
+  { id: "day", title: "Interview day" }
+];
+function h(s) { return String(s === undefined || s === null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function setPath(p, v) { var k = p.split("."), o = state; for (var i = 0; i < k.length - 1; i++) o = o[k[i]]; o[k[k.length - 1]] = v; dirty = true; }
+function getPath(p) { return p.split(".").reduce(function (o, k) { return o == null ? undefined : o[k]; }, state); }
+function groups() { var g = []; QUESTIONS.forEach(function (q) { if (g.indexOf(q.g) === -1) g.push(q.g); }); return g; }
+function visibleQs() { return QUESTIONS.filter(function (q) { return qFilter === "all" || q.g === qFilter; }); }
+function fmt(sec) { var m = Math.floor(sec / 60), s = Math.floor(sec % 60); return m + ":" + (s < 10 ? "0" : "") + s; }
+
+function renderProgress() {
+  var pct = Math.round((step / (STEPS.length - 1)) * 100);
+  document.getElementById("progress").innerHTML =
+    '<span class="label">Step ' + (step + 1) + " of " + STEPS.length + ": " + h(STEPS[step].title) + "</span>" +
+    '<div class="bar" aria-hidden="true"><div style="width:' + pct + '%"></div></div>' +
+    '<select class="jump" data-action="jump" aria-label="Go to step">' +
+    STEPS.map(function (s, i) { return '<option value="' + i + '"' + (i === step ? " selected" : "") + ">" + (i + 1) + ". " + h(s.title) + "</option>"; }).join("") + "</select>";
+}
+function nav() {
+  return '<div class="nav no-print">' + (step > 0 ? '<button data-action="prev">Back</button>' : "<span></span>") +
+    (step < STEPS.length - 1 ? '<button class="primary" data-action="next">Next</button>' : "<span></span>") + "</div>";
+}
+function meter(text, target) {
+  var w = words(text), sec = seconds(text);
+  if (!w) return '<p class="meter" data-meter>Nothing written yet.</p>';
+  var note = sec <= target ? "a good length." : "a little long. Try to trim it.";
+  return '<p class="meter" data-meter><b>' + w + " words</b>, about <b>" + sec + " seconds</b> out loud: " + note + "</p>";
+}
+function partBlock(group, part, i) {
+  var path = group + "." + part.key, id = "p_" + group + "_" + part.key;
+  return '<div class="part"><span class="num">' + (i + 1) + ". " + h(part.title) + "</span>" +
+    (part.help ? '<div class="help">' + h(part.help) + "</div>" : "") +
+    '<div class="quick">' + part.starters.map(function (st, k) {
+      return '<button class="small" data-action="starter" data-group="' + group + '" data-key="' + part.key + '" data-k="' + k + '">+ ' + h(st) + "</button>";
+    }).join("") + "</div>" +
+    '<textarea id="' + id + '" data-bind="' + path + '" data-live="' + group + '" aria-label="' + h(part.title) + '">' + h(getPath(path)) + "</textarea></div>";
+}
+
+function stepStart() {
+  return '<div class="card"><h2>Get ready for your interview</h2>' +
+    "<p>This tool helps you prepare the two answers that matter most, practice common questions out loud, and make a one-page sheet to take with you.</p>" +
+    '<div class="tip">Privacy: everything stays on this device. Nothing is sent over the internet, and nothing is saved unless you choose to save it.</div>' +
+    '<label class="field" for="name">Your first and last name</label><input type="text" id="name" data-bind="name" value="' + h(state.name) + '">' +
+    '<div class="row"><label class="field" for="jt">Job you are interviewing for (optional)</label><input type="text" id="jt" data-bind="job.title" value="' + h(state.job.title) + '" placeholder="For example: HVAC Technician"></div>' +
+    '<label class="field" for="jc">Company (optional)</label><input type="text" id="jc" data-bind="job.company" value="' + h(state.job.company) + '">' +
+    '<label class="field" for="jp">Person you will meet (optional)</label><input type="text" id="jp" data-bind="job.person" value="' + h(state.job.person) + '" placeholder="For example: Ms. Johnson">' +
+    "<h3>Already made a resume?</h3>" +
+    '<div class="help">If you saved your work in the Resume Builder, open that file here and the tool will start your “Tell me about yourself” answer for you.</div>' +
+    '<div class="actions"><button class="primary" data-action="next">Start</button>' +
+    '<button data-action="openResume">Use my resume file</button><button data-action="openFile">Open saved practice</button>' +
+    '<input type="file" id="resumeFile" accept=".json,application/json" class="hidden"><input type="file" id="loadFile" accept=".json,application/json" class="hidden"></div>' +
+    '<div id="loadMsg"></div></div>';
+}
+function stepStory() {
+  var html = '<div class="card"><h2>Your story</h2>' +
+    '<div class="help">Many employers will ask about your conviction. A short, steady answer you have practiced can make the difference. Build it in five parts. Tap a starting sentence to add it, then change the words so they are yours.</div>' +
+    STORY_PARTS.map(function (p, i) { return partBlock("story", p, i); }).join("") +
+    "<h3>Your whole answer</h3>" +
+    '<div class="sheet" data-preview="story">' + (h(storyText(state)) || "Your answer will appear here as you write.") + "</div>" +
+    meter(storyText(state), 60) +
+    (hasBlank(storyText(state)) ? '<div class="msg warn" data-blank>There is still a blank (___). Fill it in or take that part out.</div>' : "") +
+    '<div class="actions no-print"><button data-action="readText" data-what="story">Read my answer to me</button><button data-action="goPractice" data-q="conviction">Practice it with a timer</button></div>' +
+    '<div class="tip">Aim for 30 to 60 seconds. Say it out loud until it feels natural, not memorized. Look the interviewer in the eye, keep your voice steady, and then stop talking. Let them ask the next question.</div>';
+  return html + nav() + "</div>";
+}
+function stepTell() {
+  var html = '<div class="card"><h2>Tell me about yourself</h2>' +
+    '<div class="help">This is often the first question. Answer in three parts: who you are as a worker, what you have done, and why you want this job. Tap a starting sentence to add it, then make it yours.</div>' +
+    TELL_PARTS.map(function (p, i) { return partBlock("tell", p, i); }).join("") +
+    "<h3>Your whole answer</h3>" +
+    '<div class="sheet" data-preview="tell">' + (h(tellText(state)) || "Your answer will appear here as you write.") + "</div>" +
+    meter(tellText(state), 60) +
+    (hasBlank(tellText(state)) ? '<div class="msg warn" data-blank>There is still a blank (___). Fill it in or take that part out.</div>' : "") +
+    '<div class="actions no-print"><button data-action="readText" data-what="tell">Read my answer to me</button><button data-action="goPractice" data-q="about">Practice it with a timer</button></div>' +
+    '<div class="tip">Keep this about work. Your conviction can come later if they ask, and you have your story ready for that.</div>';
+  return html + nav() + "</div>";
+}
+function stepPractice() {
+  var list = visibleQs();
+  if (qi >= list.length) qi = 0;
+  var q = list[qi];
+  var done = QUESTIONS.filter(function (x) { return state.practiced[x.id]; }).length;
+  var html = '<div class="card"><h2>Practice questions</h2>' +
+    '<div class="help">Read the question out loud, or tap “Read the question.” Start the timer and answer out loud as if you were in the room. Practicing with another person is even better.</div>' +
+    '<label class="field" for="qf">Show</label><select id="qf" data-action="filter"><option value="all"' + (qFilter === "all" ? " selected" : "") + ">All questions (" + QUESTIONS.length + ")</option>" +
+    groups().map(function (g) { return '<option value="' + h(g) + '"' + (qFilter === g ? " selected" : "") + ">" + h(g) + "</option>"; }).join("") + "</select>" +
+    '<p class="count">Question ' + (qi + 1) + " of " + list.length + ". You have practiced " + done + " of " + QUESTIONS.length + ".</p>" +
+    '<div class="qcard"><div class="grp">' + h(q.g) + '</div><div class="q">' + h(q.q) + "</div>" +
+    '<div class="actions"><button class="small" data-action="readQ">🔊 Read the question</button><button class="small" data-action="tips">' + (showTips ? "Hide tips" : "Show tips") + "</button></div>" +
+    '<div class="timer-row"><span class="timer" id="timer">' + fmt(timer.elapsed) + '</span><button class="primary" data-action="timer">' + (timer.running ? "Stop" : (timer.elapsed ? "Start again" : "Start timer")) + "</button>" +
+    '<span class="count">Aim for about ' + fmt(q.secs) + "</span></div>" +
+    (showTips ? '<div class="tip"><b>Why they ask:</b> ' + h(q.why) + '<ul class="tight">' + q.tips.map(function (x) { return "<li>" + h(x) + "</li>"; }).join("") + "</ul></div>" : "") +
+    '<label class="field" for="note">My notes for this question</label><textarea id="note" data-bind="notes.' + q.id + '">' + h(state.notes[q.id] || "") + "</textarea>" +
+    '<label class="check"><input type="checkbox" data-action="practiced" data-id="' + q.id + '"' + (state.practiced[q.id] ? " checked" : "") + "> I practiced this one out loud</label></div>" +
+    '<div class="actions"><button data-action="qprev"' + (list.length < 2 ? " disabled" : "") + ">Previous question</button>" +
+    '<button class="primary" data-action="qnext"' + (list.length < 2 ? " disabled" : "") + '>Next question</button><button data-action="shuffle">Surprise me</button></div>';
+  return html + nav() + "</div>";
+}
+function stepAsk() {
+  var html = '<div class="card"><h2>Questions to ask them</h2>' +
+    '<div class="help">At the end, most interviewers ask if you have questions. Pick one or two to have ready.</div>' +
+    ASK_THEM.map(function (q, i) {
+      return '<label class="check"><input type="checkbox" data-action="askPick" data-i="' + i + '"' + (state.ask.indexOf(q) !== -1 ? " checked" : "") + "> <span>" + h(q) + "</span></label>";
+    }).join("") +
+    '<label class="field" for="askOwn">Or write your own</label><input type="text" id="askOwn" data-bind="askOwn" value="' + h(state.askOwn) + '">' +
+    '<div class="tip">Pay and benefits are fair to ask about, often near the end or once they show interest in you.</div>';
+  return html + nav() + "</div>";
+}
+function stepDay() {
+  var html = '<div class="card"><h2>Interview day</h2>' +
+    '<div class="help">Check off what you have ready. Then print your interview sheet to take with you.</div>' +
+    DAY_CHECKS.map(function (c, i) {
+      return '<label class="check"><input type="checkbox" data-action="dayCheck" data-i="' + i + '"' + (state.checks[i] ? " checked" : "") + "> <span>" + h(c) + "</span></label>";
+    }).join("") +
+    "<h3>The first 30 seconds</h3><ol class=\"tight\">" +
+    "<li>Greet the person at the front desk and say who you are there to see.</li>" +
+    "<li>When the interviewer comes, stand up, smile, and look them in the eye.</li>" +
+    "<li>Shake hands if they offer: firm, not crushing, two pumps. If they do not offer, a nod and a smile are fine.</li>" +
+    "<li>Say your name and “Thank you for having me.”</li>" +
+    "<li>Wait to be offered a seat. Sit up straight with your hands relaxed.</li></ol>" +
+    "<h3>After the interview</h3>" +
+    '<div class="help">Send a short thank-you the same day, by text, email, or a note left at the front desk. Here is one you can use:</div>' +
+    '<div class="sheet">' + h(thankYou(state)) + "</div>" +
+    '<div class="actions no-print"><button data-action="copyThanks">Copy the thank-you</button></div><div id="copyMsg" class="no-print"></div>' +
+    "<h3>Your interview sheet</h3>" +
+    '<div class="sheet print-area">' + h(sheetText(state)) + "</div>" +
+    '<div class="actions no-print"><button class="primary" data-action="print">Print my sheet</button><button data-action="save">Save my practice</button><button class="danger" data-action="clear">Clear everything</button></div>';
+  return html + nav() + "</div>";
+}
+
+/* ----- Read aloud ----- */
+var canSpeak = "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+var speaking = false;
+function say(text, btn) {
+  if (!canSpeak) return;
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  var voices = window.speechSynthesis.getVoices() || [];
+  var v = voices.filter(function (x) { return /^en(-|_)US/i.test(x.lang) && x.localService; })[0] || voices.filter(function (x) { return /^en(-|_)US/i.test(x.lang); })[0];
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  u.onend = u.onerror = function () { speaking = false; var b = document.getElementById("speakBtn"); if (b) b.textContent = "🔊 Read this to me"; };
+  window.speechSynthesis.speak(u);
+  speaking = true;
+}
+function stopSpeaking() { if (canSpeak) window.speechSynthesis.cancel(); speaking = false; var b = document.getElementById("speakBtn"); if (b) b.textContent = "🔊 Read this to me"; }
+function speakCard() {
+  if (speaking) { stopSpeaking(); return; }
+  var card = document.querySelector("#app .card"), parts = [];
+  card.querySelectorAll("h2, h3, p, li, .help, .tip, label.field, label.check span, .part .num, .qcard .q").forEach(function (el) {
+    if (el.closest("#speakBtn, .sheet")) return;
+    var x = (el.innerText || "").replace(/\s+/g, " ").trim();
+    if (x && parts.indexOf(x) === -1) parts.push(x);
+  });
+  say(parts.join(". ").replace(/\.\./g, "."));
+  document.getElementById("speakBtn").textContent = "■ Stop reading";
+}
+function addSpeakButton() {
+  if (!canSpeak) return;
+  var h2 = document.querySelector("#app .card h2");
+  if (!h2) return;
+  var b = document.createElement("button");
+  b.id = "speakBtn"; b.className = "small speak no-print"; b.setAttribute("data-action", "speak");
+  b.textContent = "🔊 Read this to me";
+  h2.insertAdjacentElement("afterend", b);
+}
+
+/* ----- Timer ----- */
+function tick() {
+  var el = document.getElementById("timer");
+  var now = timer.elapsed + (timer.running ? (Date.now() - timer.start) / 1000 : 0);
+  if (el) {
+    el.textContent = fmt(now);
+    var q = visibleQs()[qi];
+    el.className = "timer" + (q && now > q.secs ? " over" : "");
+  }
+}
+function stopTimer() {
+  if (timer.running) { timer.elapsed += (Date.now() - timer.start) / 1000; timer.running = false; }
+  clearInterval(timer.handle); timer.handle = null;
+}
+function resetTimer() { stopTimer(); timer.elapsed = 0; }
+
+function render() {
+  renderProgress();
+  var id = STEPS[step].id, html;
+  if (id === "start") html = stepStart();
+  else if (id === "story") html = stepStory();
+  else if (id === "tell") html = stepTell();
+  else if (id === "practice") html = stepPractice();
+  else if (id === "ask") html = stepAsk();
+  else html = stepDay();
+  document.getElementById("app").innerHTML = html;
+  addSpeakButton();
+  tick();
+}
+function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
+function goTo(n) { stopSpeaking(); resetTimer(); step = Math.max(0, Math.min(STEPS.length - 1, n)); render(); window.scrollTo(0, 0); }
+function refreshLive(group) {
+  var text = group === "story" ? storyText(state) : tellText(state);
+  var pv = document.querySelector('[data-preview="' + group + '"]');
+  if (pv) pv.textContent = text || "Your answer will appear here as you write.";
+  var m = document.querySelector("[data-meter]");
+  if (m) m.outerHTML = meter(text, 60);
+}
+function download(text, name) {
+  var url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+  var a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+}
+function readJsonFile(input, onData) {
+  var fr = new FileReader();
+  fr.onload = function () {
+    try { onData(JSON.parse(fr.result)); }
+    catch (e) { document.getElementById("loadMsg").innerHTML = '<div class="msg bad">That file could not be opened.</div>'; }
+  };
+  fr.readAsText(input.files[0]);
+}
+
+document.addEventListener("input", function (ev) {
+  var el = ev.target, p = el.getAttribute("data-bind");
+  if (!p) return;
+  setPath(p, el.value);
+  var live = el.getAttribute("data-live");
+  if (live) refreshLive(live);
+});
+document.addEventListener("change", function (ev) {
+  var el = ev.target, a = el.getAttribute("data-action");
+  if (a === "jump") { goTo(parseInt(el.value, 10)); return; }
+  if (a === "filter") { qFilter = el.value; qi = 0; resetTimer(); rerender(); return; }
+  if (a === "practiced") { state.practiced[el.getAttribute("data-id")] = el.checked; dirty = true; rerender(); return; }
+  if (a === "askPick") {
+    var q = ASK_THEM[parseInt(el.getAttribute("data-i"), 10)], at = state.ask.indexOf(q);
+    if (el.checked && at === -1) state.ask.push(q); else if (!el.checked && at !== -1) state.ask.splice(at, 1);
+    dirty = true; return;
+  }
+  if (a === "dayCheck") { state.checks[el.getAttribute("data-i")] = el.checked; dirty = true; return; }
+  if (el.id === "loadFile" && el.files && el.files[0]) {
+    readJsonFile(el, function (d) { state = mergeState(d); dirty = false; goTo(1); });
+  }
+  if (el.id === "resumeFile" && el.files && el.files[0]) {
+    readJsonFile(el, function (d) {
+      var r = fromResume(d), msg = document.getElementById("loadMsg");
+      if (!r) { msg.innerHTML = '<div class="msg bad">That does not look like a file saved by the Resume Builder.</div>'; return; }
+      if (r.name && !t(state.name)) state.name = r.name;
+      if (r.job && !t(state.job.title)) state.job.title = r.job;
+      Object.keys(r.tell).forEach(function (k) { if (!t(state.tell[k])) state.tell[k] = r.tell[k]; });
+      dirty = true; render();
+      document.getElementById("loadMsg").innerHTML = '<div class="msg good">Got it. Your “Tell me about yourself” answer has a head start on step 3.</div>';
+    });
+  }
+});
+document.addEventListener("click", function (ev) {
+  var el = ev.target.closest("[data-action]");
+  if (!el || el.tagName === "SELECT" || el.tagName === "INPUT") return;
+  var a = el.getAttribute("data-action");
+  switch (a) {
+    case "next": goTo(step + 1); break;
+    case "prev": goTo(step - 1); break;
+    case "speak": speakCard(); break;
+    case "openFile": document.getElementById("loadFile").click(); break;
+    case "openResume": document.getElementById("resumeFile").click(); break;
+    case "starter":
+      var grp = el.getAttribute("data-group"), key = el.getAttribute("data-key"), k = parseInt(el.getAttribute("data-k"), 10);
+      var parts = grp === "story" ? STORY_PARTS : TELL_PARTS;
+      var part = parts.filter(function (p) { return p.key === key; })[0];
+      state[grp][key] = addStarter(state[grp][key], part.starters[k]);
+      dirty = true; rerender();
+      var ta = document.getElementById("p_" + grp + "_" + key); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+      break;
+    case "readText":
+      var txt = el.getAttribute("data-what") === "story" ? storyText(state) : tellText(state);
+      if (!txt) { alert("Write your answer first."); break; }
+      say(txt); break;
+    case "goPractice":
+      qFilter = "all"; qi = QUESTIONS.map(function (q) { return q.id; }).indexOf(el.getAttribute("data-q")); showTips = false; goTo(3); break;
+    case "readQ": say(visibleQs()[qi].q); break;
+    case "tips": showTips = !showTips; rerender(); break;
+    case "timer":
+      if (timer.running) { stopTimer(); }
+      else { if (timer.elapsed) timer.elapsed = 0; timer.start = Date.now(); timer.running = true; timer.handle = setInterval(tick, 250); }
+      rerender(); break;
+    case "qnext": qi = (qi + 1) % visibleQs().length; resetTimer(); showTips = false; rerender(); break;
+    case "qprev": var n = visibleQs().length; qi = (qi - 1 + n) % n; resetTimer(); showTips = false; rerender(); break;
+    case "shuffle":
+      var len = visibleQs().length, next = qi;
+      if (len > 1) while (next === qi) next = Math.floor(Math.random() * len);
+      qi = next; resetTimer(); showTips = false; rerender(); break;
+    case "copyThanks":
+      var msgEl = document.getElementById("copyMsg");
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(thankYou(state)).then(function () { msgEl.innerHTML = '<div class="msg good">Copied.</div>'; }, function () { msgEl.innerHTML = '<div class="msg warn">Could not copy. Select the text above and copy it.</div>'; });
+      else msgEl.innerHTML = '<div class="msg warn">Could not copy. Select the text above and copy it.</div>';
+      break;
+    case "print": window.print(); break;
+    case "save": download(JSON.stringify(state, null, 2), "Interview Practice (saved work).json"); dirty = false; break;
+    case "clear":
+      if (confirm("Clear everything you entered on this device? Save your practice first if you want to keep it.")) { state = newState(); dirty = false; qi = 0; goTo(0); }
+      break;
+  }
+});
+window.addEventListener("beforeunload", function (ev) { if (dirty) { ev.preventDefault(); ev.returnValue = ""; } });
+render();
+</script>
+</body>
+</html>
