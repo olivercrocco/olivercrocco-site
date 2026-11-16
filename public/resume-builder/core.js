@@ -148,8 +148,8 @@ var JOBS = {
     skills: ["Typing", "Filing and record keeping", "Data entry", "Customer service"]
   },
   health: {
-    label: "Hospice, health care, or orderly",
-    titles: ["Hospice Volunteer", "Patient Care Aide", "Health Care Orderly"],
+    label: "Hospice or health care",
+    titles: ["Hospice Volunteer", "Patient Care Aide"],
     bullets: [
       "Provided comfort and companionship to seriously ill and dying patients",
       "Helped patients with daily living, including eating, bathing, and moving",
@@ -737,7 +737,7 @@ var EXAMPLE_STATE = (function () {
     { name: "NCCER Core", org: "NCCER", year: "2017" }
   ];
   s.work = [
-    Object.assign(newEntry(), { inside: true, type: "maintenance", title: "HVAC and Maintenance Technician", employer: "Louisiana Department of Public Safety and Corrections", location: "Angola, LA", start: "2010", end: "2025",
+    Object.assign(newEntry(), { inside: true, type: "maintenance", title: "HVAC and Maintenance Technician", employer: "Louisiana Department of Public Safety and Corrections", location: "", start: "2010", end: "2025",
       bullets: ["Installed, serviced, and repaired heating and air-conditioning units across 14 buildings", "Completed about 25 work orders per week", "Carried out preventive maintenance to reduce breakdowns", "Trained 8 new maintenance workers in tool safety and repair procedures"] }),
     Object.assign(newEntry(), { title: "Warehouse Worker", employer: "Building Supply Store", location: "Baton Rouge, LA", start: "1993", end: "1995",
       bullets: ["Received, checked, and stored incoming supplies", "Loaded customer orders safely and on time"] })
@@ -820,6 +820,7 @@ var WORDING_RULES = [
   { re: /\bhall\s*man\b|\bhallman\b/i, tip: "Employers will not know “hall man.” Describe the tasks you did, for example cleaning or delivering supplies." },
   { re: /\btrust(y|ee) status\b|\btrusty\b/i, tip: "Employers may not know “trusty.” Say what it meant, for example “Trusted to work with little supervision.”" },
   { re: /\blifers?\b/i, tip: "Leave out “lifer.” Your resume is about your skills and work." },
+  { re: /\borderl(y|ies)\b/i, tip: "If “orderly” is your job title, use one that says what you did, for example “Custodian” or “Patient Care Aide.”" },
   { re: /\bCTRP\b/, tip: "Employers will not know “CTRP.” Name the program or the certificate you earned instead." },
   { re: /\b(locked up|behind bars|doing time|state time|cell ?block|lock ?down)\b/i, tip: "Lines about your work do not need to mention prison. Your employer line already says where you worked." },
   { re: /\b(in|while in|at) (prison|the penitentiary|jail)\b|\bincarcerat/i, tip: "Lines about your work do not need to mention prison. Your employer line already says where you worked." }

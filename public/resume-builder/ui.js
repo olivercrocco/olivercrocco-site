@@ -142,7 +142,7 @@ function stepStart() {
     "<p>This tool asks you questions one section at a time and builds a resume that hiring software can read. At the end you can download it as a Word file, print it, or copy the text into an online job application.</p>" +
     '<div class="tip">Privacy: everything stays on this device. Nothing is sent over the internet, and nothing is saved unless you choose to save it. On a shared computer, use Clear everything when you finish.</div>' +
     "<h3>Before you start</h3><ul>" +
-    "<li>Jobs you did while incarcerated are real work experience. Include them.</li>" +
+    "<li>Keep it simple and honest. Your resume does not need to mention prison unless you need it to show your work experience.</li>" +
     "<li>You do not list your conviction on a resume. That conversation happens in the interview, and you will practice it in class.</li>" +
     "<li>Everything on your resume should be true and something you could talk about.</li>" +
     "<li>You can skip any step and come back to it.</li></ul>" +
@@ -196,16 +196,16 @@ function entryCard(list, i) {
   html += (job && job.titles.length ? datalist(titleList, job.titles) : "") +
     field("Job title", p + ".title", { list: job && job.titles.length ? titleList : null, placeholder: job && job.titles[0] ? "For example: " + job.titles[0] : "Your job title" });
   var empHelp = e.inside
-    ? "You choose how to name the employer. Each of these is honest: the state department, the facility, or the program or industry you worked for. Pick the one you are most comfortable explaining in an interview."
+    ? "You choose how to name the employer, as long as it is honest: for example, the state department, or the program or industry you worked for. Pick the one you are most comfortable explaining in an interview."
     : "";
   html += field("Employer or organization", p + ".employer", { help: empHelp, placeholder: "Who you worked for" });
   if (e.inside) {
     html += '<div class="quick">' +
-      ["Louisiana Department of Public Safety and Corrections", "Louisiana Prison Enterprises"].map(function (v) {
+      ["Louisiana Department of Public Safety and Corrections"].map(function (v) {
         return '<button class="small" data-action="fillEmployer" data-list="' + list + '" data-i="' + i + '" data-value="' + h(v) + '">Use: ' + h(v) + "</button>";
       }).join("") + "</div>";
   }
-  html += field("City and state", p + ".location", { placeholder: "For example: Angola, LA" });
+  html += field("City and state", p + ".location", { placeholder: "For example: Baton Rouge, LA" });
   html += '<div class="row"><div>' + field("Start year", p + ".start", { placeholder: "2012", mode: "numeric" }) + "</div>" +
     "<div>" + field("End year", p + ".end", { placeholder: "2025 or Present" }) + "</div></div>";
   html += "<h3>What you did</h3>" +
@@ -229,7 +229,7 @@ function stepEntries(list) {
   var isWork = list === "work";
   var html = '<div class="card"><h2>' + (isWork ? "Work history" : "Volunteer and leadership") + "</h2>";
   html += isWork
-    ? '<div class="help">Start with your most recent job and work backward. Include jobs you did while incarcerated. They count as real work experience, and many employers value them.</div>'
+    ? '<div class="help">Start with your most recent job and work backward. Be honest, but your resume does not need to mention prison unless you need it to show your work experience. If jobs you did while incarcerated are your best or most recent work, include them and describe the work itself.</div>'
     : '<div class="help">Optional. Mentoring, clubs, faith groups, hospice, and other service show leadership and responsibility. Skip this step if it does not apply.</div>';
   state[list].forEach(function (e, i) { html += entryCard(list, i); });
   html += '<div class="actions"><button data-action="addEntry" data-list="' + list + '">' + (isWork ? "Add another job" : "Add an activity") + "</button></div>";
