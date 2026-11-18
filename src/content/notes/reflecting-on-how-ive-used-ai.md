@@ -1,0 +1,20 @@
+---
+title: "Reflecting on how I've used AI"
+date: 2026-11-18
+lane: "Method"
+draft: false
+---
+
+When I was on sabbatical in Bangkok (2025-2026), I had the time to learn a lot about AI. I also had a grant from the Academy of Management, along with my friend and colleague Dr. Nibu John Thomas, to deliver workshops on how AI is changing the field and management education in particular. Needless to say, I've been using AI a lot in lots of different ways related to my work. You can see a lot of the code I published on my GitHub accounts ([olivercrocco](https://github.com/olivercrocco) and [WarderHouse](https://github.com/WarderHouse)) where I've been using AI to code tools (and even this website). 
+
+One of the first things I did was build a voice profile so Claude knew me and knew my writing style. I gave it access to some of my articles, blog posts, etc. and then used it to generate draft text based on my ideas that I would then revise. One of my favorite "tricks" is to use voice dictation where I dictate thoughts and ideas into my microphone and then allow AI to clean it up and write it up, which I would then edit and revise as needed. What that means is that during my sabbatical year, a lot of the output I've generated has been aided at least in part by AI (almost all Claude, but I have accounts with Grammarly, OpenAI, and Grok now, too. In fact, almost every program we use now as scholars is AI-enabled). 
+
+My solution to this new landscape has been disclosure and transparency, which is why most of my published writing in the last year includes an AI disclosure statement to help readers understand how and where I've used AI. It's been a shifting landscape, but I seek to ensure my disclosure statements also meet the expectations of any of the publishers I work with. If I work with co-authors, I also do my best to share with them how I'm using AI in the process. Most importantly, I try to use AI responsibly, review and revise all output, check everything multiple times, and verify every claim and citation. If I plan to use AI in scholarly research that involves IRB, I will disclose the use. At LSU, I've also filled out the appropriate paperwork regarding my AI use. At the end of the day, AI cannot be considered an author and cannot be responsible for what it writes, which means I take ultimate responsibility for any outputs.
+
+I'm changing my mind a little about that usage because I don't actually think AI writing is the best. It often uses trite words and phrases and awkward sentence structures. To get the words to sound the way I want, I often have to do heavy editing, which makes me wonder why I didn't just write it myself. (I typed every single word of this post, by the way.) These days, I have found myself using AI more as an editor to check for little things instead of as a kind of ghostwriter or graduate assistant who might bring me first drafts based on my ideas. 
+
+Even though I've had that change of heart now, I'm still using AI in many ways that I think are legitimate and useful. But I'm avoiding using it in ways that would lead to the atrophy of important scholarly skills like academic writing and editing. I also don't want to lose my voice in my academic writing. Even with a voice profile that knows my style, it still can't fully capture my voice, and I want to preserve that in my writing more moving forward. That said, "my voice" isn't necessary for all the kinds of writing we do as scholars. In fact, for example, in most quantitative research, you don't want a scholar's voice. You want the facts. I also am fine with AI output for boilerplate text and notes, worksheets, and things that don't need "Ozzie's voice." 
+
+I'm excited about where AI-enabled research is going because I think we've had a lot of sloppiness in the past that AI can catch. At the same time, all of us need to constantly reflect on what we will not allow AI to atrophy in our lives. I think my own practice is still evolving and will continue to change, so I may write a follow-up post to this or edit it later, but I think it's good to reflect on and disclose to you all as well.
+
+Onward.
