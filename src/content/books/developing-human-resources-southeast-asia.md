@@ -17,6 +17,7 @@ buyLinks:
 awards: []
 featured: true
 order: 1
+wikidata: "Q142214439"
 ---
 
 The book introduces a three-tier ecosystem framework for understanding HRD across the eleven Southeast Asian nations — covering culture, government, and ASEAN at the macro dimension; education, professional networks, and international organizations at the meso dimension; and workers, organizations, and regional talent mobility at the micro dimension.

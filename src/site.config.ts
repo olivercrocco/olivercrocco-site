@@ -58,6 +58,7 @@ export const SOCIAL = {
   googleScholar:
     "https://scholar.google.com/citations?user=7LcwHvIAAAAJ&hl=en",
   orcid: "https://orcid.org/0000-0001-8472-1224",
+  wikidata: "https://www.wikidata.org/wiki/Q142214437",
 } as const;
 
 export const NAV = [

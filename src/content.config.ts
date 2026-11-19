@@ -21,6 +21,8 @@ const books = defineCollection({
     cover: z.string().optional(),
     coverColor: z.string().optional(),
     isbn: z.string().optional(),
+    // Wikidata item id (e.g. "Q142214439"); emitted as sameAs in the Book JSON-LD.
+    wikidata: z.string().optional(),
     // schema.org BookFormatType name, e.g. "Paperback" or "Hardcover".
     bookFormat: z.string().optional(),
     buyLinks: z

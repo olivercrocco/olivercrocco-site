@@ -35,6 +35,9 @@ const booksGraph = {
           }
         : {}),
       ...(b.data.isbn ? { isbn: b.data.isbn } : {}),
+      ...(b.data.wikidata
+        ? { sameAs: `https://www.wikidata.org/wiki/${b.data.wikidata}` }
+        : {}),
       bookFormat: `https://schema.org/${b.data.bookFormat || "Hardcover"}`,
       inLanguage: "en",
     };

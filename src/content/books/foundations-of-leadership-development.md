@@ -21,6 +21,7 @@ buyLinks:
 awards: []
 featured: true
 order: 2
+wikidata: "Q142214441"
 ---
 
 Written with Tomika W. Greer (University of Houston) and Edward A. Gibbons III (LSU). Part I works through self-awareness, emotional intelligence, wellness, integrity and discipline, motivation, and resilience. Part II turns outward to communication, relationships, conflict, and the management of time and priorities. Part III moves to global self-leadership, personal vision and mission, and a development plan students build for themselves.
