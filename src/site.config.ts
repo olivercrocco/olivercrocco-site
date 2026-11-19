@@ -38,6 +38,20 @@ export const AUTHOR = {
     "https://www.lsu.edu/chse/slhrd/about/bios/crocco.php",
 } as const;
 
+/**
+ * Stable identifier for Oliver in the site's JSON-LD. Books and articles point
+ * their author entries at this id, so search engines and AI crawlers read every
+ * work as belonging to one person rather than to an unlinked name string.
+ */
+export const PERSON_ID = "https://olivercrocco.com/#person";
+
+/** A JSON-LD Person for an author name, linked to PERSON_ID when it is Oliver. */
+export function personRef(name: string) {
+  return /Crocco/.test(name)
+    ? { "@type": "Person", "@id": PERSON_ID, name: AUTHOR.name }
+    : { "@type": "Person", name };
+}
+
 export const SOCIAL = {
   twitter: "https://twitter.com/OzzieCrocco",
   linkedin: "https://www.linkedin.com/in/olivercrocco/",

@@ -1,0 +1,125 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PersonSchema from "../components/PersonSchema.astro";
+import { AUTHOR } from "../site.config";
+
+// Ready-to-use biographies for introductions, programs, and media. Every fact
+// here also appears on /about, /books, or the homepage; keep them in step.
+const bios = [
+  {
+    id: "short",
+    label: "Short",
+    note: "About 50 words",
+    paragraphs: [
+      "Oliver S. (Ozzie) Crocco, EdD, is Associate Professor of Leadership and Human Resource Development at Louisiana State University. His research examines how people, organizations, and nations build human capability, with a focus on Southeast Asia, global leadership and adult learning, and the changing nature of work.",
+    ],
+  },
+  {
+    id: "medium",
+    label: "Medium",
+    note: "About 120 words",
+    paragraphs: [
+      "Oliver S. (Ozzie) Crocco, EdD, is Associate Professor of Leadership and Human Resource Development at Louisiana State University. His research examines how people, organizations, and nations build human capability, with a focus on Southeast Asia, global leadership and adult learning, and the changing nature of work. He is the author of Developing Human Resources in Southeast Asia (Palgrave Macmillan, 2021) and co-author of Foundations of Leadership Development (Palgrave Macmillan, 2026). He serves as an associate editor of Human Resource Development Review and the Journal of Tropical Futures. He holds an EdD in Human and Organizational Learning from George Washington University and a master's in Human Development and Psychology from Harvard University.",
+    ],
+  },
+  {
+    id: "long",
+    label: "Long",
+    note: "About 280 words",
+    paragraphs: [
+      "Oliver S. (Ozzie) Crocco, EdD, is Associate Professor of Leadership and Human Resource Development at Louisiana State University, where he also serves as Associate Director of the School of Leadership and Human Resource Development and as PhD Program Coordinator. From 2025 to 2026 he was a Visiting Professor in the Faculty of Political Science at Chulalongkorn University in Bangkok.",
+      "His research follows three connected streams: how nations and institutions across Southeast Asia build human capability; global leadership and adult learning as developmental processes; and the changing nature of work, including digitalization, gig work, and AI-augmented work. He has published more than 50 scholarly works, and his research has received four awards from AHRD, UFHRD, and Emerald.",
+      "His books include Developing Human Resources in Southeast Asia: A Holistic Framework for the ASEAN Community (Palgrave Macmillan, 2021) and Foundations of Leadership Development: The Self-Leadership Journey (Palgrave Macmillan, 2026), written with Tomika W. Greer and Edward A. Gibbons III. Leading Through Paradox, with Rajashi Ghosh, is under contract with Cambridge University Press.",
+      "Before LSU he taught at George Washington University and, before that, for four years at Payap University in Chiang Mai, Thailand. Fieldwork with community-based organizations on the Thai-Myanmar border and inside Myanmar during those years shaped the questions he still asks. He serves as an associate editor of Human Resource Development Review and the Journal of Tropical Futures and as Book and Media Review Editor of New Horizons in Adult Education and Human Resource Development. He served on the Board of Directors of the Academy of Human Resource Development from 2021 to 2024. He holds an EdD from George Washington University, a master's from Harvard University, and an undergraduate degree from Whitworth University.",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Bio"
+  description="Short, medium, and long biographies of Oliver S. (Ozzie) Crocco, EdD, Associate Professor of Leadership and Human Resource Development at Louisiana State University, for introductions, programs, and media."
+>
+  <PersonSchema slot="head" />
+
+  <section class="border-b border-[var(--color-border)] paper-grain">
+    <div class="wrap py-20 md:py-28">
+      <p class="eyebrow mb-5">Bio</p>
+      <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
+        Biographies for introductions and programs
+      </h1>
+      <p class="font-display text-xl md:text-2xl text-[var(--color-text-muted)] leading-snug max-w-3xl">
+        Use whichever length fits. You are welcome to shorten them.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-[var(--color-border)]">
+    <div class="wrap py-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <aside class="md:col-span-4">
+          <img
+            src="/headshot-800.jpg"
+            srcset="/headshot-400.jpg 400w, /headshot-800.jpg 800w, /headshot-1200.jpg 1200w"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            alt="Oliver S. Crocco"
+            class="w-full aspect-[3/4] object-cover rounded shadow-xl border border-[var(--color-border-strong)] mb-6"
+          />
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-6">
+            <a href="/headshot-1200.jpg" download class="text-[var(--color-ink)]">Download the headshot</a> (1200 pixels wide).
+          </p>
+          <p class="eyebrow mb-3">Name and pronunciation</p>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-6">
+            Oliver S. Crocco in print; Ozzie in person. Crocco sounds like the start of crocodile
+            (<a href={AUTHOR.namedropUrl} class="text-[var(--color-ink)]">hear it</a>).
+          </p>
+          <p class="eyebrow mb-3">Contact</p>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+            <a href={`mailto:${AUTHOR.email}`} class="text-[var(--color-ink)] break-all">{AUTHOR.email}</a>
+          </p>
+        </aside>
+
+        <div class="md:col-span-8">
+          {bios.map((bio) => (
+            <article id={bio.id} class="mb-14 last:mb-0">
+              <div class="flex items-baseline justify-between gap-4 mb-4 border-b border-[var(--color-border)] pb-3">
+                <h2 class="font-display text-2xl font-semibold tracking-tight">
+                  {bio.label} <span class="text-[var(--color-text-soft)] text-base font-normal">{bio.note}</span>
+                </h2>
+                <button
+                  type="button"
+                  class="copy-bio text-sm text-[var(--color-text-muted)] hover:text-[var(--color-ink)] underline underline-offset-4"
+                  data-target={`${bio.id}-text`}
+                >
+                  Copy
+                </button>
+              </div>
+              <div id={`${bio.id}-text`} class="prose">
+                {bio.paragraphs.map((p) => <p>{p}</p>)}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll<HTMLButtonElement>(".copy-bio").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const el = document.getElementById(btn.dataset.target || "");
+        if (!el) return;
+        const text = Array.from(el.querySelectorAll("p"))
+          .map((p) => p.textContent?.trim())
+          .join("\n\n");
+        try {
+          await navigator.clipboard.writeText(text);
+          btn.textContent = "Copied";
+          setTimeout(() => (btn.textContent = "Copy"), 2000);
+        } catch {
+          btn.textContent = "Select and copy";
+        }
+      });
+    });
+  </script>
+</BaseLayout>

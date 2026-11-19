@@ -10,13 +10,24 @@
  * Schema reference: https://schema.org/Person
  */
 
-import { AUTHOR, SITE, SOCIAL } from "../site.config";
+import { AUTHOR, SITE, SOCIAL, PERSON_ID } from "../site.config";
+
+interface Props {
+  /** On /about, wrap the Person in a ProfilePage so the page reads as his profile. */
+  profilePage?: boolean;
+}
+const { profilePage = false } = Astro.props;
 
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": PERSON_ID,
   name: AUTHOR.name,
-  alternateName: `${AUTHOR.nickname} Crocco`,
+  alternateName: [
+    `${AUTHOR.nickname} Crocco`,
+    "Oliver Crocco",
+    "Oliver S. Crocco, EdD",
+  ],
   givenName: "Oliver",
   familyName: "Crocco",
   honorificSuffix: "EdD",
@@ -60,15 +71,18 @@ const personSchema = {
   ],
   knowsAbout: [
     "Human Resource Development",
-    "Adult Learning",
-    "Human Development",
-    "Leadership Development",
-    "Southeast Asia",
+    "Human Capital Development in Southeast Asia",
     "ASEAN",
-    "Comparative Education",
-    "Regional Development",
+    "Global Leadership",
+    "Leadership Development",
+    "Adult Learning",
     "Transformative Learning",
-    "Cross-cultural Leadership",
+    "Workplace Learning",
+    "The Changing Nature of Work",
+    "Gig Work",
+    "Responsible AI in Research",
+    "Thailand",
+    "Myanmar",
   ],
   sameAs: [
     SOCIAL.orcid,
@@ -78,6 +92,15 @@ const personSchema = {
     AUTHOR.lsuProfileUrl,
   ].filter(Boolean),
 };
+
+const schema = profilePage
+  ? {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      url: `${SITE.url}/about/`,
+      mainEntity: personSchema,
+    }
+  : personSchema;
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

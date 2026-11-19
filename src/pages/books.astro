@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import { AUTHOR, SITE } from "../site.config";
+import { AUTHOR, SITE, personRef } from "../site.config";
 
 const allBooks = await getCollection("books");
 const books = allBooks.sort((a, b) => a.data.order - b.data.order);
@@ -19,9 +19,9 @@ const booksGraph = {
       "@type": "Book",
       name: b.data.title,
       alternateName: b.data.subtitle,
-      author: b.data.authors.map((a) => ({ "@type": "Person", name: a })),
+      author: b.data.authors.map(personRef),
       ...(b.data.role === "co-editor" || b.data.role === "editor"
-        ? { editor: b.data.authors.map((a) => ({ "@type": "Person", name: a })) }
+        ? { editor: b.data.authors.map(personRef) }
         : {}),
       publisher: { "@type": "Organization", name: b.data.publisher },
       datePublished:

@@ -70,7 +70,7 @@ const regionalWork: { role: string; venue: string; dates?: string; url?: string 
   title="About"
   description="Oliver S. Crocco is Associate Professor of Leadership and Human Resource Development at Louisiana State University, with research on HRD, leadership, and human development across Southeast Asia and ASEAN."
 >
-  <PersonSchema slot="head" />
+  <PersonSchema slot="head" profilePage />
 
   {/* HERO */}
   <section class="border-b border-[var(--color-border)] paper-grain">
@@ -103,6 +103,9 @@ const regionalWork: { role: string; venue: string; dates?: string; url?: string 
             My last name is pronounced like crocodile
             (<a href={AUTHOR.namedropUrl} class="text-[var(--color-ink)]">hear it</a>).
             People who know me call me Ozzie.
+          </p>
+          <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-2">
+            Introducing me somewhere? <a href="/bio" class="text-[var(--color-ink)]">Short, medium, and long bios</a> and a headshot are ready to use.
           </p>
         </aside>
 
