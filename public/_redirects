@@ -4,8 +4,7 @@
 # `!` after status = force, overrides matching static file if present
 #
 # Goal: anyone landing on an old WordPress.com URL gets to the right place —
-# either to the equivalent page on the new site, or to the personal blog
-# content that still lives at oliverscrocco.wordpress.com.
+# the equivalent page on the new site, or the Notes page for old blog posts.
 
 # ===== Old WordPress page URLs → new site equivalents =====
 /curriculum-vitae       /about                301
@@ -21,27 +20,24 @@
 /suggested-reading      /publications         301
 /suggested-reading/     /publications         301
 
-# ===== Old blog post URLs (WordPress permalink: /YYYY/MM/DD/slug/) =====
-# Catches every old blog post. Sends to the same path on the WordPress.com
-# subdomain where the blog content now lives.
-/:year/:month/:day/:slug/   https://oliverscrocco.wordpress.com/:year/:month/:day/:slug/   301!
-/:year/:month/:day/:slug    https://oliverscrocco.wordpress.com/:year/:month/:day/:slug/   301!
+# ===== Old WordPress blog, taxonomy, and feed paths =====
+# These used to forward to oliverscrocco.wordpress.com, but that site now
+# forwards everything back here, which made an endless loop (Search Console
+# "Redirect error"). Since 19 Nov 2026 they all land on /notes instead.
+/:year/:month/:day/:slug/   /notes/   301!
+/:year/:month/:day/:slug    /notes/   301!
+/category/*             /notes/              301
+/tag/*                  /notes/              301
+/author/*               /about/              301
+/feed                   /notes/rss.xml       301
+/feed/                  /notes/rss.xml       301
+/comments/feed          /notes/rss.xml       301
+/comments/feed/         /notes/rss.xml       301
+/blog                   /notes/              301
+/blog/                  /notes/              301
+/blog/*                 /notes/              301
 
-# ===== WordPress taxonomy & feed paths =====
-/category/*             https://oliverscrocco.wordpress.com/category/:splat   301
-/tag/*                  https://oliverscrocco.wordpress.com/tag/:splat        301
-/author/*               https://oliverscrocco.wordpress.com/author/:splat     301
-/feed                   https://oliverscrocco.wordpress.com/feed/             301
-/feed/                  https://oliverscrocco.wordpress.com/feed/             301
-/comments/feed          https://oliverscrocco.wordpress.com/comments/feed/    301
-/comments/feed/         https://oliverscrocco.wordpress.com/comments/feed/    301
-
-# ===== Anything under /blog (we don't host blog content here) =====
-/blog                   https://oliverscrocco.wordpress.com/                  301
-/blog/                  https://oliverscrocco.wordpress.com/                  301
-/blog/*                 https://oliverscrocco.wordpress.com/:splat            301
-
-# ===== Old WordPress uploads (images embedded in old posts) =====
-/wp-content/*           https://oliverscrocco.wordpress.com/wp-content/:splat 301
-/wp-admin/*             https://oliverscrocco.wordpress.com/wp-admin/:splat   301
-/wp-login.php           https://oliverscrocco.wordpress.com/wp-login.php      301
+# ===== Old WordPress files and admin paths: not found =====
+/wp-content/*           /404                 404
+/wp-admin/*             /404                 404
+/wp-login.php           /404                 404
