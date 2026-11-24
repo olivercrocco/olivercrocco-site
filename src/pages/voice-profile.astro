@@ -112,7 +112,7 @@ const outputs = [
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         {outputs.map((o, i) => (
           <article class="border-t border-[var(--color-border-strong)] pt-6">
-            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">0{i + 1}</p>
+            <p class="text-[var(--color-gold-text)] font-mono text-xs mb-3">0{i + 1}</p>
             <h3 class="font-display text-xl font-semibold mb-3 leading-tight">{o.title}</h3>
             <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{o.body}</p>
           </article>
@@ -136,7 +136,7 @@ const outputs = [
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
         {steps.map((s) => (
           <article class="border-t border-[var(--color-border-strong)] pt-6">
-            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">{s.n}</p>
+            <p class="text-[var(--color-gold-text)] font-mono text-xs mb-3">{s.n}</p>
             <h3 class="font-display text-xl font-semibold mb-3 leading-tight">{s.title}</h3>
             <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{s.body}</p>
           </article>
@@ -211,7 +211,7 @@ const outputs = [
         </p>
       </div>
       <div class="max-w-3xl border-t border-[var(--color-border-strong)] pt-5">
-        <p class="font-mono text-xs text-[var(--color-gold)] mb-3">
+        <p class="font-mono text-xs text-[var(--color-gold-text)] mb-3">
           Version {version} · Updated {updated} · DOI {doi}
         </p>
         <p

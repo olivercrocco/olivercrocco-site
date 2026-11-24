@@ -62,12 +62,12 @@ const coverGradients: Record<string, string> = {
 };
 
 const goldText: Record<string, string> = {
-  "navy": "text-[var(--color-gold)]",
+  "navy": "text-[var(--color-gold-text)]",
   "burgundy": "text-[#CD8A5A]",
-  "ink": "text-[var(--color-gold)]",
+  "ink": "text-[var(--color-gold-text)]",
   "rust": "text-[#ECC79A]",
   "forest": "text-[#CD8A5A]",
-  "default": "text-[var(--color-gold)]",
+  "default": "text-[var(--color-gold-text)]",
 };
 ---
 
@@ -134,7 +134,7 @@ const goldText: Record<string, string> = {
                         )}
                       </div>
                       <div>
-                        <div class={`w-10 h-px ${gold === "text-[var(--color-gold)]" ? "bg-[var(--color-gold)]" : "bg-[#CD8A5A]"} mb-3`}></div>
+                        <div class={`w-10 h-px ${gold === "text-[var(--color-gold-text)]" ? "bg-[var(--color-gold)]" : "bg-[#CD8A5A]"} mb-3`}></div>
                         <p class="text-white font-display text-xs font-medium leading-snug">
                           {book.data.authors.join(" · ")}
                         </p>

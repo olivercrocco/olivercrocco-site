@@ -15,7 +15,7 @@ const formatDate = (d: Date) =>
 
 // Lane → color treatment. Sticking with the site's existing gold accent
 // for all lanes for now; can introduce per-lane color later if desired.
-const laneColor = "text-[var(--color-gold)]";
+const laneColor = "text-[var(--color-gold-text)]";
 ---
 
 <BaseLayout
@@ -39,31 +39,31 @@ const laneColor = "text-[var(--color-gold)]";
   {isPrelaunch ? (
     <section class="border-b border-[var(--color-border)]">
       <div class="wrap-narrow py-20">
-        <p class="font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-gold)] mb-6">
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-gold-text)] mb-6">
           The four lanes
         </p>
         <ul class="list-none m-0 p-0 space-y-5">
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Ideas</span>
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Ideas</span>
               Arguments and conversation warm-ups — where the channel earns its keep.
             </p>
           </li>
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Region</span>
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Region</span>
               Southeast Asia field notes — what shows up between conferences and journal pages.
             </p>
           </li>
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Method</span>
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Method</span>
               How the research actually gets done — including the role of AI in serious scholarship.
             </p>
           </li>
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold)] mr-3">Reading</span>
+              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Reading</span>
               Short notes on books worth more than a tweet.
             </p>
           </li>

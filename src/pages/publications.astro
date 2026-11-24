@@ -245,7 +245,7 @@ const publicationsGraph = {
         <div class="mb-20">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10 items-end">
             <div class="md:col-span-1">
-              <span class="font-mono text-sm text-[var(--color-gold)]">
+              <span class="font-mono text-sm text-[var(--color-gold-text)]">
                 0{themeIdx + 1}
               </span>
             </div>
@@ -265,7 +265,7 @@ const publicationsGraph = {
                     {p.venue}
                   </p>
                   {p.award && (
-                    <p class="text-xs uppercase tracking-wider text-[var(--color-gold)] font-medium mb-3">
+                    <p class="text-xs uppercase tracking-wider text-[var(--color-gold-text)] font-medium mb-3">
                       ★ {p.awardUrl ? <a href={p.awardUrl}>{p.award}</a> : p.award}
                     </p>
                   )}

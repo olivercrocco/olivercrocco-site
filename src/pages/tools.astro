@@ -212,7 +212,7 @@ const principles = [
             <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-6">
               {tool.tagline}
             </p>
-            <p class="font-mono text-xs text-[var(--color-gold)] mb-6">{tool.stack}</p>
+            <p class="font-mono text-xs text-[var(--color-gold-text)] mb-6">{tool.stack}</p>
             <div class="flex flex-wrap gap-3">
               {tool.demo
                 ? <a href={tool.demo} class="btn btn-primary">{tool.demoLabel || "Try the live demo →"}</a>
@@ -228,7 +228,7 @@ const principles = [
             <ul class="space-y-3">
               {tool.features.map((f) => (
                 <li class="flex gap-3 text-[var(--color-text)] text-[0.9375rem] leading-relaxed">
-                  <span class="text-[var(--color-gold)] shrink-0" aria-hidden="true">▪</span>
+                  <span class="text-[var(--color-gold-text)] shrink-0" aria-hidden="true">▪</span>
                   <span>{f}</span>
                 </li>
               ))}
@@ -252,7 +252,7 @@ const principles = [
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
         {principles.map((p, i) => (
           <article class="border-t border-[var(--color-border-strong)] pt-6">
-            <p class="text-[var(--color-gold)] font-mono text-xs mb-3">0{i + 1}</p>
+            <p class="text-[var(--color-gold-text)] font-mono text-xs mb-3">0{i + 1}</p>
             <h3 class="font-display text-xl font-semibold mb-3 leading-tight">
               {p.title}
             </h3>
