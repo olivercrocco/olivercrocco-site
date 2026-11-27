@@ -14,7 +14,7 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
 ---
 
 <header class="border-b border-[var(--color-border)] bg-[var(--color-paper)]/85 backdrop-blur-sm sticky top-0 z-40">
-  <div class="wrap flex items-center justify-between py-5">
+  <div class="wrap flex items-center py-5">
     <a
       href="/"
       class="font-display text-lg font-semibold tracking-tight no-underline text-[var(--color-text)] hover:text-[var(--color-ink)]"
@@ -22,7 +22,7 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
       {AUTHOR.name}
     </a>
 
-    <nav class="hidden md:flex items-center gap-8">
+    <nav class="hidden md:flex items-center gap-8 ml-auto">
       {NAV.map((item) => (
         item.label === "Tools" ? (
           <div class="relative" id="tools-menu">
@@ -66,6 +66,9 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
         )
       ))}
     </nav>
+
+    {/* Site search: filled in by src/scripts/search.ts; empty without JavaScript. */}
+    <div id="site-search" class="ml-auto md:ml-7 mr-2 md:mr-0"></div>
 
     <button
       id="mobile-menu-toggle"
@@ -122,6 +125,8 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
 </header>
 
 <script>
+  import "../scripts/search.ts";
+
   const toggle = document.getElementById("mobile-menu-toggle");
   const menu = document.getElementById("mobile-menu");
   const setMobileOpen = (open: boolean) => {
