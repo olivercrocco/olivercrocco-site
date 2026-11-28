@@ -3,7 +3,7 @@
 .irr { --irr-paper: var(--color-paper, #f3efea); --irr-warm: var(--color-paper-warm, #e9e2da);
   --irr-deep: var(--color-paper-deep, #dcd3c8); --irr-ink: var(--color-ink, #34243a);
   --irr-text: var(--color-text, #2a2230); --irr-muted: var(--color-text-muted, #645a63);
-  --irr-soft: var(--color-text-soft, #948a93); --irr-gold: var(--color-gold, #b0613c);
+  --irr-soft: var(--color-text-soft, #948a93); --irr-gold: var(--color-gold-text, #965233);
   --irr-rust: var(--color-rust, #8b3a1f); --irr-border: var(--color-border, rgba(52,36,58,.11));
   --irr-border-strong: var(--color-border-strong, rgba(52,36,58,.2));
   --irr-good: #2f6b3a; --irr-warn: #8a5a12; --irr-bad: #8b3a1f;
@@ -29,7 +29,7 @@
 .irr-field { display: block; }
 .irr-label { display: block; font-size: .85rem; font-weight: 600; color: var(--irr-text); margin-bottom: .3rem; }
 .irr-input { width: 100%; font-family: var(--irr-sans); font-size: .95rem; color: var(--irr-text); background: var(--irr-paper); border: 1px solid var(--irr-border-strong); border-radius: 4px; padding: .5rem .65rem; line-height: 1.4; }
-.irr-input:focus { outline: none; border-color: var(--irr-ink); box-shadow: 0 0 0 3px rgba(20,33,61,.08); }
+.irr-input:focus { outline: 2px solid var(--irr-ink); outline-offset: 1px; border-color: var(--irr-ink); }
 .irr-input-sm { width: auto; padding: .3rem .5rem; font-size: .85rem; }
 .irr-paste { font-family: var(--irr-mono); font-size: .82rem; resize: vertical; white-space: pre; }
 .irr-check { display: flex; gap: .5rem; align-items: flex-start; font-size: .9rem; color: var(--irr-text); margin: 1rem 0 .25rem; max-width: 78ch; }

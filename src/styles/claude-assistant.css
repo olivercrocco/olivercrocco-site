@@ -17,7 +17,7 @@
 .ca-group-title {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.75rem;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -57,7 +57,7 @@
 .ca-input:focus,
 .ca-select:focus,
 .ca-textarea:focus {
-  outline: 2px solid var(--color-gold-light);
+  outline: 2px solid var(--color-gold);
   outline-offset: 1px;
 }
 .ca-textarea { min-height: 4.75rem; resize: vertical; }
@@ -115,7 +115,7 @@
   user-select: none;
 }
 .ca-step-done .ca-step-title { color: var(--color-text-soft); }
-.ca-step-done .ca-done { color: var(--color-gold); }
+.ca-step-done .ca-done { color: var(--color-gold-text); }
 
 .ca-prompt {
   border-left: 3px solid var(--color-gold);

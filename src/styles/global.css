@@ -21,12 +21,14 @@
 
   --color-text: #2A2230;
   --color-text-muted: #645A63;
-  --color-text-soft: #948A93;
+  --color-text-soft: #70666F; /* darkened from #948A93 to pass 4.5:1 on paper */
 
   /* accent — copper/terracotta (token kept as --color-gold so usages don't change) */
   --color-gold: #B0613C;
   --color-gold-light: #CD8A5A;
   --color-rust: #8B3A1F;
+  /* copper for small text: #B0613C is only 4.0:1 on paper, this is 5.2:1 */
+  --color-gold-text: #965233;
 
   --color-border: rgba(52, 36, 58, 0.11);
   --color-border-strong: rgba(52, 36, 58, 0.20);
@@ -153,6 +155,29 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--color-ink);
+}
+
+/* Skip link: hidden until a keyboard user tabs to it */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 50;
+  padding: 0.6rem 1rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+main:focus {
+  outline: none;
 }
 
 /* Button styles */
@@ -356,6 +381,8 @@ a:hover {
 .section-dark {
   background: var(--color-ink);
   color: var(--color-paper);
+  /* on plum, small copper text needs the light copper (5.1:1) */
+  --color-gold-text: var(--color-gold-light);
 }
 .section-dark h2,
 .section-dark h3,
@@ -363,7 +390,7 @@ a:hover {
   color: var(--color-paper);
 }
 .section-dark .eyebrow {
-  color: var(--color-gold);
+  color: var(--color-gold-light);
 }
 .section-dark p {
   color: rgba(243, 239, 234, 0.80);

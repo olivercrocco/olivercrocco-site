@@ -69,10 +69,13 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
 
     <button
       id="mobile-menu-toggle"
-      aria-label="Toggle menu"
+      type="button"
+      aria-label="Menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
       class="md:hidden p-2 -mr-2 text-[var(--color-ink)]"
     >
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <line x1="3" y1="6" x2="21" y2="6" />
         <line x1="3" y1="12" x2="21" y2="12" />
         <line x1="3" y1="18" x2="21" y2="18" />
@@ -121,8 +124,12 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
 <script>
   const toggle = document.getElementById("mobile-menu-toggle");
   const menu = document.getElementById("mobile-menu");
+  const setMobileOpen = (open: boolean) => {
+    menu?.classList.toggle("hidden", !open);
+    toggle?.setAttribute("aria-expanded", open ? "true" : "false");
+  };
   toggle?.addEventListener("click", () => {
-    menu?.classList.toggle("hidden");
+    setMobileOpen(toggle.getAttribute("aria-expanded") !== "true");
   });
 
   // Tools dropdown: opens on hover, click or tap, and keyboard; closes on Escape,
@@ -155,6 +162,10 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
     if (e.key === "Escape" && isOpen()) {
       setOpen(false);
       button?.focus();
+    }
+    if (e.key === "Escape" && toggle?.getAttribute("aria-expanded") === "true") {
+      setMobileOpen(false);
+      toggle.focus();
     }
   });
 </script>
