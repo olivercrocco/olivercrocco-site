@@ -50,9 +50,8 @@ const outputs = [
   description="A free prompt that interviews you about your research identity and reads your published work, then builds two reference documents so an AI assistant can write and think in your scholarly voice, in place of the flat, generic default."
 >
   {/* HERO */}
-  <section class="border-b border-[var(--color-border)] paper-grain">
+  <section class="border-b border-[var(--color-border)]">
     <div class="wrap py-20 md:py-28">
-      <p class="eyebrow mb-5">Tools · Writing</p>
       <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
         Scholarly Voice &amp; Identity Interviewer
       </h1>
@@ -63,7 +62,7 @@ const outputs = [
         generic default.
       </p>
       <div class="flex flex-wrap gap-3 mt-10">
-        <a href="#prompt" class="btn btn-primary">Get the prompt →</a>
+        <a href="#prompt" class="btn btn-primary">Get the prompt</a>
         <a href="#how" class="btn btn-ghost">How to use it</a>
       </div>
     </div>
@@ -169,7 +168,7 @@ const outputs = [
         <button id="copy-prompt" type="button" class="btn btn-primary">Copy prompt</button>
         <a href="/tools/scholarly-voice-and-identity-interviewer.md" class="btn btn-ghost" download>Download .md</a>
         <a href="/tools/scholarly-voice-and-identity-interviewer.docx" class="btn btn-ghost" download>Download .docx</a>
-        <a href={repoUrl} class="btn btn-ghost">View on GitHub →</a>
+        <a href={repoUrl} class="btn btn-ghost">View on GitHub</a>
       </div>
       <pre
         id="prompt-text"
@@ -212,7 +211,7 @@ const outputs = [
       </div>
       <div class="max-w-3xl border-t border-[var(--color-border-strong)] pt-5">
         <p class="font-mono text-xs text-[var(--color-gold-text)] mb-3">
-          Version {version} · Updated {updated} · DOI {doi}
+          Version {version}, updated {updated}, DOI {doi}
         </p>
         <p
           class="text-[var(--color-text)] text-[0.95rem] leading-relaxed mb-3"

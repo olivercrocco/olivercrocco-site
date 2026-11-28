@@ -23,9 +23,8 @@ const principles = [
   description="Free research tools by Oliver S. Crocco: a claim-fidelity checker, a cross-tool statistical verifier, a citation verifier, a peer-reviewer finder, an inter-rater reliability calculator, and a Scholarly Voice and Identity Interviewer prompt. Open, free, and built for trust."
 >
   {/* HERO */}
-  <section class="border-b border-[var(--color-border)] paper-grain">
+  <section class="border-b border-[var(--color-border)]">
     <div class="wrap py-20 md:py-28">
-      <p class="eyebrow mb-5">Tools</p>
       <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
         Open-source research tools
       </h1>
@@ -72,12 +71,12 @@ const principles = [
             <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-6">
               {tool.tagline}
             </p>
-            <p class="font-mono text-xs text-[var(--color-gold-text)] mb-6">{tool.stack}</p>
+            <p class="text-sm text-[var(--color-text-muted)] mb-6">{tool.stack}</p>
             <div class="flex flex-wrap gap-3">
               {tool.demo
-                ? <a href={tool.demo} class="btn btn-primary">{tool.demoLabel || "Try the live demo →"}</a>
-                : <a href={tool.repo} class="btn btn-primary">View on GitHub →</a>}
-              {tool.demo && tool.repo && <a href={tool.repo} class="btn btn-ghost">View on GitHub →</a>}
+                ? <a href={tool.demo} class="btn btn-primary">{tool.demoLabel || "Try the live demo"}</a>
+                : <a href={tool.repo} class="btn btn-primary">View on GitHub</a>}
+              {tool.demo && tool.repo && <a href={tool.repo} class="btn btn-ghost">View on GitHub</a>}
             </div>
           </div>
 
@@ -105,14 +104,12 @@ const principles = [
   {/* PRINCIPLES */}
   <section class="border-b border-[var(--color-border)]">
     <div class="wrap py-20">
-      <p class="eyebrow mb-4">How they work</p>
       <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-12 max-w-2xl">
         Shared principles
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        {principles.map((p, i) => (
+        {principles.map((p) => (
           <article class="border-t border-[var(--color-border-strong)] pt-6">
-            <p class="text-[var(--color-gold-text)] font-mono text-xs mb-3">0{i + 1}</p>
             <h3 class="font-display text-xl font-semibold mb-3 leading-tight">
               {p.title}
             </h3>
@@ -141,7 +138,7 @@ const principles = [
         </p>
         <div class="flex flex-wrap gap-3">
           <a href="https://github.com/olivercrocco" class="btn btn-primary">
-            All my code on GitHub →
+            All my code on GitHub
           </a>
         </div>
       </div>

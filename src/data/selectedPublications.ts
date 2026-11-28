@@ -79,7 +79,7 @@ export const selected: Record<string, SelectedPub[]> = {
     },
     {
       citation:
-        "Crocco, O. S., & Sukanya Chaemchoy. (2024). Higher education in Thailand.",
+        "Crocco, O. S., & Chaemchoy, S. (2024). Higher education in Thailand.",
       venue: "In L. P. Symaco (Ed.), Higher education in Southeast Asia (pp. 119–137). Emerald",
       url: "https://doi.org/10.1108/S1479-367920240000049009",
       note: "A chapter on Thai higher education in a comparative volume on higher education across Southeast Asia.",

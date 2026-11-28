@@ -23,9 +23,8 @@ const laneColor = "text-[var(--color-gold-text)]";
   description="Ideas, field notes from Southeast Asia, method, and reading, by Oliver S. Crocco."
 >
   {/* HEADER */}
-  <section class="border-b border-[var(--color-border)] paper-grain">
+  <section class="border-b border-[var(--color-border)]">
     <div class="wrap py-20 md:py-28">
-      <p class="eyebrow mb-5">Notes</p>
       <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-6 max-w-3xl leading-[1.05]">
         Notes
       </h1>
@@ -39,31 +38,31 @@ const laneColor = "text-[var(--color-gold-text)]";
   {isPrelaunch ? (
     <section class="border-b border-[var(--color-border)]">
       <div class="wrap-narrow py-20">
-        <p class="font-mono text-xs uppercase tracking-[0.18em] text-[var(--color-gold-text)] mb-6">
+        <p class="font-sans text-sm text-[var(--color-gold-text)] mb-6">
           The four lanes
         </p>
         <ul class="list-none m-0 p-0 space-y-5">
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Ideas</span>
+              <span class="font-sans text-sm text-[var(--color-gold-text)] mr-3">Ideas</span>
               Arguments and conversation warm-ups — where the channel earns its keep.
             </p>
           </li>
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Region</span>
+              <span class="font-sans text-sm text-[var(--color-gold-text)] mr-3">Region</span>
               Southeast Asia field notes — what shows up between conferences and journal pages.
             </p>
           </li>
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Method</span>
+              <span class="font-sans text-sm text-[var(--color-gold-text)] mr-3">Method</span>
               How the research actually gets done — including the role of AI in serious scholarship.
             </p>
           </li>
           <li>
             <p class="font-display text-xl text-[var(--color-text)] leading-snug">
-              <span class="font-mono text-xs uppercase tracking-[0.12em] text-[var(--color-gold-text)] mr-3">Reading</span>
+              <span class="font-sans text-sm text-[var(--color-gold-text)] mr-3">Reading</span>
               Short notes on books worth more than a tweet.
             </p>
           </li>
@@ -79,7 +78,7 @@ const laneColor = "text-[var(--color-gold-text)]";
         <ul class="list-none m-0 p-0">
           {notes.map((note) => (
             <li class="py-7 border-t border-[var(--color-border)] first:border-t-0">
-              <div class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-[var(--color-text-soft)] flex items-center gap-4 mb-2">
+              <div class="font-sans text-sm text-[var(--color-text-soft)] flex items-center gap-4 mb-2">
                 <span class={`${laneColor} font-medium`}>{note.data.lane}</span>
                 <span>{formatDate(note.data.date)}</span>
               </div>

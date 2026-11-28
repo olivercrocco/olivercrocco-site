@@ -67,8 +67,24 @@ const toolsActive = TOOL_LINKS.some((t) => isActive(t.href));
       ))}
     </nav>
 
-    {/* Site search: filled in by src/scripts/search.ts; empty without JavaScript. */}
-    <div id="site-search" class="ml-auto md:ml-7 mr-2 md:mr-0"></div>
+    {/* Site search. This plain button loads the search code on first use
+        (src/scripts/search.ts), so pages do not carry it until someone searches. */}
+    <div id="site-search" class="ml-auto md:ml-7 mr-2 md:mr-0 h-9">
+      <button
+        type="button"
+        id="site-search-trigger"
+        aria-label="Search the site"
+        aria-keyshortcuts="/ Meta+K Control+K"
+        class="flex h-9 items-center gap-2 rounded-md border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-2.5 text-[var(--color-text-muted)] hover:text-[var(--color-ink)] hover:border-[var(--color-ink-soft)] transition-colors md:w-44"
+      >
+        <svg viewBox="0 0 20 20" class="h-4 w-4" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.7" />
+          <path d="M12.6 12.6L17 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+        </svg>
+        <span class="hidden md:inline text-[0.875rem]">Search</span>
+        <kbd id="site-search-kbd" class="hidden md:inline ml-auto rounded border border-[var(--color-border-strong)] px-1.5 text-[0.7rem] leading-5 font-sans text-[var(--color-text-soft)]">⌘K</kbd>
+      </button>
+    </div>
 
     <button
       id="mobile-menu-toggle"

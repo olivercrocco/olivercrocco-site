@@ -73,9 +73,8 @@ const regionalWork: { role: string; venue: string; dates?: string; url?: string 
   <PersonSchema slot="head" profilePage />
 
   {/* HERO */}
-  <section class="border-b border-[var(--color-border)] paper-grain">
+  <section class="border-b border-[var(--color-border)]">
     <div class="wrap py-20 md:py-28">
-      <p class="eyebrow mb-5">About</p>
       <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-8 leading-[1.05]">
         Oliver S. (Ozzie) Crocco
       </h1>
@@ -210,7 +209,7 @@ const regionalWork: { role: string; venue: string; dates?: string; url?: string 
                   <p class="text-[var(--color-text-muted)] italic leading-snug">
                     {role.venue}
                     {role.dates && <span class="not-italic text-[var(--color-text-soft)] text-sm ml-2">({role.dates})</span>}
-                    {role.current && <span class="not-italic text-[var(--color-gold-text)] text-xs ml-2 uppercase tracking-wider font-medium">Current</span>}
+                    {role.current && <span class="not-italic text-[var(--color-gold-text)] text-sm ml-2 font-medium">Current</span>}
                   </p>
                 </div>
               </li>
@@ -263,8 +262,8 @@ const regionalWork: { role: string; venue: string; dates?: string; url?: string 
           >
             Download CV
           </a>
-          <a href={SOCIAL.googleScholar} class="btn btn-ghost">Google Scholar →</a>
-          <a href={SOCIAL.orcid} class="btn btn-ghost">ORCID →</a>
+          <a href={SOCIAL.googleScholar} class="btn btn-ghost">Google Scholar</a>
+          <a href={SOCIAL.orcid} class="btn btn-ghost">ORCID</a>
         </div>
       </div>
     </div>

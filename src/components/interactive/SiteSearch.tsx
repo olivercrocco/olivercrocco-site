@@ -42,8 +42,8 @@ function score(item: SearchItem, words: string[]): number {
   return s;
 }
 
-export default function SiteSearch() {
-  const [open, setOpen] = useState(false);
+export default function SiteSearch({ initialOpen = false }: { initialOpen?: boolean }) {
+  const [open, setOpen] = useState(initialOpen);
   const [query, setQuery] = useState("");
   const [items, setItems] = useState<SearchItem[] | null>(null);
   const [failed, setFailed] = useState(false);
