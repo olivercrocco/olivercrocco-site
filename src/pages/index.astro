@@ -99,11 +99,10 @@ const featuredBook = {
   <PersonSchema slot="head" />
 
   {/* ============================================================ HERO ============================================================ */}
-  <section class="paper-grain border-b border-[var(--color-border)] relative overflow-hidden">
+  <section class=" border-b border-[var(--color-border)] relative overflow-hidden">
     <div class="wrap py-24 md:py-36 relative">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
         <div class="md:col-span-8">
-          <p class="eyebrow mb-8">{AUTHOR.scholarlyArea}</p>
           <h1 class="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-tight mb-10 leading-[0.95]">
             Oliver S.<br />Crocco
           </h1>
@@ -125,28 +124,21 @@ const featuredBook = {
             srcset="/headshot-400.jpg 400w, /headshot-800.jpg 800w, /headshot-1200.jpg 1200w"
             sizes="(max-width: 768px) 100vw, 33vw"
             alt="Oliver S. Crocco"
+            width="800"
+            height="1200"
+            fetchpriority="high"
             class="w-full aspect-[3/4] object-cover rounded shadow-xl border border-[var(--color-border-strong)] mb-8"
           />
-          <div class="border-l border-[var(--color-border-strong)] pl-6">
-            <p class="eyebrow mb-5">At a glance</p>
-            <div class="grid grid-cols-2 gap-x-5 gap-y-6">
-              {stats.map((stat) => (
-                <div>
-                  <p
-                    class:list={[
-                      "font-display font-semibold text-[var(--color-text)] leading-[1.05] mb-1.5",
-                      stat.small ? "text-xl" : "text-3xl",
-                    ]}
-                  >
-                    {stat.figure}
-                  </p>
-                  <p class="text-[0.8125rem] text-[var(--color-text-muted)] leading-snug">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <p class="eyebrow mb-3">At a glance</p>
+          <ul class="space-y-2 text-[0.9375rem] leading-snug text-[var(--color-text-muted)]">
+            {stats.map((stat) => (
+              <li>
+                {stat.small
+                  ? <>{stat.figure}, <i>{stat.label}</i></>
+                  : <>{stat.figure} {stat.label}</>}
+              </li>
+            ))}
+          </ul>
         </aside>
       </div>
     </div>
@@ -154,7 +146,7 @@ const featuredBook = {
 
   {/* ============================================================ FEATURED BOOK ============================================================ */}
   <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
-    <div class="wrap py-20" data-fade>
+    <div class="wrap py-20">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
         <div class="md:col-span-4">
           <img
@@ -162,7 +154,10 @@ const featuredBook = {
             srcset="/book-covers/developing-human-resources-southeast-asia-400.jpg 400w, /book-covers/developing-human-resources-southeast-asia-800.jpg 800w, /book-covers/developing-human-resources-southeast-asia-1200.jpg 1200w"
             sizes="(max-width: 768px) 100vw, 33vw"
             alt="Cover of Developing Human Resources in Southeast Asia: A Holistic Framework for the ASEAN Community"
-            class="aspect-[2/3] w-full object-cover rounded shadow-2xl border border-black/20 lift"
+            width="800"
+            height="1186"
+            loading="lazy"
+            class="aspect-[2/3] w-full object-cover rounded shadow-2xl border border-black/20"
           />
         </div>
         <div class="md:col-span-8">
@@ -192,7 +187,10 @@ const featuredBook = {
             srcset="/book-covers/foundations-of-leadership-development-400.jpg 400w, /book-covers/foundations-of-leadership-development-800.jpg 800w"
             sizes="(max-width: 768px) 40vw, 15vw"
             alt="Cover of Foundations of Leadership Development: The Self-Leadership Journey"
-            class="aspect-[2/3] w-full object-cover rounded shadow-lg border border-black/20 lift"
+            width="400"
+            height="606"
+            loading="lazy"
+            class="aspect-[2/3] w-full object-cover rounded shadow-lg border border-black/20"
           />
         </div>
         <div class="md:col-span-10">
@@ -224,7 +222,6 @@ const featuredBook = {
     />
     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
     <figcaption class="absolute bottom-6 left-6 md:bottom-10 md:left-12 text-white">
-      <p class="font-mono text-xs uppercase tracking-[0.18em] opacity-80 mb-1">Bangkok Skyline</p>
       <p class="font-display text-base md:text-lg italic">Bangkok, at dusk</p>
     </figcaption>
   </figure>
@@ -232,8 +229,7 @@ const featuredBook = {
   {/* ============================================================ THREE STREAMS — DARK SECTION (B) ============================================================ */}
   <section class="section-dark border-y border-black/40">
     <div class="wrap py-28">
-      <div class="max-w-2xl mb-14" data-fade>
-        <p class="eyebrow mb-4">What I work on</p>
+      <div class="max-w-2xl mb-14">
         <h2 class="font-display text-4xl md:text-5xl font-semibold tracking-tight mb-6 text-white leading-[1.1]">
           Three streams that interweave
         </h2>
@@ -242,11 +238,11 @@ const featuredBook = {
         </p>
       </div>
 
-      <div data-fade>
+      <div>
         <StreamsBraid id="streams-home" />
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-3" data-fade-stagger>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-3">
         {RESEARCH_THEMES.map((theme) => (
           <article class="relative">
             <div class="h-[2px] mb-6" style={`background: ${theme.color};`}></div>
@@ -265,9 +261,8 @@ const featuredBook = {
   {/* ============================================================ SELECTED PUBLICATIONS ============================================================ */}
   <section class="border-b border-[var(--color-border)]">
     <div class="wrap py-24">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14" data-fade>
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
         <div class="max-w-xl">
-          <p class="eyebrow mb-4">Recent scholarship</p>
           <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-5">
             Selected publications
           </h2>
@@ -276,27 +271,19 @@ const featuredBook = {
           </p>
         </div>
         <a href="/publications" class="btn btn-ghost self-start md:self-end whitespace-nowrap">
-          All publications →
+          All publications
         </a>
       </div>
 
-      <ol class="divide-y divide-[var(--color-border)]" data-fade-stagger>
-        {featuredPubs.map((pub, i) => (
-          <li class="py-7 grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div class="md:col-span-1">
-              <p class="font-mono text-xs text-[var(--color-text-soft)]">
-                {String(i + 1).padStart(2, "0")}
-              </p>
-            </div>
-            <div class="md:col-span-11">
-              <div class="flex items-start gap-3 flex-wrap mb-2">
-                <span class="inline-block px-2 py-0.5 text-[0.7rem] uppercase tracking-wider font-medium bg-[var(--color-paper-deep)] text-[var(--color-ink)] rounded">
-                  {pub.tag}
-                </span>
-                <p class="text-sm text-[var(--color-text-muted)] italic">{pub.venue}</p>
-              </div>
-              <p class="font-display text-lg leading-snug text-[var(--color-text)] mb-2">
+      <ol class="divide-y divide-[var(--color-border)]">
+        {featuredPubs.map((pub) => (
+          <li class="py-7 max-w-4xl">
+            <div>
+              <p class="font-display text-lg leading-snug text-[var(--color-text)] mb-1">
                 {pub.citation}
+              </p>
+              <p class="text-sm text-[var(--color-text-muted)] mb-2">
+                <i>{pub.venue}</i>{!/^\d{4}$/.test(pub.tag) && <>. {pub.tag}.</>}
               </p>
               {pub.plain && (
                 <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed mb-2 max-w-2xl">
@@ -316,28 +303,21 @@ const featuredBook = {
   {/* ============================================================ BEYOND THE RESEARCH — DISTINCTIVE SECTIONS ============================================================ */}
   <section class="border-b border-[var(--color-border)] bg-[var(--color-paper-warm)]">
     <div class="wrap py-24">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-fade-stagger>
+      <h2 class="font-display text-2xl md:text-3xl font-semibold tracking-tight mb-6">
+        Also on this site
+      </h2>
+      <ul class="divide-y divide-[var(--color-border-strong)] border-y border-[var(--color-border-strong)]">
         {distinctive.map((item) => (
-          <a
-            href={item.href}
-            class="group block border border-[var(--color-border-strong)] rounded-sm p-7 bg-[var(--color-paper)] lift"
-            style="text-decoration: none;"
-          >
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="font-display text-xl font-semibold text-[var(--color-text)] leading-tight group-hover:underline underline-offset-4 decoration-[var(--color-border-strong)]">
-                {item.label}
-              </h3>
-              <span
-                class="text-[var(--color-gold-text)] transition-transform group-hover:translate-x-0.5"
-                aria-hidden="true"
-              >→</span>
-            </div>
-            <p class="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
+          <li class="py-5 grid grid-cols-1 md:grid-cols-12 gap-1 md:gap-8 items-baseline">
+            <a href={item.href} class="md:col-span-3 font-display text-xl font-semibold text-[var(--color-text)]">
+              {item.label}
+            </a>
+            <p class="md:col-span-9 text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">
               {item.blurb}
             </p>
-          </a>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -345,9 +325,8 @@ const featuredBook = {
 
   {/* ============================================================ CTA ============================================================ */}
   <section>
-    <div class="wrap py-24" data-fade>
+    <div class="wrap py-24">
       <div class="max-w-2xl">
-        <p class="eyebrow mb-4">Get in touch</p>
         <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-5">
           For invitations to collaborate, discuss, or learn more
         </h2>

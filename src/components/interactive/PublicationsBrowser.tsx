@@ -148,7 +148,7 @@ export default function PublicationsBrowser({ streams }: Props) {
                       </p>
                       <p className="text-sm italic text-[var(--color-text-muted)] mb-3">{p.venue}</p>
                       {p.award && (
-                        <p className="text-xs uppercase tracking-wider text-[var(--color-gold-text)] font-medium mb-3">
+                        <p className="text-sm text-[var(--color-gold-text)] font-medium mb-3">
                           ★ {p.awardUrl ? <a href={p.awardUrl}>{p.award}</a> : p.award}
                         </p>
                       )}
@@ -163,7 +163,7 @@ export default function PublicationsBrowser({ streams }: Props) {
                       </div>
                     </div>
                     {p.note && (
-                      <div className="md:col-span-4 md:border-l md:border-[var(--color-border-strong)] md:pl-6">
+                      <div className="md:col-span-4">
                         <p className="text-[var(--color-text-muted)] text-[0.9375rem] leading-relaxed">{p.note}</p>
                       </div>
                     )}

@@ -78,9 +78,8 @@ const goldText: Record<string, string> = {
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(booksGraph)} />
 
   {/* HEADER */}
-  <section class="border-b border-[var(--color-border)] paper-grain">
+  <section class="border-b border-[var(--color-border)]">
     <div class="wrap py-20 md:py-28">
-      <p class="eyebrow mb-5">Books</p>
       <h1 class="font-display text-4xl md:text-6xl font-semibold tracking-tight mb-6 max-w-3xl">
         Long-form scholarship
       </h1>
@@ -113,6 +112,9 @@ const goldText: Record<string, string> = {
                         srcset={`${base}-400.jpg 400w, ${base}-800.jpg 800w, ${base}-1200.jpg 1200w`}
                         sizes="(max-width: 768px) 100vw, 33vw"
                         alt={`Cover of ${book.data.title}`}
+                        width="800"
+                        height="1200"
+                        loading={i === 0 ? "eager" : "lazy"}
                         class="aspect-[2/3] w-full object-cover rounded shadow-2xl border border-black/20"
                       />
                     );
@@ -136,7 +138,7 @@ const goldText: Record<string, string> = {
                       <div>
                         <div class={`w-10 h-px ${gold === "text-[var(--color-gold-text)]" ? "bg-[var(--color-gold)]" : "bg-[#CD8A5A]"} mb-3`}></div>
                         <p class="text-white font-display text-xs font-medium leading-snug">
-                          {book.data.authors.join(" · ")}
+                          {book.data.authors.join(", ")}
                         </p>
                         {book.data.role !== "author" && (
                           <p class="text-white/70 font-display text-[0.65rem] uppercase tracking-wider mt-1">
@@ -151,7 +153,7 @@ const goldText: Record<string, string> = {
 
               {/* Metadata */}
               <div class={`md:col-span-8 ${i % 2 === 1 ? "md:order-1" : ""}`}>
-                <p class="eyebrow mb-3">{statusLabels[book.data.status]} · {book.data.year}</p>
+                <p class="eyebrow mb-3">{statusLabels[book.data.status]}, {book.data.year}</p>
                 <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-3 leading-tight">
                   {book.data.title}
                 </h2>
@@ -161,7 +163,7 @@ const goldText: Record<string, string> = {
                   </p>
                 )}
                 <p class="text-sm text-[var(--color-text-soft)] mb-6">
-                  {book.data.authors.join(", ")} · {book.data.publisher}
+                  {book.data.authors.join(", ")}. {book.data.publisher}
                 </p>
                 <p class="text-[var(--color-text-muted)] text-lg leading-relaxed mb-8 max-w-2xl">
                   {book.data.description}

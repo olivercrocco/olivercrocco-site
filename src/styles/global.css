@@ -1,4 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap");
+/* Fonts are served from this site (Fontsource), not Google: one less outside
+   connection before text can render. */
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource-variable/source-serif-4/opsz.css";
+@import "@fontsource-variable/source-serif-4/opsz-italic.css";
 @import "tailwindcss";
 
 /* =============================================================================
@@ -6,14 +10,15 @@
    ============================================================================= */
 @theme {
   /* Type families */
-  --font-display: "Source Serif 4", "Source Serif Pro", Georgia, serif;
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+  --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* Colors — Plum & Copper palette (warm stone · plum · copper) */
-  --color-paper: #F3EFEA;
-  --color-paper-warm: #E9E2DA;
-  --color-paper-deep: #DCD3C8;
+  /* Warm white (Nov 2026), replacing the earlier cream #F3EFEA / #E9E2DA / #DCD3C8 */
+  --color-paper: #FAF9F7;
+  --color-paper-warm: #F0EDEA;
+  --color-paper-deep: #E2DED9;
 
   --color-ink: #34243A;
   --color-ink-light: #4A3550;
@@ -21,13 +26,13 @@
 
   --color-text: #2A2230;
   --color-text-muted: #645A63;
-  --color-text-soft: #70666F; /* darkened from #948A93 to pass 4.5:1 on paper */
+  --color-text-soft: #70666F; /* 5.2:1 on paper; darkened from #948A93, which failed 4.5:1 */
 
   /* accent — copper/terracotta (token kept as --color-gold so usages don't change) */
   --color-gold: #B0613C;
   --color-gold-light: #CD8A5A;
   --color-rust: #8B3A1F;
-  /* copper for small text: #B0613C is only 4.0:1 on paper, this is 5.2:1 */
+  /* copper for small text: 5.6:1 on paper, where #B0613C is only 4.3:1 */
   --color-gold-text: #965233;
 
   --color-border: rgba(52, 36, 58, 0.11);
@@ -87,6 +92,9 @@ h1, h2, h3, h4, h5, h6,
   letter-spacing: -0.015em;
   color: var(--color-text);
 }
+
+/* Even line lengths in headings, so one word is not left alone on the last line. */
+h1, h2, h3 { text-wrap: balance; }
 
 h1 { font-size: var(--text-5xl); line-height: 1.08; }
 h2 { font-size: var(--text-4xl); line-height: 1.15; }
@@ -148,13 +156,12 @@ a:hover {
 }
 
 /* "Eyebrow" small caps label (used above section headings) */
+/* Small label over a section: plain sentence case, not tracked capitals. */
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-ink);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
 }
 
 /* Skip link: hidden until a keyboard user tabs to it */
@@ -191,7 +198,7 @@ main:focus {
   font-size: 0.9375rem;
   text-decoration: none;
   border-radius: 4px;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, text-decoration-color 0.15s ease;
   letter-spacing: 0.005em;
 }
 
@@ -258,14 +265,6 @@ main:focus {
   margin-block: 3em;
 }
 
-/* Subtle grain on hero background — feels more "paper" */
-.paper-grain {
-  background-image:
-    radial-gradient(rgba(52, 36, 58, 0.030) 1px, transparent 1px);
-  background-size: 3px 3px;
-  background-position: 0 0;
-}
-
 /* =============================================================================
    Drop cap (used on the lead paragraph of long-form content)
    ============================================================================= */
@@ -312,71 +311,6 @@ main:focus {
   font-style: normal;
 }
 
-/* =============================================================================
-   Oversized faded section numerals (editorial section numbering)
-   ============================================================================= */
-.section-numeral {
-  font-family: var(--font-display);
-  font-size: 5rem;
-  font-weight: 600;
-  line-height: 0.85;
-  color: var(--color-gold);
-  opacity: 0.18;
-  letter-spacing: -0.02em;
-}
-
-/* =============================================================================
-   Quiet motion: fade-up on scroll
-   Elements with data-fade attribute start invisible & translated; the
-   IntersectionObserver in BaseLayout adds .in-view to reveal them.
-   ============================================================================= */
-[data-fade] {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-[data-fade].in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Stagger children with data-fade-stagger */
-[data-fade-stagger] > * {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-[data-fade-stagger].in-view > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
-[data-fade-stagger].in-view > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
-[data-fade-stagger].in-view > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
-[data-fade-stagger].in-view > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
-[data-fade-stagger].in-view > *:nth-child(5) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  [data-fade],
-  [data-fade-stagger] > * {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-}
-
-/* Smooth lift on hover for interactive cards */
-.lift {
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-              box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.lift:hover {
-  transform: translateY(-3px);
-}
-
 /* Dark section override — used on Three Streams */
 .section-dark {
   background: var(--color-ink);
@@ -393,8 +327,8 @@ main:focus {
   color: var(--color-gold-light);
 }
 .section-dark p {
-  color: rgba(243, 239, 234, 0.80);
+  color: rgba(250, 249, 247, 0.80);
 }
 .section-dark .border-t {
-  border-color: rgba(243, 239, 234, 0.18);
+  border-color: rgba(250, 249, 247, 0.18);
 }

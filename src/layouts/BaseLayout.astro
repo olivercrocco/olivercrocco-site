@@ -28,6 +28,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#FAF9F7" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>
@@ -48,9 +49,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
 
-    {/* Preload key fonts */}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     {/* Page-specific <head> content (JSON-LD schema, etc.) */}
     <slot name="head" />
@@ -78,32 +76,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
           /* skip invalid URLs */
         }
       });
-
-      // Quiet motion: reveal elements as they scroll into view.
-      const reduceMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      if (!reduceMotion && "IntersectionObserver" in window) {
-        const io = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("in-view");
-                io.unobserve(entry.target);
-              }
-            }
-          },
-          { rootMargin: "0px 0px -80px 0px", threshold: 0.05 }
-        );
-        document
-          .querySelectorAll("[data-fade], [data-fade-stagger]")
-          .forEach((el) => io.observe(el));
-      } else {
-        // Reduced motion: just show everything
-        document
-          .querySelectorAll("[data-fade], [data-fade-stagger]")
-          .forEach((el) => el.classList.add("in-view"));
-      }
     </script>
   </body>
 </html>
