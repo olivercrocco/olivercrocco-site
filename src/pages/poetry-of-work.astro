@@ -68,7 +68,18 @@ const archive = posts.slice(1);
         {current.poet}, &ldquo;{current.title}&rdquo;
       </h2>
       <p class="text-[var(--color-text-muted)] text-[0.9375rem] mb-5">Select a card to read it full size.</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6" data-fade-stagger>
+      {/* Card deck: filled in by src/scripts/poetry-deck.ts, which then hides the grid
+          below. Without JavaScript the grid stays. The grid's buttons also remain the
+          lightbox's list of cards either way. */}
+      <div id="pow-week">
+      <div
+        id="pow-deck"
+        class="mb-8"
+        data-group={`w${current.week}`}
+        data-cards={JSON.stringify(current.cards)}
+        data-alts={JSON.stringify(current.cards.map((_, i) => `${current.poet}, ${current.title}, card ${i + 1} of ${current.cards.length}`))}
+      ></div>
+      <div id="pow-week-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
         {current.cards.map((src, i) => (
           <button type="button" class="pow-card block w-full p-0 bg-transparent border-0 cursor-zoom-in" data-group={`w${current.week}`}>
             <img
@@ -84,6 +95,7 @@ const archive = posts.slice(1);
         <p class="eyebrow mb-2">Sources</p>
         <p>{current.poemCredit}</p>
         <p>{current.photoCredit}</p>
+      </div>
       </div>
     </div>
   </section>
@@ -177,6 +189,8 @@ const archive = posts.slice(1);
   </style>
 
   <script>
+    import "../scripts/poetry-deck.ts";
+
     const dialog = document.getElementById("pow-lightbox") as HTMLDialogElement | null;
     const img = document.getElementById("pow-lightbox-img") as HTMLImageElement | null;
     const count = document.getElementById("pow-lightbox-count");
@@ -192,16 +206,28 @@ const archive = posts.slice(1);
       count.textContent = `${index + 1} of ${group.length}`;
     }
 
+    function openGroup(key: string, i: number, from: HTMLElement | null) {
+      if (!dialog) return;
+      const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(`.pow-card[data-group="${key}"]`));
+      group = buttons.map((b) => b.querySelector("img")!);
+      opener = from;
+      show(i);
+      dialog.showModal();
+    }
+
     if (dialog && img) {
       document.querySelectorAll<HTMLButtonElement>(".pow-card").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const key = btn.dataset.group;
+          const key = btn.dataset.group!;
           const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(`.pow-card[data-group="${key}"]`));
-          group = buttons.map((b) => b.querySelector("img")!);
-          opener = btn;
-          show(buttons.indexOf(btn));
-          dialog.showModal();
+          openGroup(key, buttons.indexOf(btn), btn);
         });
+      });
+
+      // The card deck asks for the full-size view this way.
+      window.addEventListener("pow:open", (e) => {
+        const { group: key, index: i } = (e as CustomEvent<{ group: string; index: number }>).detail;
+        openGroup(key, i, document.activeElement as HTMLElement | null);
       });
 
       dialog.addEventListener("click", (e) => {
