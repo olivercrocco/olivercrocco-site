@@ -1,7 +1,7 @@
 /* Inter-rater reliability calculator. Uses the site's tokens with fallbacks so
    the same stylesheet works in the offline single-file copy. */
-.irr { --irr-paper: var(--color-paper, #f3efea); --irr-warm: var(--color-paper-warm, #e9e2da);
-  --irr-deep: var(--color-paper-deep, #dcd3c8); --irr-ink: var(--color-ink, #34243a);
+.irr { --irr-paper: var(--color-paper, #faf9f7); --irr-warm: var(--color-paper-warm, #f0edea);
+  --irr-deep: var(--color-paper-deep, #e2ded9); --irr-ink: var(--color-ink, #34243a);
   --irr-text: var(--color-text, #2a2230); --irr-muted: var(--color-text-muted, #645a63);
   --irr-soft: var(--color-text-soft, #948a93); --irr-gold: var(--color-gold-text, #965233);
   --irr-rust: var(--color-rust, #8b3a1f); --irr-border: var(--color-border, rgba(52,36,58,.11));
